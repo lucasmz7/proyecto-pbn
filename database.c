@@ -164,7 +164,8 @@ void listar_estudiantes(ListadoEstudiantes *lista) {
     Estudiante *estudiante = actual->data;
     
     while (actual != NULL) {
-        printf("|%-30s|%-5d|%-2d|%-2d|\n", estudiante->nombre, estudiante->legajo, estudiante->edad, estudiante->promedio);
+        /* promedio es float, usar formato de punto flotante */
+        printf("|%-30s|%-5d|%-2d|%-5.2f|\n", estudiante->nombre, estudiante->legajo, estudiante->edad, estudiante->promedio);
         actual = actual->siguiente;
     }
 }
@@ -180,14 +181,15 @@ void listar_materias(ListadoMaterias *lista) {
     }
 }
 
+// TODO: printear una lista, ahora lo unico que hace es encontrar el primero que existe
 Estudiante *buscar_por_nombre(ListadoEstudiantes *lista, const char* nombre) {
     if (lista == NULL) {
-        printf("ERROR: base de datos vacia\n");
+        printf("ERROR: base de datos vacia\n\n");
         return NULL;
     }
 
     if (strlen(nombre) > 50) {
-        printf("ERORR: nombre demasiado largo, el nombre debe ser de como mucho 50 caracteres\n");
+        printf("ERORR: nombre demasiado largo, el nombre debe ser de como mucho 50 caracteres\n\n");
         return NULL;
     }
     
@@ -198,7 +200,7 @@ Estudiante *buscar_por_nombre(ListadoEstudiantes *lista, const char* nombre) {
     }
     
     if (actual == NULL) {
-        printf("El estudiante no existe\n");
+        printf("El estudiante no existe\n\n");
         return NULL;
     }
     
@@ -208,22 +210,23 @@ Estudiante *buscar_por_nombre(ListadoEstudiantes *lista, const char* nombre) {
 // Tanto edad_min como edad_max son incluyentes
 void buscar_por_rango_edad(ListadoEstudiantes *lista, int edad_min, int edad_max) {
     if (lista == NULL) {
-        printf("ERROR: base de datos vacia\n");
+        printf("ERROR: base de datos vacia\n\n");
         return;
     }
 
     if (edad_min < 18 || edad_min > 100) {
-        printf("ERROR: edad minima invalida, la edad minima debe estar entre [18;100]\n");
+        printf("ERROR: edad minima invalida, la edad minima debe estar entre [18;100]\n\n");
+
         return;
     } 
 
     if (edad_max < 18 || edad_max > 100) {
-        printf("ERROR: edad maxima invalida, la edad maxima debe estar entre [18;100]\n");
+        printf("ERROR: edad maxima invalida, la edad maxima debe estar entre [18;100]\n\n");
         return;
     }
     
     if (edad_max < edad_min) {
-        printf("ERROR: rango de edad invalido, la edad minima tiene que ser menor o igual que la edad maxima\n");
+        printf("ERROR: rango de edad invalido, la edad minima tiene que ser menor o igual que la edad maxima\n\n");
         return;
     }
 
@@ -232,9 +235,34 @@ void buscar_por_rango_edad(ListadoEstudiantes *lista, int edad_min, int edad_max
     printf("Estudiantes en el rango %d-%d", edad_min, edad_max);
     while (actual != NULL) {
         if (actual->data->edad >= edad_min && actual->data->edad <= edad_max) {
-            printf("|%-30s|%-5d|%-2d|%-2d|\n", actual->data->nombre, actual->data->legajo, actual->data->edad, actual->data->promedio);
+            /* promedio es float, usar formato de punto flotante */
+            printf("|%-30s|%-5d|%-2d|%-5.2f|\n", actual->data->nombre, actual->data->legajo, actual->data->edad, actual->data->promedio);
         }
         actual = actual->siguiente;
     }
 
+}
+
+Estudiante *buscar_por_legajo(ListadoEstudiantes *lista, int legajo) {
+    if (lista == NULL) {
+        printf("ERROR: base de datos vacia\n\n");
+        return NULL;
+    }
+
+    if (legajo < 10000 || legajo >= 100000) {
+        printf("ERROR: numero de legajo invalido");
+        return NULL;
+    }
+
+    ListadoEstudiantes *actual = lista;
+    while (actual != NULL) {
+        if (actual->data->legajo == legajo) {
+            return actual;
+        }
+        actual = actual->siguiente;
+    }
+
+    // No encontrado
+    printf("ERROR: legajo no encontrado\n\n");
+    return NULL;
 }

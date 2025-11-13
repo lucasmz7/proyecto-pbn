@@ -29,5 +29,6 @@ void listar_estudiantes(ListadoEstudiantes *lista);
 void listar_materias(ListadoMaterias *lista);
 Estudiante *buscar_por_nombre(ListadoEstudiantes *lista, const char* nombre);
 void buscar_por_rango_edad(ListadoEstudiantes *lista, int edad_min, int edad_max);
+Estudiante *buscar_por_legajo(ListadoEstudiantes *lista, int legajo);
 
 #endif // DATABASE_H
