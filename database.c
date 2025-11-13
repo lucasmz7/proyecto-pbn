@@ -189,7 +189,7 @@ Estudiante *buscar_por_nombre(ListadoEstudiantes *lista, const char* nombre) {
     }
 
     if (strlen(nombre) > 50) {
-        printf("ERORR: nombre demasiado largo, el nombre debe ser de como mucho 50 caracteres\n\n");
+        printf("ERORR: nombre demasiado largo (el nombre debe ser de como mucho 50 caracteres)\n\n");
         return NULL;
     }
     
@@ -215,18 +215,18 @@ void buscar_por_rango_edad(ListadoEstudiantes *lista, int edad_min, int edad_max
     }
 
     if (edad_min < 18 || edad_min > 100) {
-        printf("ERROR: edad minima invalida, la edad minima debe estar entre [18;100]\n\n");
+        printf("ERROR: edad minima invalida (la edad minima debe estar entre [18;100])\n\n");
 
         return;
     } 
 
     if (edad_max < 18 || edad_max > 100) {
-        printf("ERROR: edad maxima invalida, la edad maxima debe estar entre [18;100]\n\n");
+        printf("ERROR: edad maxima invalida (la edad maxima debe estar entre [18;100])\n\n");
         return;
     }
     
     if (edad_max < edad_min) {
-        printf("ERROR: rango de edad invalido, la edad minima tiene que ser menor o igual que la edad maxima\n\n");
+        printf("ERROR: rango de edad invalido (la edad minima tiene que ser menor o igual que la edad maxima)\n\n");
         return;
     }
 
