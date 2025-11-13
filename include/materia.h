@@ -3,15 +3,25 @@
 
 #include <stdbool.h>
 
-typedef struct Materia {
+typedef enum {
+    PENDIENTE,
+    REGULAR,
+    APROBADA
+} EstadoMateria;
+
+typedef struct {
     char nombre[40];
     char identificador[5];
-    bool rendida;
+    int id;
+    EstadoMateria estado;
     float nota;
-    //struct Materia *materias_correlativas[10];  /* Use pointers instead of array */
+    //struct Materia *materias_correlativas[10]; 
 } Materia;
 
-void materia_modificar_nombre(void);
-void materia_modificar_correlativas(void);
+//void materia_modificar_correlativas(void);
+void materia_modificar_nombre(Materia *materia, char* nuevo_nombre);
+void materia_modificar_id(Materia *materia, int nuevo_id);
+void materia_modificar_identificador(Materia *materia, const char* nuevo_identificador);
 
 #endif
+
