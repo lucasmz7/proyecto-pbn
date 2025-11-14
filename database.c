@@ -197,7 +197,7 @@ void buscar_por_nombre(ListadoEstudiantes *lista, const char* nombre) {
     
     while (actual != NULL ) {
         if (strcmp(actual->data->nombre, nombre) == 0) {
-            print_estudiante(actual);
+            print_estudiante(actual->data);
         }
         actual = actual->siguiente;
     }
@@ -258,7 +258,7 @@ Estudiante *buscar_por_legajo(ListadoEstudiantes *lista, int legajo) {
     ListadoEstudiantes *actual = lista;
     while (actual != NULL) {
         if (actual->data->legajo == legajo) {
-            return actual;
+            return actual->data;
         }
         actual = actual->siguiente;
     }
