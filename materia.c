@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include "materia.h"
 #include <utils.c>
+#include <string.h>
 
 // Modificar los datos de una materia del listado global
 void materia_modificar_nombre(Materia *materia, const char* nuevo_nombre) {
@@ -10,6 +11,7 @@ void materia_modificar_nombre(Materia *materia, const char* nuevo_nombre) {
         printf("No se pudo modificar el nombre de la materia. Nombre invalido");
         return;
     }
+    strcpy(materia->nombre, nuevo_nombre);
 }
 
 void materia_modificar_identificador(Materia *materia, const char* nuevo_identificador) {
@@ -17,6 +19,7 @@ void materia_modificar_identificador(Materia *materia, const char* nuevo_identif
         printf("No se pudo modificar el identificador de la materia. Identificador invalido");
         return;        
     }
+    strcpy(materia->identificador, nuevo_identificador);
 }
 
 //void materia_modificar_id(Materia *materia, int nuevo_id) {}
