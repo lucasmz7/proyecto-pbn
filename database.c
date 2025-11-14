@@ -4,6 +4,7 @@
 #include "materia.h"
 #include <string.h>
 #include "database.h"
+#include <utils.c>
 
 ListadoEstudiantes* crear_listado_estudiantes() {
     return NULL;
@@ -22,11 +23,11 @@ void agregar_estudiante(ListadoEstudiantes **lista, int legajo, int edad, const 
     nuevo_estudiante->promedio = 0;
 
     for (int i = 0; i < 5; i++) {
-        nuevo_estudiante->materias_cursando[i].id = -1;
+        strcpy(nuevo_estudiante->materias_cursando[i].identificador, "00000");
     }
 
     for (int i = 0; i < 60; i++) {
-        nuevo_estudiante->materias_aprobadas[i].id = -1;
+        strcpy(nuevo_estudiante->materias_aprobadas[i].identificador, "00000");
     }
 
     // Incializamos nuevo nodo de la lista
@@ -47,10 +48,9 @@ void agregar_estudiante(ListadoEstudiantes **lista, int legajo, int edad, const 
     }
 }
 
-void agregar_materia(ListadoMaterias **lista, const char* identificador, const char* nombre, int id) {
+void agregar_materia(ListadoMaterias **lista, const char* identificador, const char* nombre) {
     // Inicializamos Materia
     Materia *nueva_materia = malloc(sizeof(Materia));
-    nueva_materia->id = id;
     strcpy(nueva_materia->identificador, identificador);
     strcpy(nueva_materia->nombre, nombre);
     nueva_materia->nota = 0;
@@ -75,7 +75,7 @@ void agregar_materia(ListadoMaterias **lista, const char* identificador, const c
 }
 
 
-void eliminar_estudiante(ListadoEstudiantes **lista, const char* nombre) {
+void eliminar_estudiante(ListadoEstudiantes **lista, int legajo) {
     if (*lista == NULL) {
         return;
     }
@@ -84,7 +84,7 @@ void eliminar_estudiante(ListadoEstudiantes **lista, const char* nombre) {
     ListadoEstudiantes *previo = NULL;
 
     // Si el estudiante a eliminar es el primero
-    if (strcmp(actual->data->nombre, nombre) == 0) {
+    if (actual->data->legajo == legajo) {
         *lista = actual->siguiente;
         free(actual->data);
         free(actual);
@@ -92,7 +92,7 @@ void eliminar_estudiante(ListadoEstudiantes **lista, const char* nombre) {
     }
 
     // Recorremos hasta llegar encontrar el nodo a eliminar
-    while (actual != NULL && strcmp(actual->data->nombre, nombre) != 0) {
+    while (actual != NULL && (actual->data->legajo == legajo)) {
         previo = actual;
         actual = actual->siguiente;
     }
@@ -164,8 +164,7 @@ void listar_estudiantes(ListadoEstudiantes *lista) {
     Estudiante *estudiante = actual->data;
     
     while (actual != NULL) {
-        /* promedio es float, usar formato de punto flotante */
-        printf("|%-30s|%-5d|%-2d|%-5.2f|\n", estudiante->nombre, estudiante->legajo, estudiante->edad, estudiante->promedio);
+        print_estudiante(actual->data);
         actual = actual->siguiente;
     }
 }
@@ -176,57 +175,59 @@ void listar_materias(ListadoMaterias *lista) {
     Materia *materia = actual->data;
 
     while (actual != NULL) {
-        printf("|%-5s|%-40s|\n", materia->nombre, materia->identificador);
+        print_materia(actual->data);
         actual = actual->siguiente;
     }
 }
 
 // TODO: printear una lista, ahora lo unico que hace es encontrar el primero que existe
-Estudiante *buscar_por_nombre(ListadoEstudiantes *lista, const char* nombre) {
+void buscar_por_nombre(ListadoEstudiantes *lista, const char* nombre) {
     if (lista == NULL) {
-        printf("ERROR: base de datos vacia\n\n");
-        return NULL;
+        printf("ERROR: base de datos vacia\n");
+        return;
     }
 
+    // TODO: verificar nombre
     if (strlen(nombre) > 50) {
-        printf("ERORR: nombre demasiado largo (el nombre debe ser de como mucho 50 caracteres)\n\n");
-        return NULL;
+        printf("ERORR: nombre demasiado largo (el nombre debe ser de como mucho 50 caracteres)\n");
+        return;
     }
     
     ListadoEstudiantes *actual = lista;
     
-    while (actual != NULL && strcmp(actual->data->nombre, nombre) != 0) {
+    while (actual != NULL ) {
+        if (strcmp(actual->data->nombre, nombre) == 0) {
+            print_estudiante(actual);
+        }
         actual = actual->siguiente;
     }
     
     if (actual == NULL) {
-        printf("El estudiante no existe\n\n");
-        return NULL;
+        printf("No existe ningun estudiante con ese nombre\n");
+        return;
     }
-    
-    return actual->data;
 }
 
 // Tanto edad_min como edad_max son incluyentes
 void buscar_por_rango_edad(ListadoEstudiantes *lista, int edad_min, int edad_max) {
     if (lista == NULL) {
-        printf("ERROR: base de datos vacia\n\n");
+        printf("ERROR: base de datos vacia\n");
         return;
     }
 
+    // TODO: verificar edad
     if (edad_min < 18 || edad_min > 100) {
-        printf("ERROR: edad minima invalida (la edad minima debe estar entre [18;100])\n\n");
-
+        printf("ERROR: edad minima invalida (la edad minima debe estar entre [18;100])\n");
         return;
     } 
 
     if (edad_max < 18 || edad_max > 100) {
-        printf("ERROR: edad maxima invalida (la edad maxima debe estar entre [18;100])\n\n");
+        printf("ERROR: edad maxima invalida (la edad maxima debe estar entre [18;100])\n");
         return;
     }
     
     if (edad_max < edad_min) {
-        printf("ERROR: rango de edad invalido (la edad minima tiene que ser menor o igual que la edad maxima)\n\n");
+        printf("ERROR: rango de edad invalido (la edad minima tiene que ser menor o igual que la edad maxima)\n");
         return;
     }
 
@@ -235,8 +236,7 @@ void buscar_por_rango_edad(ListadoEstudiantes *lista, int edad_min, int edad_max
     printf("Estudiantes en el rango %d-%d", edad_min, edad_max);
     while (actual != NULL) {
         if (actual->data->edad >= edad_min && actual->data->edad <= edad_max) {
-            /* promedio es float, usar formato de punto flotante */
-            printf("|%-30s|%-5d|%-2d|%-5.2f|\n", actual->data->nombre, actual->data->legajo, actual->data->edad, actual->data->promedio);
+            print_estudiante(actual->data);
         }
         actual = actual->siguiente;
     }
@@ -245,12 +245,13 @@ void buscar_por_rango_edad(ListadoEstudiantes *lista, int edad_min, int edad_max
 
 Estudiante *buscar_por_legajo(ListadoEstudiantes *lista, int legajo) {
     if (lista == NULL) {
-        printf("ERROR: base de datos vacia\n\n");
+        printf("ERROR: base de datos vacia\n");
         return NULL;
     }
 
+    // TODO: verificar legajo
     if (legajo < 10000 || legajo >= 100000) {
-        printf("ERROR: numero de legajo invalido");
+        printf("ERROR: numero de legajo invalido (debe ser de 5 digitos)\n");
         return NULL;
     }
 
@@ -263,6 +264,7 @@ Estudiante *buscar_por_legajo(ListadoEstudiantes *lista, int legajo) {
     }
 
     // No encontrado
-    printf("ERROR: legajo no encontrado\n\n");
+    printf("ERROR: legajo no encontrado\n");
     return NULL;
 }
+
