@@ -4,7 +4,7 @@
 #include "materia.h"
 #include <string.h>
 #include "database.h"
-#include <utils.c>
+#include "utils.h"
 
 ListadoEstudiantes* crear_listado_estudiantes() {
     return NULL;

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "materia.h"
-#include <utils.c>
+#include "utils.h"
 #include <string.h>
 
 // Modificar los datos de una materia del listado global
