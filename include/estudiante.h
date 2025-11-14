@@ -12,9 +12,9 @@ typedef struct Estudiante {
     float promedio;
 } Estudiante;
 
-void estudiante_modificar_legajo(Estudiante *lista); 
-void estudiante_modificar_edad(Estudiante *lista); 
-void estudiante_modificar_nombre(Estudiante *lista);
-void estudiante_actualizar_promedio(Estudiante *lista);
+void estudiante_modificar_legajo(Estudiante *estudiante, int nuevo_legajo); 
+void estudiante_modificar_edad(Estudiante *estudiante, int nueva_edad); 
+void estudiante_modificar_nombre(Estudiante *estudiante, const char* nuevo_nombre);
+void estudiante_actualizar_promedio(Estudiante *estudiante);
 
 #endif
