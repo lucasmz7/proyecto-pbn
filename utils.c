@@ -46,5 +46,7 @@ void print_materia(MateriaGlobal *materia) {
 
 
 void print_cursada(Cursada *cursada) {
-    printf("|   %-47s|%-6s|%-4d|%-20s|\n", cursada->referencia->nombre, cursada->referencia->identificador, cursada->nota, cursada->estado);
+    // TODO: CORREGIR CURSADA->ESTADO
+
+    printf("|   %-47s|%-6s|%-2.2f|%-20s|\n", cursada->referencia->nombre, cursada->referencia->identificador, cursada->nota, cursada->estado);
 }

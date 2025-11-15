@@ -12,5 +12,6 @@ int verificar_identificador(const char *identificador);
 int verificar_nota(float nota);
 void print_estudiante(Estudiante *estudiante);
 void print_materia(MateriaGlobal *materia);
+void print_cursada(Cursada *cursada);
 
 #endif
