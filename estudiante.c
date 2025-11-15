@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "estudiante.h"
+#include "database.h"
 #include "utils.h"
 #include <string.h>
 
@@ -51,48 +52,87 @@ int estudiante_actualizar_promedio(Estudiante *estudiante) {
         return 1;
     }
     
-    int suma = 0;
+    double suma = 0.0;
     int cantidad = 0;
     ListadoCursadas *lista = estudiante->regulares;
 
     while (lista != NULL) {
+        if (lista->data != NULL) {
+            suma += lista->data->nota;
+            cantidad++;
+        }
         lista = lista->siguiente;
-        suma += lista->data->nota;
-        cantidad++;
     }
 
-    estudiante->promedio = suma / cantidad;
+    if (cantidad > 0) {
+        estudiante->promedio = (float)(suma / cantidad);
+    } else {
+        estudiante->promedio = 0.0f;
+    }
     return 0;
 }
 
-int anotar(Estudiante *estudiante, MateriaGlobal *materia) {
-    // TODO: deberia anotarse si ya esta en regulares?
-    if (estudiante == NULL || materia == NULL) {
+int anotar(Estudiante *estudiante, ListadoMaterias *lista_materias, const char *nombre_materia) {
+    // Validar parámetros
+    if (estudiante == NULL || lista_materias == NULL || nombre_materia == NULL) {
         return 1;
-    } 
+    }
+     
+    // Buscar la materia global en la lista
+    ListadoMaterias *actual = lista_materias;
+    MateriaGlobal *materia_encontrada = NULL;
+    
+    while (actual != NULL) {
+        if (actual->data != NULL && strcmp(actual->data->nombre, nombre_materia) == 0) {
+            materia_encontrada = actual->data;
+            break;
+        }
+        actual = actual->siguiente;
+    }
+    
+    // Si no se encontró la materia
+    if (materia_encontrada == NULL) {
+        printf("ERROR: Materia '%s' no existe en el sistema.\n", nombre_materia);
+        return 1;
+    }
+    
+    // Crear la cursada
+    Cursada *c = malloc(sizeof(Cursada));
+    if (c == NULL) return 1;
+    c->referencia = materia_encontrada;
+    c->estado = CURSANDO;
+    c->nota = 0.0f;
 
-    ListadoCursadas *lista = estudiante->cursadas;
+    // Crear el nodo de lista
+    ListadoCursadas *nodo = malloc(sizeof(ListadoCursadas));
+    if (nodo == NULL) { free(c); return 1; }
+    nodo->data = c;
+    nodo->siguiente = NULL;
 
-    while (lista->siguiente != NULL) {
-        lista = lista->siguiente;
+    // Insertar en la lista de cursadas del estudiante
+    if (estudiante->cursadas == NULL) {
+        estudiante->cursadas = nodo;
+        return 0;
     }
 
-    lista->siguiente = materia;
+    // Recorrer hasta el final e insertar
+    ListadoCursadas *iter = estudiante->cursadas;
+    while (iter->siguiente != NULL) iter = iter->siguiente;
+    iter->siguiente = nodo;
     return 0;
 }
 
 int bajar(Estudiante *estudiante, const char *nombre_materia) {
-    ListadoCursadas **lista = estudiante->cursadas;
-    
-    if (estudiante == NULL) {
-        return 1;
-    }
+    if (estudiante == NULL) return 1;
+
+    ListadoCursadas **lista = &estudiante->cursadas;
+    if (lista == NULL || *lista == NULL) return 1;
 
     ListadoCursadas *actual = *lista;
     ListadoCursadas *previo = NULL;
 
     // Si la correlativa a eliminar es la primera
-    if (strcmp(actual->data->referencia->nombre, nombre_materia) == 0) {
+    if (actual != NULL && actual->data != NULL && strcmp(actual->data->referencia->nombre, nombre_materia) == 0) {
         *lista = actual->siguiente;
         free(actual->data);
         free(actual);
@@ -100,7 +140,7 @@ int bajar(Estudiante *estudiante, const char *nombre_materia) {
     }
 
     // Recorremos hasta llegar encontrar el nodo a eliminar
-    while (actual != NULL && strcmp(actual->data->referencia->nombre, nombre_materia) != 0) {
+    while (actual != NULL && (actual->data == NULL || strcmp(actual->data->referencia->nombre, nombre_materia) != 0)) {
         previo = actual;
         actual = actual->siguiente;
     }
@@ -110,9 +150,9 @@ int bajar(Estudiante *estudiante, const char *nombre_materia) {
 
     // Eliminamos el nodo y reconectamos la lista
     previo->siguiente = actual->siguiente;
-    free(actual->data);
+    if (actual->data) free(actual->data);
     free(actual);
-    return 0; 
+    return 0;
 }
 
 int rendir_final(Estudiante *estudiante, const char *nombre_materia, float nota) {
