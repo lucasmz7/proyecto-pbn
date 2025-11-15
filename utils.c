@@ -40,6 +40,6 @@ void print_estudiante(Estudiante *estudiante) {
     printf("|%-30s|%-5d|%-2d|%-5.2f|\n", estudiante->nombre, estudiante->legajo, estudiante->edad, estudiante->promedio);
 }
 
-void print_materia(Materia *materia) {
+void print_materia(MateriaGlobal *materia) {
     printf("|%-5s|%-40s|\n", materia->nombre, materia->identificador);
 }

@@ -13,9 +13,22 @@ typedef struct ListadoEstudiantes {
 } ListadoEstudiantes;
 
 typedef struct ListadoMaterias {
-    Materia *data;
+    MateriaGlobal *data;
     struct ListadoMaterias *siguiente;
 } ListadoMaterias;
+
+typedef struct ListadoCorrelativa 
+{
+    MateriaGlobal *data;
+    struct ListadoCorrelativa *siguiente;
+} ListadoCorrelativa;
+
+typedef struct ListadoCursadas
+{
+    Cursada *data;
+    struct ListadoCursadas *siguiente;
+} ListadoCursadas;
+
 
 ListadoEstudiantes* crear_listado_estudiantes();
 ListadoMaterias* crear_listado_materias();
@@ -31,4 +44,4 @@ void buscar_por_nombre(ListadoEstudiantes *lista, const char* nombre);
 void buscar_por_rango_edad(ListadoEstudiantes *lista, int edad_min, int edad_max);
 Estudiante *buscar_por_legajo(ListadoEstudiantes *lista, int legajo);
 
-#endif // DATABASE_H
+#endif

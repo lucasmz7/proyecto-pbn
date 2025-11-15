@@ -6,11 +6,19 @@
 #include "database.h"
 #include "utils.h"
 
-ListadoEstudiantes* crear_listado_estudiantes() {
+ListadoEstudiantes *crear_listado_estudiantes() {
     return NULL;
 }
 
-ListadoMaterias* crear_listado_materias() {
+ListadoMaterias *crear_listado_materias() {
+    return NULL;
+}
+
+ListadoCorrelativa *crear_listado_correlativa() {
+    return NULL;
+}
+
+ListadoCursadas *crear_listado_cursadas() {
     return NULL;
 }
 
@@ -21,14 +29,8 @@ void agregar_estudiante(ListadoEstudiantes **lista, int legajo, int edad, const 
     nuevo_estudiante->edad = edad;
     strcpy(nuevo_estudiante->nombre, nombre);
     nuevo_estudiante->promedio = 0;
-
-    for (int i = 0; i < 5; i++) {
-        strcpy(nuevo_estudiante->materias_cursando[i].identificador, "00000");
-    }
-
-    for (int i = 0; i < 60; i++) {
-        strcpy(nuevo_estudiante->materias_aprobadas[i].identificador, "00000");
-    }
+    nuevo_estudiante->cursadas = NULL;
+    nuevo_estudiante->regulares = NULL;
 
     // Incializamos nuevo nodo de la lista
     ListadoEstudiantes *nuevo_nodo = malloc(sizeof(ListadoEstudiantes));
@@ -48,13 +50,11 @@ void agregar_estudiante(ListadoEstudiantes **lista, int legajo, int edad, const 
     }
 }
 
-void agregar_materia(ListadoMaterias **lista, const char* identificador, const char* nombre) {
+void agregar_materia(ListadoMaterias **lista, const char *identificador, const char *nombre) {
     // Inicializamos Materia
-    Materia *nueva_materia = malloc(sizeof(Materia));
+    MateriaGlobal *nueva_materia = malloc(sizeof(MateriaGlobal));
     strcpy(nueva_materia->identificador, identificador);
     strcpy(nueva_materia->nombre, nombre);
-    nueva_materia->nota = 0;
-    nueva_materia->estado = PENDIENTE;
 
     // Incializamos nuevo nodo de la lista
     ListadoMaterias *nuevo_nodo = malloc(sizeof(ListadoMaterias));
@@ -107,7 +107,7 @@ void eliminar_estudiante(ListadoEstudiantes **lista, int legajo) {
 }
 
 
-void eliminar_materia(ListadoMaterias **lista, const char* nombre) {
+void eliminar_materia(ListadoMaterias **lista, const char *nombre) {
     if (*lista == NULL) {
         return;
     }
@@ -115,7 +115,7 @@ void eliminar_materia(ListadoMaterias **lista, const char* nombre) {
     ListadoMaterias *actual = *lista;
     ListadoMaterias *previo = NULL;
 
-    // Si el estudiante a eliminar es el primero
+    // Si la materia a eliminar es la primera
     if (strcmp(actual->data->nombre, nombre) == 0) {
         *lista = actual->siguiente;
         free(actual->data);
@@ -160,28 +160,37 @@ int cantidad_materias(ListadoMaterias *lista) {
 
 
 void listar_estudiantes(ListadoEstudiantes *lista) {
+    if (lista == NULL) {
+        printf("No hay estudiantes");
+        return;
+    }
+
     ListadoEstudiantes *actual = lista;
     Estudiante *estudiante = actual->data;
     
     while (actual != NULL) {
-        print_estudiante(actual->data);
+        print_estudiante(estudiante);
         actual = actual->siguiente;
     }
 }
 
 
 void listar_materias(ListadoMaterias *lista) {
+    if (lista == NULL) {
+        printf("No hay materias");
+        return;
+    }
+
     ListadoMaterias *actual = lista;
-    Materia *materia = actual->data;
+    MateriaGlobal *materia = actual->data;
 
     while (actual != NULL) {
-        print_materia(actual->data);
+        print_materia(materia);
         actual = actual->siguiente;
     }
 }
 
-// TODO: printear una lista, ahora lo unico que hace es encontrar el primero que existe
-void buscar_por_nombre(ListadoEstudiantes *lista, const char* nombre) {
+void buscar_por_nombre(ListadoEstudiantes *lista, const char *nombre) {
     if (lista == NULL) {
         printf("ERROR: base de datos vacia\n");
         return;
