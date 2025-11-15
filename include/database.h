@@ -3,9 +3,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "estudiante.h"
 #include "materia.h"
 #include <string.h>
+
+typedef struct Estudiante Estudiante;
 
 typedef struct ListadoEstudiantes {
     Estudiante *data;

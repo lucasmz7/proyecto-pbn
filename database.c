@@ -161,15 +161,17 @@ int cantidad_materias(ListadoMaterias *lista) {
 
 void listar_estudiantes(ListadoEstudiantes *lista) {
     if (lista == NULL) {
-        printf("No hay estudiantes");
+        printf("No hay estudiantes\n");
         return;
     }
 
     ListadoEstudiantes *actual = lista;
     Estudiante *estudiante = actual->data;
-    
+
+    printf("|%-50s|%-6d|%-4d|%-5.2f%-15s|\n", "Nombre", "Legajo", "Edad", "Promedio", "");
     while (actual != NULL) {
         print_estudiante(estudiante);
+
         actual = actual->siguiente;
     }
 }
@@ -177,7 +179,7 @@ void listar_estudiantes(ListadoEstudiantes *lista) {
 
 void listar_materias(ListadoMaterias *lista) {
     if (lista == NULL) {
-        printf("No hay materias");
+        printf("No hay materias\n");
         return;
     }
 
@@ -203,10 +205,25 @@ void buscar_por_nombre(ListadoEstudiantes *lista, const char *nombre) {
     }
     
     ListadoEstudiantes *actual = lista;
+    Estudiante *estudiante = actual->data;
+    ListadoCursadas *actual_cursadas = estudiante->cursadas;
+    ListadoCursadas *actual_regulares = estudiante->regulares;    
     
+    printf("|%-50s|%-6d|%-4d|%-5.2f%-15s|\n", "Nombre", "Legajo", "Edad", "Promedio", "");
     while (actual != NULL ) {
         if (strcmp(actual->data->nombre, nombre) == 0) {
-            print_estudiante(actual->data);
+            print_estudiante(estudiante);
+            printf("|   %-47s|%-6s|%-4s|%-20s|\n", "Materias en curso:", "ID", "Nota", "Estado");
+            while (actual_cursadas != NULL) {
+                print_cursada(actual_cursadas);
+                actual_cursadas = actual_cursadas->siguiente;
+            }
+            printf("|   %-47s|%-6s|%-4s|%-20s|\n", "Materias regulares:", "ID", "Nota", "Estado");
+            while (actual_regulares != NULL) {
+                print_cursada(actual_regulares);
+                actual_regulares = actual_regulares->siguiente;
+            }
+
         }
         actual = actual->siguiente;
     }
@@ -242,7 +259,8 @@ void buscar_por_rango_edad(ListadoEstudiantes *lista, int edad_min, int edad_max
 
     ListadoEstudiantes *actual = lista;
     
-    printf("Estudiantes en el rango %d-%d", edad_min, edad_max);
+    printf("Estudiantes en el rango %d-%d\n", edad_min, edad_max);
+    printf("|%-50s|%-6d|%-4d|%-5.2f%-15s|\n", "Nombre", "Legajo", "Edad", "Promedio", "");
     while (actual != NULL) {
         if (actual->data->edad >= edad_min && actual->data->edad <= edad_max) {
             print_estudiante(actual->data);
