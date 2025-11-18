@@ -2,23 +2,27 @@
 #include <string.h>
 #include "estudiante.h"
 #include "database.h"
-#include "utils.h"
 #include <stdbool.h>
+#include "persistencia.h"
+#include <time.h>
 
-void menu_modificar_estudiante(ListadoEstudiantes *lista) {
+void menu_modificar_estudiante(ListadoEstudiantes *lista)
+{
     printf("¿Que estudiante desea modificar? \n");
     int legajo;
-    
-    
-    while (true) {
+
+    while (true)
+    {
         printf("Legajo: ");
 
-        if (scanf("%d", &legajo) != 1) {
+        if (scanf("%d", &legajo) != 1)
+        {
             printf("ERROR: Debe ingresar un número\n");
             continue;
         }
 
-        if (legajo < 10000 || legajo >= 100000) {
+        if (legajo < 10000 || legajo >= 100000)
+        {
             printf("ERROR: número de legajo inválido (debe tener 5 dígitos)\n");
             continue;
         }
@@ -29,15 +33,17 @@ void menu_modificar_estudiante(ListadoEstudiantes *lista) {
 
     Estudiante *estudiante = buscar_por_legajo(lista, legajo);
 
-    if (estudiante == NULL) {
+    if (estudiante == NULL)
+    {
         printf("Estudiante con legajo (%d) no existe\n", legajo);
         return;
     }
-    
+
     char opcion;
     int valido = 0;
 
-    while (!valido) {
+    while (!valido)
+    {
         printf("Opciones:\n");
         printf("A. Modificar nombre\n");
         printf("B. Modificar legajo\n");
@@ -47,10 +53,11 @@ void menu_modificar_estudiante(ListadoEstudiantes *lista) {
 
         scanf(" %c", &opcion);
         printf("\n");
-        
+
         switch (opcion)
         {
-        case 'A': {
+        case 'A':
+        {
             char nombre[50];
             printf("Ingresar nuevo nombre: ");
             scanf(" %[^\n]%*cs", nombre);
@@ -58,18 +65,28 @@ void menu_modificar_estudiante(ListadoEstudiantes *lista) {
             printf("\n");
             break;
         }
-        case 'B': {
+        case 'B':
+        {
             int nuevo_legajo;
             printf("Ingresar nuevo legajo: ");
-            if (scanf(" %d", &nuevo_legajo) != 1) { getchar(); break; }
+            if (scanf(" %d", &nuevo_legajo) != 1)
+            {
+                getchar();
+                break;
+            }
             printf("\n");
             estudiante_modificar_legajo(estudiante, nuevo_legajo);
             break;
         }
-        case 'C': {
+        case 'C':
+        {
             int nueva_edad;
             printf("Ingresar nueva edad: ");
-            if (scanf(" %d", &nueva_edad) != 1) { getchar(); break; }
+            if (scanf(" %d", &nueva_edad) != 1)
+            {
+                getchar();
+                break;
+            }
             estudiante_modificar_edad(estudiante, nueva_edad);
             printf("\n");
             break;
@@ -89,34 +106,97 @@ void menu_modificar_materia(ListadoMaterias *lista) {}
 
 void menu_estadisticas() {}
 
-//int argc, char *argv[]
-int main() {
+void menu_busqueda(ListadoEstudiantes *lista)
+{
+    char opcion_lista;
+    printf("\n");
+    printf("A. Volver\n");
+    printf("B. Mostrar un estudiante\n");
+    printf("\n");
+    scanf(" %c", &opcion_lista);
+
+    switch (opcion_lista)
+    {
+    case 'A':
+        return;
+    case 'B':
+        int legajo;
+        printf("\n");
+        printf("¿Que estudiante desea ver?");
+        printf("\n");
+        while (true)
+        {
+            printf("Legajo: ");
+
+            if (scanf("%d", &legajo) != 1)
+            {
+                printf("ERROR: Debe ingresar un número\n");
+                continue;
+            }
+
+            if (legajo < 10000 || legajo > 99999)
+            {
+                printf("ERROR: número de legajo inválido (debe tener 5 dígitos)\n");
+                continue;
+            }
+
+            break; // legajo válido → salir del loop
+        }
+        printf("\n");
+        Estudiante *estudiante = buscar_por_legajo(lista, legajo);
+        print_detalle(estudiante);
+        break;
+    default:
+        printf("Opcion invalida.\n");
+        printf("\n");
+        break;
+    }
+}
+
+int main()
+{
     char opcion;
     char opcion_carga;
     int valido = 0;
     int valido_carga = 0;
 
     printf("\n");
-    printf("=========================================\n");
-    printf("=== Sistema de Gestion de Estudiantes ===\n");
-    printf("=========================================\n");
+    printf("|=========================================|\n");
+    printf("|=== Sistema de Gestion de Estudiantes ===|\n");
+    printf("|=========================================|\n");
     printf("\n");
-    
 
     ListadoEstudiantes *lista_estudiantes = crear_listado_estudiantes();
     ListadoMaterias *lista_materias = crear_listado_materias();
 
-    while (!valido_carga) {
-        printf("¿Desea cargar la informacion de forma manual? [S/N]\n\n");
-        
+    while (!valido_carga)
+    {
+        printf("¿De que forma desea inicializar los datos del sistema?\n");
+        printf("\n");
+        printf("Opciones: \n");
+        printf("A. Inicializar base de datos vacia\n");
+        printf("B. Inicializar base de datos a partir de un archivo JSON\n");
+        printf("C. Inicializar base de datos con materias y estudiantes aleatorios\n");
+        printf("\n");
+
         scanf(" %c", &opcion_carga);
         switch (opcion_carga)
         {
-        case 'S':
+        case 'A':
             valido_carga = 1;
             break;
-        case 'N':
-            // TODO: parsear y cargar base de datos existente,
+        case 'B':
+            char path[100];
+            printf("Ubicacion: ");
+            scanf(" %99s", &path);
+            cargar_datos(path, &lista_materias, &lista_estudiantes);
+            valido_carga = 1;
+            break;
+        case 'C':
+            // TODO
+            printf("\n");
+            printf("ADVERTENCIA: El generador de materias no crea materias con correlativas, debes cargar las correlativas para cada materia manualmente");
+            printf("\n");
             valido_carga = 1;
             break;
         default:
@@ -126,7 +206,8 @@ int main() {
         }
     }
 
-    while (!valido) {
+    while (!valido)
+    {
         printf("\n");
         printf("Opciones: \n");
         printf("A. Agregar un estudiante\n");
@@ -153,57 +234,89 @@ int main() {
 
         switch (opcion)
         {
-        case 'A': {
+        case 'A':
+        {
             char nombre[50];
             int edad;
             int legajo;
             printf("Nombre: ");
             scanf(" %[^\n]%*c", nombre);
             printf("Edad: ");
-            if (scanf(" %d", &edad) != 1) { getchar(); break; }
+            if (scanf(" %d", &edad) != 1)
+            {
+                getchar();
+                break;
+            }
             printf("Legajo: ");
-            if (scanf(" %d", &legajo) != 1) { getchar(); break; }
+            if (scanf(" %d", &legajo) != 1)
+            {
+                getchar();
+                break;
+            }
             agregar_estudiante(&lista_estudiantes, legajo, edad, nombre);
             // TODO: Desea agregar otro estudiante?
             break;
         }
-        case 'B': {
+        case 'B':
+        {
             int legajo;
             printf("Legajo: ");
             printf("\n");
-            if (scanf(" %d", &legajo) != 1) { getchar(); break; }
+            if (scanf(" %d", &legajo) != 1)
+            {
+                getchar();
+                break;
+            }
             eliminar_estudiante(&lista_estudiantes, legajo);
             break;
         }
         case 'C':
             menu_modificar_estudiante(lista_estudiantes);
             break;
-        case 'D': {
+        case 'D':
+        {
             char nombre[50];
             printf("Nombre: ");
             scanf(" %[^\n]%*c", nombre);
             printf("\n");
             buscar_por_nombre(lista_estudiantes, nombre);
+            menu_busqueda(lista_estudiantes);
             break;
         }
-        case 'E': {
+        case 'E':
+        {
             int legajo;
             printf("Legajo: ");
-            if (scanf(" %d", &legajo) != 1) { getchar(); break; }
+            if (scanf(" %d", &legajo) != 1)
+            {
+                getchar();
+                break;
+            }
             Estudiante *estudiante = buscar_por_legajo(lista_estudiantes, legajo);
             printf("|%-50s|%-6s|%-4s|%-20s|\n", "Nombre", "Legajo", "Edad", "Promedio");
             print_estudiante(estudiante);
+            menu_busqueda(lista_estudiantes);
             break;
         }
-        case 'F': {
+        case 'F':
+        {
             int edad_min;
             int edad_max;
             printf("Edad minima (incluyente): ");
-            if (scanf(" %d", &edad_min) != 1) { getchar(); break; }
+            if (scanf(" %d", &edad_min) != 1)
+            {
+                getchar();
+                break;
+            }
             printf("Edad maxima (incluyente): ");
-            if (scanf(" %d", &edad_max) != 1) { getchar(); break; }
+            if (scanf(" %d", &edad_max) != 1)
+            {
+                getchar();
+                break;
+            }
             printf("\n");
             buscar_por_rango_edad(lista_estudiantes, edad_min, edad_max);
+            menu_busqueda(lista_estudiantes);
             break;
         }
         case 'G':
@@ -218,7 +331,8 @@ int main() {
             agregar_materia(&lista_materias, identificador, nombre);
             // TODO: Desea agregar otra materia?
             break;
-        case 'H': {
+        case 'H':
+        {
             char nombre[50];
             printf("Nombre: ");
             scanf(" %[^\n]%*c", nombre);
@@ -228,25 +342,36 @@ int main() {
         case 'I':
             menu_modificar_materia(lista_materias);
             break;
-        case 'J': {
+        case 'J':
+        {
             int legajo;
             printf("Legajo: ");
-            if (scanf(" %d", &legajo) != 1) { getchar(); break; }
+            if (scanf(" %d", &legajo) != 1)
+            {
+                getchar();
+                break;
+            }
             char nombre[50];
             printf("Nombre de materia: ");
             scanf(" %[^\n]%*c", nombre);
             {
                 Estudiante *estudiante = buscar_por_legajo(lista_estudiantes, legajo);
-                if (estudiante != NULL) {
+                if (estudiante != NULL)
+                {
                     anotar(estudiante, lista_materias, nombre);
                 }
             }
             break;
         }
-        case 'K': {
+        case 'K':
+        {
             int legajo;
             printf("Legajo: ");
-            if (scanf(" %d", &legajo) != 1) { getchar(); break; }
+            if (scanf(" %d", &legajo) != 1)
+            {
+                getchar();
+                break;
+            }
             char nombre[50];
             printf("Nombre: ");
             scanf(" %[^\n]%*c", nombre);
@@ -256,12 +381,21 @@ int main() {
             }
             break;
         }
-        case 'L': {
+        case 'L':
+        {
             int legajo;
             printf("Legajo: ");
-            if (scanf(" %d", &legajo) != 1) { getchar(); break; }
+            if (scanf(" %d", &legajo) != 1)
+            {
+                getchar();
+                break;
+            }
             int nota;
-            if (scanf(" %d", &nota) != 1) { getchar(); break; }
+            if (scanf(" %d", &nota) != 1)
+            {
+                getchar();
+                break;
+            }
             char nombre[50];
             printf("Nombre: ");
             scanf(" %[^\n]%*c", nombre);
@@ -271,40 +405,40 @@ int main() {
             }
             break;
         }
-        case 'M': {
+        case 'M':
+        {
             listar_estudiantes(lista_estudiantes);
-            char opcion_lista;
-            printf("\n");
-            printf("A. Volver\n");
-            printf("\n");
-            scanf(" %c", &opcion_lista);
-            if (opcion_lista == 'A') {
-                break;
-            }
+            menu_busqueda(lista_estudiantes);
             break;
         }
-        case 'N': {
+        case 'N':
+        {
             listar_materias(lista_materias);
-            char opcion_lista;
-            printf("\n");
-            printf("A. Volver\n");
-            printf("\n");
-            scanf(" %c", &opcion_lista);
-            if (opcion_lista == 'A') {
-                break;
-            }
+            menu_busqueda(lista_estudiantes);
             break;
         }
         case 'O':
             // TODO
             break;
+        case 'P':
+        {
+            time_t now = time(NULL);
+            struct tm *tm_info = localtime(&now);
+            char filepath[256];
+
+            strftime(filepath, sizeof(filepath), "./data/datos_%Y%m%d_%H%M%S.json", tm_info);
+
+            guardar_datos(lista_materias, lista_estudiantes, filepath);
+            printf("Datos guardados en: %s\n", filepath);
+            break;
+        }
         case 'Z':
             valido = 1;
-            break;                    
+            break;
         default:
             printf("Opcion invalida.\n");
             break;
-        } 
+        }
     }
 
     free(lista_estudiantes);
@@ -312,4 +446,3 @@ int main() {
 
     return 0;
 }
-
