@@ -142,24 +142,6 @@ ListadoEstudiantes *json_a_lista_estudiantes(cJSON *arr, ListadoMaterias *materi
     return lista;
 }
 
-const char *estado_a_json(EstadoMateria e)
-{
-    switch (e)
-    {
-    case CURSANDO:
-        return "CURSANDO";
-    case REGULAR_PENDIENTE:
-        return "REGULAR_PENDIENTE";
-    case REGULAR_DESAPROBADA:
-        return "REGULAR_DESAPROBADA";
-    case REGULAR_APROBADA:
-        return "REGULAR_APROBADA";
-    case LIBRE:
-        return "LIBRE";
-    }
-    return "DESCONOCIDO";
-}
-
 cJSON *cursada_a_json(Cursada *c)
 {
     if (!c)
@@ -169,7 +151,7 @@ cJSON *cursada_a_json(Cursada *c)
 
     cJSON_AddStringToObject(obj, "materia", c->referencia->nombre);
     cJSON_AddStringToObject(obj, "id", c->referencia->identificador);
-    cJSON_AddStringToObject(obj, "estado", estado_a_json(c->estado));
+    cJSON_AddStringToObject(obj, "estado", estado_a_string(c->estado));
     cJSON_AddNumberToObject(obj, "nota", c->nota);
 
     return obj;
