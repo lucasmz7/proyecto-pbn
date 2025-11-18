@@ -5,7 +5,9 @@
 #include <stdbool.h>
 #include "persistencia.h"
 #include <time.h>
+#include "generador.h"
 
+// todo corregir errores print
 void menu_modificar_estudiante(ListadoEstudiantes *lista)
 {
     printf("¿Que estudiante desea modificar? \n");
@@ -32,12 +34,6 @@ void menu_modificar_estudiante(ListadoEstudiantes *lista)
     printf("\n");
 
     Estudiante *estudiante = buscar_por_legajo(lista, legajo);
-
-    if (estudiante == NULL)
-    {
-        printf("Estudiante con legajo (%d) no existe\n", legajo);
-        return;
-    }
 
     char opcion;
     int valido = 0;
@@ -106,6 +102,8 @@ void menu_modificar_materia(ListadoMaterias *lista) {}
 
 void menu_estadisticas() {}
 
+// TODO: agregar repeticion
+// TODO: hay que crear un menu de busqueda separado para materias
 void menu_busqueda(ListadoEstudiantes *lista)
 {
     char opcion_lista;
@@ -193,10 +191,21 @@ int main()
             valido_carga = 1;
             break;
         case 'C':
-            // TODO
             printf("\n");
-            printf("ADVERTENCIA: El generador de materias no crea materias con correlativas, debes cargar las correlativas para cada materia manualmente");
+            printf("ADVERTENCIA: El generador de materias no crea materias con correlativas\n");
+            printf("debes cargar las correlativas para cada materia manualmente\n");
             printf("\n");
+            int cant_estudiantes;
+            int cant_materias;
+            printf("Cantidad de estudiantes: ");
+            scanf(" %d", &cant_estudiantes);
+            printf("Cantidad de materias: ");
+            scanf(" %d", &cant_materias);
+            int check = generador(&lista_estudiantes, &lista_materias, cant_estudiantes, cant_materias);
+            if (check != 0)
+            {
+                break;
+            }
             valido_carga = 1;
             break;
         default:
