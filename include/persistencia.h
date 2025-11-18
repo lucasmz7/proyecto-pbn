@@ -23,8 +23,6 @@ cJSON *lista_cursadas_a_json(ListadoCursadas *lista);
 cJSON *estudiante_a_json(Estudiante *e);
 cJSON *lista_estudiantes_a_json(ListadoEstudiantes *lista);
 
-const char *estado_a_json(EstadoMateria e);
-
 void guardar_datos(ListadoMaterias *materias,
                    ListadoEstudiantes *estudiantes,
                    const char *path);

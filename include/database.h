@@ -54,6 +54,8 @@ Estudiante *buscar_por_legajo(ListadoEstudiantes *lista, int legajo);
 MateriaGlobal *buscar_por_identificador(ListadoMaterias *lista, const char *id);
 MateriaGlobal *buscar_materia_por_nombre(ListadoMaterias *lista, const char *nombre);
 
+const char *estado_a_string(EstadoMateria e);
+
 void print_detalle(Estudiante *estudiante);
 void print_estudiante(Estudiante *estudiante);
 void print_materia(MateriaGlobal *materia);

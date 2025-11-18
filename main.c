@@ -335,7 +335,7 @@ int main()
             scanf(" %[^\n]%*c", nombre);
             printf("Identificador: ");
             scanf(" %15s", identificador);
-            // TODO: Verificar
+            // TODO: Verificar identificador y repetir
             // TODO: materia ya existente con nombre/verificador
             agregar_materia(&lista_materias, identificador, nombre);
             // TODO: Desea agregar otra materia?
@@ -427,7 +427,8 @@ int main()
             break;
         }
         case 'O':
-            // TODO
+            // TODO;
+            menu_estadisticas();
             break;
         case 'P':
         {
