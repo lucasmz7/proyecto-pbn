@@ -12,7 +12,7 @@ int estudiante_modificar_legajo(Estudiante *estudiante, int nuevo_legajo)
         return 1;
     }
 
-    if (nuevo_legajo < 1000 || nuevo_legajo > 9999)
+    if (nuevo_legajo < 10000 || nuevo_legajo > 99999)
     {
         printf("[ERROR]: Legajo invalido\n");
         return 1;
@@ -249,6 +249,7 @@ int rendir_final(Estudiante *estudiante, const char *nombre_materia, float nota)
         {
             lista->data->estado = estado;
             lista->data->nota = nota;
+            estudiante_actualizar_promedio(estudiante);
             break;
         }
         lista = lista->siguiente;
