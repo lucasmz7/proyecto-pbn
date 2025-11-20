@@ -8,9 +8,9 @@ const char *NOMBRES_MATERIAS[] = {
     "Algebra I",
     "Algebra II",
     "Algebra Lineal",
-    "Analisis Matemático I",
-    "Analisis Matemático II",
-    "Analisis Matemático III",
+    "Analisis Matematico I",
+    "Analisis Matematico II",
+    "Analisis Matematico III",
     "Probabilidad y Estadistica",
     "Estadistica Aplicada",
     "Ecuaciones Diferenciales",
@@ -21,40 +21,40 @@ const char *NOMBRES_MATERIAS[] = {
     "Topologia II",
     "Matematica Discreta",
     "Logica Matematica",
-    "Métodos Numéricos",
+    "Metodos Numericos",
     "Introduccion a la Programacion",
     "Programacion Imperativa",
     "Programacion Orientada a Objetos",
     "Estructuras de Datos",
     "Algoritmos y Complejidad",
     "Bases de Datos",
-    "Modelos y Simulación",
+    "Modelos y Simulacion",
     "Sistemas Operativos",
     "Redes de Computadoras",
     "Arquitectura de Computadoras",
-    "Organización del Computador",
+    "Organizacion del Computador",
     "Compiladores",
-    "Lenguajes Formales y Autómatas",
-    "Ingeniería de Software I",
-    "Ingeniería de Software II",
-    "Métodos Formales",
-    "Computación Gráfica",
+    "Lenguajes Formales y Automatas",
+    "Ingenieria de Software I",
+    "Ingenieria de Software II",
+    "Metodos Formales",
+    "Computacion Grafica",
     "Sistemas Distribuidos",
     "Inteligencia Artificial",
     "Machine Learning",
     "Deep Learning",
     "Sistemas Embebidos",
-    "Robótica I",
-    "Robótica II",
-    "Teoría de la Computación",
+    "Robotica I",
+    "Robotica II",
+    "Teoria de la Computacion",
     "Criptografia",
-    "Seguridad Informática",
+    "Seguridad Informatica",
     "Procesamiento de Señales",
-    "Procesamiento Digital de Imágenes",
-    "Visión por Computadora",
-    "Biomecánica Computacional",
+    "Procesamiento Digital de Imagenes",
+    "Vision por Computadora",
+    "Biomecanica Computacional",
 
-    // Física
+    // Fisica
     "Fisica I",
     "Fisica II",
     "Fisica III",
@@ -73,7 +73,7 @@ const char *NOMBRES_MATERIAS[] = {
     "Laboratorio de Optica",
     "Laboratorio de Electricidad y Magnetismo",
 
-    // Química
+    // Quimica
     "Quimica General",
     "Quimica Inorganica",
     "Quimica Organica I",
@@ -86,7 +86,7 @@ const char *NOMBRES_MATERIAS[] = {
     "Quimica de Materiales",
     "Nanotecnologia Quimica",
 
-    // Biología / Exactas
+    // Biologia / Exactas
     "Biologia Celular",
     "Biologia Molecular",
     "Genetica",
@@ -96,73 +96,73 @@ const char *NOMBRES_MATERIAS[] = {
     "Zoologia",
     "Botanica",
 
-    // Ingeniería Electrónica
+    // Ingenieria Electronica
     "Circuitos Electricos I",
     "Circuitos Electricos II",
-    "Electrónica I",
-    "Electrónica II",
-    "Electrónica Digital",
+    "Electronica I",
+    "Electronica II",
+    "Electronica Digital",
     "Telecomunicaciones",
     "Sistemas de Control",
-    "Control Automático",
+    "Control Automatico",
     "Microprocesadores",
-    "Antenas y Propagación",
+    "Antenas y Propagacion",
     "Dispositivos Semiconductores",
-    "Instrumentación Electrónica",
+    "Instrumentacion Electronica",
     "Electrotecnia",
 
-    // Ingeniería Mecánica
+    // Ingenieria Mecanica
     "Mecanica de Fluidos",
     "Mecanica de Solidos",
     "Estatica",
     "Dinamica",
     "Resistencia de Materiales",
-    "Termodinámica Aplicada",
-    "Máquinas Térmicas",
-    "Diseño Mecánico",
+    "Termodinamica Aplicada",
+    "Maquinas Termicas",
+    "Diseño Mecanico",
     "Materiales Industriales",
     "Procesos de Manufactura",
-    "Ingeniería de Transporte",
+    "Ingenieria de Transporte",
 
-    // Ingeniería Química
-    "Balance de Materia y Energía",
+    // Ingenieria Quimica
+    "Balance de Materia y Energia",
     "Cinetica Quimica",
     "Operaciones Unitarias I",
     "Operaciones Unitarias II",
-    "Reacciones Químicas",
+    "Reacciones Quimicas",
     "Ingenieria de Procesos",
-    "Ingeniería Ambiental",
-    "Polímeros",
+    "Ingenieria Ambiental",
+    "Polimeros",
 
-    // Ingeniería Civil
-    "Materiales de Construcción",
-    "Hidráulica",
-    "Topografía",
+    // Ingenieria Civil
+    "Materiales de Construccion",
+    "Hidraulica",
+    "Topografia",
     "Geotecnia",
     "Diseño Estructural",
-    "Hormigón Armado",
-    "Mecánica de Suelos",
-    "Transporte y Vías de Comunicación",
+    "Hormigon Armado",
+    "Mecanica de Suelos",
+    "Transporte y Vias de Comunicacion",
     "Urbanismo",
-    "Planificación Territorial",
+    "Planificacion Territorial",
 
-    // Ingenierías varias
-    "Sistemas de Información Geográfica",
-    "Mineralogía",
-    "Geología General",
-    "Petrología",
-    "Geomorfología",
-    "Introducción a la Aerodinámica",
-    "Estructuras Aeronáuticas",
-    "Propulsión Espacial",
+    // Ingenierias varias
+    "Sistemas de Informacion Geografica",
+    "Mineralogia",
+    "Geologia General",
+    "Petrologia",
+    "Geomorfologia",
+    "Introduccion a la Aerodinamica",
+    "Estructuras Aeronauticas",
+    "Propulsion Espacial",
 
     // Optativas (muchas)
-    "Introducción al Data Science",
-    "Minería de Datos",
-    "Teoría de Juegos",
-    "Optimización I",
-    "Optimización II",
-    "Computación Paralela",
+    "Introduccion al Data Science",
+    "Mineria de Datos",
+    "Teoria de Juegos",
+    "Optimizacion I",
+    "Optimizacion II",
+    "Computacion Paralela",
     "Cloud Computing",
     "Blockchain",
     "Ciberseguridad Avanzada",
@@ -170,43 +170,43 @@ const char *NOMBRES_MATERIAS[] = {
     "Realidad Aumentada",
     "Realidad Virtual",
     "Criptomonedas y Sistemas Descentralizados",
-    "Modelado de Fenómenos Físicos",
-    "Modelado Estocástico",
-    "Simulación Monte Carlo",
-    "Astronomía General",
-    "Astrofísica",
-    "Cosmología",
-    "Energías Renovables",
-    "Tecnología Nuclear",
-    "Fisión y Fusión Nuclear",
+    "Modelado de Fenomenos Fisicos",
+    "Modelado Estocastico",
+    "Simulacion Monte Carlo",
+    "Astronomia General",
+    "Astrofisica",
+    "Cosmologia",
+    "Energias Renovables",
+    "Tecnologia Nuclear",
+    "Fision y Fusion Nuclear",
     "Diseño de Reactores",
-    "Ingeniería Biomédica",
-    "Prostética y Biónica",
-    "Bioinstrumentación",
-    "Biofísica",
-    "Microbiología Industrial",
-    "Machine Learning para Física",
-    "Introducción al Internet de las Cosas",
-    "Sistemas Autónomos",
-    "Análisis de Big Data",
-    "Criptografía Cuántica",
-    "Computación Cuántica",
+    "Ingenieria Biomedica",
+    "Prostetica y Bionica",
+    "Bioinstrumentacion",
+    "Biofisica",
+    "Microbiologia Industrial",
+    "Machine Learning para Fisica",
+    "Introduccion al Internet de las Cosas",
+    "Sistemas Autonomos",
+    "Analisis de Big Data",
+    "Criptografia Cuantica",
+    "Computacion Cuantica",
     "Linguistica Computacional",
-    "Matemática para IA",
+    "Matematica para IA",
     "Sistemas no Lineales",
-    "Teoría del Caos",
-    "Métodos Variacionales",
-    "Introducción a la Nanotecnología",
-    "Fabricación Aditiva",
-    "Ingeniería de Materiales Avanzados",
+    "Teoria del Caos",
+    "Metodos Variacionales",
+    "Introduccion a la Nanotecnologia",
+    "Fabricacion Aditiva",
+    "Ingenieria de Materiales Avanzados",
     "Sensores y Actuadores",
-    "Acústica y Vibraciones",
-    "Modelos Climáticos",
+    "Acustica y Vibraciones",
+    "Modelos Climaticos",
     "Ciencia del Clima",
-    "Bioestadística",
-    "Epistemología de la Ciencia",
-    "Historia de la Tecnología",
-    "Taller de Investigación",
+    "Bioestadistica",
+    "Epistemologia de la Ciencia",
+    "Historia de la Tecnologia",
+    "Taller de Investigacion",
     "Seminario Final",
     "Seminario de Tesis I",
     "Seminario de Tesis II"};
@@ -222,7 +222,7 @@ const char *NOMBRES[] = {
     "Ignacio", "Ismael", "Ivan", "Joaquin", "Joel",
     "Jonathan", "Jose", "Juan", "Julian", "Kevin",
     "Lautaro", "Leonardo", "Lucas", "Luciano", "Luis",
-    "Manuel", "Marcos", "Mario", "Martín", "Mateo",
+    "Manuel", "Marcos", "Mario", "Martin", "Mateo",
     "Matias", "Maximiliano", "Nicolas", "Pablo", "Patricio",
     "Pedro", "Ramiro", "Ricardo", "Rodrigo", "Santiago",
     "Sebastian", "Sergio", "Tomas", "Ulises", "Valentin",
@@ -237,7 +237,7 @@ const char *NOMBRES[] = {
     "Juana", "Julieta", "Kiara", "Laura", "Lara",
     "Lucia", "Malena", "Marina", "Martina", "Melanie",
     "Milagros", "Micaela", "Morena", "Nadia", "Noelia",
-    "Paula", "Pilar", "Rocío", "Romina", "Sabrina",
+    "Paula", "Pilar", "Rocio", "Romina", "Sabrina",
     "Salome", "Sofia", "Stefania", "Tatiana", "Valeria",
     "Victoria", "Yasmin"};
 
@@ -247,13 +247,13 @@ const char *APELLIDOS[] = {
     "Barrios", "Benitez", "Blanco", "Borda", "Bravo",
     "Caballero", "Caceres", "Cano", "Cardozo", "Carrizo",
     "Castillo", "Castro", "Cervantes", "Cisneros", "Colman",
-    "Córdoba", "Correa", "Cuevas", "Duarte", "Escobar",
+    "Cordoba", "Correa", "Cuevas", "Duarte", "Escobar",
     "Esquivel", "Fernandez", "Figueroa", "Flores", "Franco",
-    "Galeano", "Gallardo", "García", "Gimenez", "Godoy",
+    "Galeano", "Gallardo", "Garcia", "Gimenez", "Godoy",
     "Gomez", "Gonzalez", "Guerrero", "Heredia", "Herrera",
     "Ibarra", "Ledesma", "Leguizamon", "Lopez", "Luna",
     "Maidana", "Martinez", "Medina", "Mendez", "Miranda",
-    "Molina", "Monzón", "Morales", "Mori", "Navarro",
+    "Molina", "Monzon", "Morales", "Mori", "Navarro",
     "Nuñez", "Ojeda", "Olmedo", "Ortiz", "Paez",
     "Paredes", "Perez", "Ponce", "Ramirez", "Reyes",
     "Rios", "Rivero", "Rodriguez", "Romero", "Ruiz",
@@ -266,16 +266,16 @@ void generar_estudiante_aleatorio(ListadoEstudiantes **lista)
     const char *nombre = NOMBRES[rand() % (sizeof(NOMBRES) / sizeof(NOMBRES[0]))];
     const char *apellido = APELLIDOS[rand() % (sizeof(APELLIDOS) / sizeof(APELLIDOS[0]))];
 
-    char nombre_completo[30];
+    char nombre_completo[50];
     snprintf(nombre_completo, sizeof(nombre_completo), "%s %s", nombre, apellido);
 
     int legajo = 100000 + rand() % 900000;
-    while (buscar_por_legajo(*lista, legajo) != NULL)
+    int edad = 18 + rand() % 23;
+
+    do
     {
         legajo = 100000 + rand() % 900000;
-    }
-
-    int edad = 18 + rand() % 23;
+    } while (*lista != NULL && buscar_por_legajo(*lista, legajo) != NULL);
 
     agregar_estudiante(lista, legajo, edad, nombre_completo);
 }
@@ -298,7 +298,7 @@ void generar_materia_aleatoria(ListadoMaterias **lista)
             else
                 id[i] = '0' + (r - 26);
         }
-    } while (buscar_por_identificador(*lista, id) != NULL);
+    } while (buscar_por_identificador(*lista, id) != NULL && *lista != NULL);
 
     agregar_materia(lista, id, nombre_random);
 }
@@ -323,7 +323,7 @@ int generador(ListadoEstudiantes **estudiantes,
     if (cantidad_estudiantes > TOTAL_LEGAJOS_POSIBLES)
     {
         printf("[ERROR]: No se pueden generar %d estudiantes.\n", cantidad_estudiantes);
-        printf("Solo hay %d legajos disponibles (6 dígitos).\n", TOTAL_LEGAJOS_POSIBLES);
+        printf("Solo hay %d legajos disponibles (6 digitos).\n", TOTAL_LEGAJOS_POSIBLES);
         return 1;
     }
 
@@ -337,6 +337,6 @@ int generador(ListadoEstudiantes **estudiantes,
         generar_materia_aleatoria(materias);
     }
 
-    printf("Generación exitosa\n");
+    printf("Generacion exitosa\n");
     return 0;
 }

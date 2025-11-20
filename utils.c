@@ -321,7 +321,6 @@ void imprimir_k_mejores_estudiantes(ListadoEstudiantes *estudiantes, int k)
         }
     }
 
-    printf("\n");
     free(mejores_estudiantes);
 }
 
@@ -346,6 +345,5 @@ void imprimir_k_peores_estudiantes(ListadoEstudiantes *estudiantes, int k)
         }
     }
 
-    printf("\n");
     free(peores_estudiantes);
 }

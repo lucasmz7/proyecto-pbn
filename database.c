@@ -32,7 +32,7 @@ int agregar_estudiante(ListadoEstudiantes **lista, int legajo, int edad, const c
         return 1;
     }
 
-    if (legajo < 10000 || legajo >= 99999)
+    if (legajo < 100000 || legajo > 999999)
     {
         printf("[ERROR]: Legajo invalido\n");
         return 1;
@@ -415,7 +415,7 @@ Estudiante *buscar_por_legajo(ListadoEstudiantes *lista, int legajo)
         return NULL;
     }
 
-    if (legajo < 10000 || legajo >= 99999)
+    if (legajo < 100000 || legajo >= 999999)
     {
         printf("[ERROR]: numero de legajo invalido (debe ser de 6 digitos)\n");
         return NULL;
@@ -509,7 +509,7 @@ void print_materia(MateriaGlobal *materia)
         printf("[ERROR]: Struct 'MateriaGlobal' invalido\n");
     }
 
-    printf("|%-50s|%-6s|%-9s|%-9s|%-12s|\n", materia->nombre, materia->identificador, materia->cursantes, materia->aprobados, materia->desaprobados);
+    printf("|%-50s|%-6s|%-9d|%-9d|%-12d|\n", materia->nombre, materia->identificador, materia->cursantes, materia->aprobados, materia->desaprobados);
 }
 
 void print_cursada(Cursada *cursada)

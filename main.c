@@ -6,7 +6,7 @@
 #include "persistencia.h"
 #include <time.h>
 #include "generador.h"
-#include <utils.c>
+#include "utils.h"
 
 int ventana_legajo();
 int ventana_edad();
@@ -282,9 +282,9 @@ int ventana_legajo()
             continue;
         }
 
-        if (legajo < 10000 || legajo > 99999)
+        if (legajo < 100000 || legajo > 999999)
         {
-            printf("[ERROR]: número de legajo inválido (debe tener 5 dígitos)\n");
+            printf("[ERROR]: número de legajo inválido (debe tener 6 dígitos)\n");
             continue;
         }
 
@@ -334,7 +334,7 @@ const char *ventana_identificador()
     {
         printf("Identificador: ");
 
-        if (scanf("%d", &id) != 1)
+        if (scanf("%c", &id) != 1)
         {
             printf("[ERROR]: Debe ingresar un número\n");
             continue;
@@ -484,9 +484,6 @@ void menu_busqueda_estudiante(ListadoEstudiantes *lista)
 
         switch (opcion_lista)
         {
-        case 'B':
-            valido = 1;
-            return;
         case 'A':
             printf("\n");
             printf("¿Que estudiante desea ver?");
@@ -496,6 +493,9 @@ void menu_busqueda_estudiante(ListadoEstudiantes *lista)
             Estudiante *estudiante = buscar_por_legajo(lista, legajo);
             print_detalle(estudiante);
             break;
+        case 'B':
+            valido = 1;
+            return;
         default:
             printf("Opcion invalida.\n");
             printf("\n");
@@ -518,9 +518,6 @@ void menu_busqueda_materia(ListadoMaterias *lista)
 
         switch (opcion_lista)
         {
-        case 'B':
-            valido = 1;
-            return;
         case 'A':
             printf("\n");
             printf("¿Que materia desea ver?");
@@ -530,6 +527,9 @@ void menu_busqueda_materia(ListadoMaterias *lista)
             MateriaGlobal *materia = buscar_por_identificador(lista, id);
             print_materia(materia);
             break;
+        case 'B':
+            valido = 1;
+            return;
         default:
             printf("Opcion invalida.\n");
             printf("\n");
@@ -546,7 +546,6 @@ void menu_estadisticas(ListadoEstudiantes *estudiantes, ListadoMaterias *materia
 
     // TODO: si no hay estudiantes volver? si no hay materias volver? o mostrar solo lo que haya
 
-    printf("\n");
     printf("Estadisticas:\n");
     printf("\n");
 
@@ -555,33 +554,36 @@ void menu_estadisticas(ListadoEstudiantes *estudiantes, ListadoMaterias *materia
     printf("\n");
 
     int promedio_general = 0;
-    ListadoEstudiantes *actual = estudiantes;
-    while (actual != NULL)
+    ListadoEstudiantes *actual1 = estudiantes;
+    while (actual1 != NULL)
     {
-        promedio_general += actual->data->promedio;
-        actual->siguiente;
+        promedio_general += actual1->data->promedio;
+        actual1 = actual1->siguiente;
     }
     printf("Promedio general: %d\n", promedio_general / cant_estudiantes);
     printf("\n");
 
     int edad_promedio = 0;
-    ListadoEstudiantes *actual = estudiantes;
-    while (actual != NULL)
+    ListadoEstudiantes *actual2 = estudiantes;
+    while (actual2 != NULL)
     {
-        edad_promedio += actual->data->edad;
-        actual->siguiente;
+        edad_promedio += actual2->data->edad;
+        actual2 = actual2->siguiente;
     }
     printf("Edad promedio: %d\n", edad_promedio / cant_estudiantes);
 
     int edad_maxima = 0;
-    ListadoEstudiantes *actual = estudiantes;
-    while (actual != NULL)
+    ListadoEstudiantes *actual3 = estudiantes;
+    while (actual3 != NULL)
     {
-        if (actual->data->edad > edad_maxima)
-            edad_maxima = actual->data->edad;
-        actual->siguiente;
+        if (actual3->data->edad > edad_maxima)
+        {
+            edad_maxima = actual3->data->edad;
+        }
+        actual3 = actual3->siguiente;
     }
-    printf("Edad maxima: %d\n", edad_promedio);
+
+    printf("Edad maxima: %d\n", edad_maxima);
     printf("\n");
 
     printf("Mejores promedios:\n");
