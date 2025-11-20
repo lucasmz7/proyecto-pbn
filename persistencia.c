@@ -3,6 +3,11 @@
 #include "materia.h"
 #include "cJSON.h"
 
+/**
+ * @brief Convierte un string de estado a su valor enum correspondiente.
+ * @param s String que representa el estado.
+ * @return EstadoMateria Valor del enum EstadoMateria.
+ */
 EstadoMateria json_a_estado(const char *s)
 {
     if (strcmp(s, "CURSANDO") == 0)
@@ -19,6 +24,11 @@ EstadoMateria json_a_estado(const char *s)
     return LIBRE; // Default seguro
 }
 
+/**
+ * @brief Convierte un objeto JSON a una estructura MateriaGlobal.
+ * @param obj Objeto JSON.
+ * @return MateriaGlobal* Puntero a la materia creada.
+ */
 MateriaGlobal *json_a_materia(cJSON *obj)
 {
     MateriaGlobal *m = malloc(sizeof(MateriaGlobal));
@@ -29,6 +39,11 @@ MateriaGlobal *json_a_materia(cJSON *obj)
     return m;
 }
 
+/**
+ * @brief Convierte un array JSON a una lista de materias.
+ * @param arr Array JSON.
+ * @return ListadoMaterias* Puntero a la lista de materias creada.
+ */
 ListadoMaterias *json_a_lista_materias(cJSON *arr)
 {
     ListadoMaterias *lista = NULL, *ultimo = NULL;
@@ -51,6 +66,12 @@ ListadoMaterias *json_a_lista_materias(cJSON *arr)
     return lista;
 }
 
+/**
+ * @brief Convierte un objeto JSON a una estructura Cursada.
+ * @param obj Objeto JSON.
+ * @param materias Lista de materias disponibles para referencia.
+ * @return Cursada* Puntero a la cursada creada.
+ */
 Cursada *json_a_cursada(cJSON *obj, ListadoMaterias *materias)
 {
     Cursada *c = malloc(sizeof(Cursada));
@@ -64,6 +85,12 @@ Cursada *json_a_cursada(cJSON *obj, ListadoMaterias *materias)
     return c;
 }
 
+/**
+ * @brief Convierte un array JSON a una lista de cursadas.
+ * @param arr Array JSON.
+ * @param materias Lista de materias disponibles para referencia.
+ * @return ListadoCursadas* Puntero a la lista de cursadas creada.
+ */
 ListadoCursadas *json_a_lista_cursadas(cJSON *arr, ListadoMaterias *materias)
 {
     ListadoCursadas *lista = NULL, *ultimo = NULL;
@@ -88,6 +115,12 @@ ListadoCursadas *json_a_lista_cursadas(cJSON *arr, ListadoMaterias *materias)
     return lista;
 }
 
+/**
+ * @brief Convierte un objeto JSON a una estructura Estudiante.
+ * @param obj Objeto JSON.
+ * @param materias Lista de materias disponibles para referencia.
+ * @return Estudiante* Puntero al estudiante creado.
+ */
 Estudiante *json_a_estudiante(cJSON *obj, ListadoMaterias *materias)
 {
     Estudiante *e = malloc(sizeof(Estudiante));
@@ -106,6 +139,12 @@ Estudiante *json_a_estudiante(cJSON *obj, ListadoMaterias *materias)
     return e;
 }
 
+/**
+ * @brief Convierte un array JSON a una lista de estudiantes.
+ * @param arr Array JSON.
+ * @param materias Lista de materias disponibles para referencia.
+ * @return ListadoEstudiantes* Puntero a la lista de estudiantes creada.
+ */
 ListadoEstudiantes *json_a_lista_estudiantes(cJSON *arr, ListadoMaterias *materias)
 {
     ListadoEstudiantes *lista = NULL;
@@ -131,6 +170,11 @@ ListadoEstudiantes *json_a_lista_estudiantes(cJSON *arr, ListadoMaterias *materi
     return lista;
 }
 
+/**
+ * @brief Convierte una estructura Cursada a un objeto JSON.
+ * @param c Puntero a la cursada.
+ * @return cJSON* Objeto JSON creado.
+ */
 cJSON *cursada_a_json(Cursada *c)
 {
     if (!c)
@@ -146,6 +190,11 @@ cJSON *cursada_a_json(Cursada *c)
     return obj;
 }
 
+/**
+ * @brief Convierte una estructura MateriaGlobal a un objeto JSON.
+ * @param m Puntero a la materia.
+ * @return cJSON* Objeto JSON creado.
+ */
 cJSON *materia_a_json(MateriaGlobal *m)
 {
     if (!m)
@@ -158,6 +207,11 @@ cJSON *materia_a_json(MateriaGlobal *m)
     return obj;
 }
 
+/**
+ * @brief Convierte una lista de cursadas a un array JSON.
+ * @param lista Puntero a la lista de cursadas.
+ * @return cJSON* Array JSON creado.
+ */
 cJSON *lista_cursadas_a_json(ListadoCursadas *lista)
 {
     cJSON *arr = cJSON_CreateArray();
@@ -169,6 +223,11 @@ cJSON *lista_cursadas_a_json(ListadoCursadas *lista)
     return arr;
 }
 
+/**
+ * @brief Convierte una estructura Estudiante a un objeto JSON.
+ * @param e Puntero al estudiante.
+ * @return cJSON* Objeto JSON creado.
+ */
 cJSON *estudiante_a_json(Estudiante *e)
 {
     cJSON *obj = cJSON_CreateObject();
@@ -184,6 +243,11 @@ cJSON *estudiante_a_json(Estudiante *e)
     return obj;
 }
 
+/**
+ * @brief Convierte una lista de estudiantes a un array JSON.
+ * @param lista Puntero a la lista de estudiantes.
+ * @return cJSON* Array JSON creado.
+ */
 cJSON *lista_estudiantes_a_json(ListadoEstudiantes *lista)
 {
     cJSON *arr = cJSON_CreateArray();
@@ -197,6 +261,11 @@ cJSON *lista_estudiantes_a_json(ListadoEstudiantes *lista)
     return arr;
 }
 
+/**
+ * @brief Convierte una lista de materias a un array JSON.
+ * @param lista Puntero a la lista de materias.
+ * @return cJSON* Array JSON creado.
+ */
 cJSON *lista_materias_a_json(ListadoMaterias *lista)
 {
     cJSON *arr = cJSON_CreateArray();
@@ -210,6 +279,12 @@ cJSON *lista_materias_a_json(ListadoMaterias *lista)
     return arr;
 }
 
+/**
+ * @brief Guarda los datos de materias y estudiantes en un archivo JSON.
+ * @param materias Lista de materias a guardar.
+ * @param estudiantes Lista de estudiantes a guardar.
+ * @param path Ruta del archivo de destino.
+ */
 void guardar_datos(ListadoMaterias *materias,
                    ListadoEstudiantes *estudiantes,
                    const char *path)
@@ -235,6 +310,13 @@ void guardar_datos(ListadoMaterias *materias,
     cJSON_Delete(root);
 }
 
+/**
+ * @brief Carga los datos de materias y estudiantes desde un archivo JSON.
+ * @param path Ruta del archivo de origen.
+ * @param materias_out Puntero donde se guardará la lista de materias cargada.
+ * @param estudiantes_out Puntero donde se guardará la lista de estudiantes cargada.
+ * @return int 0 si se cargó correctamente, 1 si hubo error.
+ */
 int cargar_datos(const char *path,
                  ListadoMaterias **materias_out,
                  ListadoEstudiantes **estudiantes_out)

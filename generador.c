@@ -261,6 +261,10 @@ const char *APELLIDOS[] = {
     "Valdez", "Vargas", "Vazquez", "Velazquez", "Vera",
     "Vergara", "Villalba", "Villanueva", "Zarate", "Zavala"};
 
+/**
+ * @brief Genera un estudiante con datos aleatorios y lo agrega a la lista.
+ * @param lista Puntero doble a la lista de estudiantes.
+ */
 void generar_estudiante_aleatorio(ListadoEstudiantes **lista)
 {
     const char *nombre = NOMBRES[rand() % (sizeof(NOMBRES) / sizeof(NOMBRES[0]))];
@@ -280,6 +284,10 @@ void generar_estudiante_aleatorio(ListadoEstudiantes **lista)
     agregar_estudiante(lista, legajo, edad, nombre_completo);
 }
 
+/**
+ * @brief Genera una materia con datos aleatorios y la agrega a la lista.
+ * @param lista Puntero doble a la lista de materias.
+ */
 void generar_materia_aleatoria(ListadoMaterias **lista)
 {
 
@@ -303,6 +311,14 @@ void generar_materia_aleatoria(ListadoMaterias **lista)
     agregar_materia(lista, id, nombre_random);
 }
 
+/**
+ * @brief Genera un conjunto de estudiantes y materias aleatorios.
+ * @param estudiantes Puntero doble a la lista de estudiantes.
+ * @param materias Puntero doble a la lista de materias.
+ * @param cantidad_estudiantes Cantidad de estudiantes a generar.
+ * @param cantidad_materias Cantidad de materias a generar.
+ * @return int 0 si se generó correctamente, 1 si hubo error.
+ */
 int generador(ListadoEstudiantes **estudiantes,
               ListadoMaterias **materias,
               int cantidad_estudiantes,

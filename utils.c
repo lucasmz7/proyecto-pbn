@@ -12,6 +12,11 @@ typedef struct
     int tamano;
 } Heap;
 
+/**
+ * @brief Crea un nuevo Heap con la capacidad especificada.
+ * @param capacidad Capacidad máxima del heap.
+ * @return Heap* Puntero al heap creado.
+ */
 Heap *crearHeap(int capacidad)
 {
     Heap *nuevoHeap = (Heap *)malloc(sizeof(Heap));
@@ -34,6 +39,11 @@ Heap *crearHeap(int capacidad)
     return nuevoHeap;
 }
 
+/**
+ * @brief Intercambia dos punteros a Estudiante.
+ * @param a Puntero al primer puntero de estudiante.
+ * @param b Puntero al segundo puntero de estudiante.
+ */
 void intercambiar_estudiante(Estudiante **a, Estudiante **b)
 {
     Estudiante *temp = *a;
@@ -41,6 +51,10 @@ void intercambiar_estudiante(Estudiante **a, Estudiante **b)
     *b = temp;
 }
 
+/**
+ * @brief Libera la memoria asociada a un Heap.
+ * @param heap Puntero al heap a liberar.
+ */
 void liberarHeap(Heap *heap)
 {
     if (heap == NULL)
@@ -49,6 +63,11 @@ void liberarHeap(Heap *heap)
     free(heap);
 }
 
+/**
+ * @brief Mantiene la propiedad de Min-Heap en el subárbol con raíz en i.
+ * @param heap Puntero al heap.
+ * @param i Índice del nodo raíz del subárbol.
+ */
 void min_heapify(Heap *heap, int i)
 {
     int mas_pequeno = i;
@@ -73,6 +92,11 @@ void min_heapify(Heap *heap, int i)
     }
 }
 
+/**
+ * @brief Inserta un estudiante en el Min-Heap.
+ * @param heap Puntero al heap.
+ * @param estudiante Puntero al estudiante a insertar.
+ */
 void insertar_min_heap(Heap *heap, Estudiante *estudiante)
 {
     if (heap->tamano == heap->capacidad)
@@ -92,6 +116,11 @@ void insertar_min_heap(Heap *heap, Estudiante *estudiante)
     }
 }
 
+/**
+ * @brief Extrae el estudiante con el promedio mínimo del Min-Heap.
+ * @param heap Puntero al heap.
+ * @return Estudiante* Puntero al estudiante extraído.
+ */
 Estudiante *extraer_minimo_min_heap(Heap *heap)
 {
     if (heap->tamano <= 0)
@@ -110,6 +139,11 @@ Estudiante *extraer_minimo_min_heap(Heap *heap)
     return raiz;
 }
 
+/**
+ * @brief Obtiene el estudiante con el promedio mínimo del Min-Heap sin extraerlo.
+ * @param heap Puntero al heap.
+ * @return Estudiante* Puntero al estudiante mínimo.
+ */
 Estudiante *obtener_minimo_min_heap(Heap *heap)
 {
     if (heap->tamano <= 0)
@@ -117,6 +151,11 @@ Estudiante *obtener_minimo_min_heap(Heap *heap)
     return heap->arr[0];
 }
 
+/**
+ * @brief Mantiene la propiedad de Max-Heap en el subárbol con raíz en i.
+ * @param heap Puntero al heap.
+ * @param i Índice del nodo raíz del subárbol.
+ */
 void max_heapify(Heap *heap, int i)
 {
     int mas_grande = i;
@@ -141,6 +180,11 @@ void max_heapify(Heap *heap, int i)
     }
 }
 
+/**
+ * @brief Inserta un estudiante en el Max-Heap.
+ * @param heap Puntero al heap.
+ * @param estudiante Puntero al estudiante a insertar.
+ */
 void insertar_max_heap(Heap *heap, Estudiante *estudiante)
 {
     if (heap->tamano == heap->capacidad)
@@ -161,6 +205,11 @@ void insertar_max_heap(Heap *heap, Estudiante *estudiante)
     }
 }
 
+/**
+ * @brief Extrae el estudiante con el promedio máximo del Max-Heap.
+ * @param heap Puntero al heap.
+ * @return Estudiante* Puntero al estudiante extraído.
+ */
 Estudiante *extraer_maximo_max_heap(Heap *heap)
 {
     if (heap->tamano <= 0)
@@ -179,6 +228,11 @@ Estudiante *extraer_maximo_max_heap(Heap *heap)
     return raiz;
 }
 
+/**
+ * @brief Obtiene el estudiante con el promedio máximo del Max-Heap sin extraerlo.
+ * @param heap Puntero al heap.
+ * @return Estudiante* Puntero al estudiante máximo.
+ */
 Estudiante *obtener_maximo_max_heap(Heap *heap)
 {
     if (heap->tamano <= 0)
@@ -186,6 +240,12 @@ Estudiante *obtener_maximo_max_heap(Heap *heap)
     return heap->arr[0];
 }
 
+/**
+ * @brief Encuentra los K estudiantes con los mejores promedios.
+ * @param lista Puntero al primer nodo de la lista enlazada.
+ * @param k El número de estudiantes a encontrar.
+ * @return Estudiante** Puntero a un array de punteros a Estudiante*, o NULL si hay error.
+ */
 Estudiante **encontrar_k_mejores_promedios(ListadoEstudiantes *lista, int k)
 {
     if (k <= 0)
@@ -242,6 +302,12 @@ Estudiante **encontrar_k_mejores_promedios(ListadoEstudiantes *lista, int k)
     return array_estudiantes;
 }
 
+/**
+ * @brief Encuentra los K estudiantes con los peores promedios.
+ * @param lista Puntero al primer nodo de la lista enlazada.
+ * @param k El número de estudiantes a encontrar.
+ * @return Estudiante** Puntero a un array de punteros a Estudiante*, o NULL si hay error.
+ */
 Estudiante **encontrar_k_peores_promedios(ListadoEstudiantes *lista, int k)
 {
     if (k <= 0)
@@ -300,6 +366,11 @@ Estudiante **encontrar_k_peores_promedios(ListadoEstudiantes *lista, int k)
     return array_estudiantes;
 }
 
+/**
+ * @brief Encuentra los K estudiantes con los mejores promedios e imprime sus datos.
+ * @param estudiantes Puntero al primer nodo de la lista enlazada.
+ * @param k El número de estudiantes a encontrar.
+ */
 void imprimir_k_mejores_estudiantes(ListadoEstudiantes *estudiantes, int k)
 {
     Estudiante **mejores_estudiantes = encontrar_k_mejores_promedios(estudiantes, k);
@@ -324,6 +395,11 @@ void imprimir_k_mejores_estudiantes(ListadoEstudiantes *estudiantes, int k)
     free(mejores_estudiantes);
 }
 
+/**
+ * @brief Encuentra los K estudiantes con los peores promedios e imprime sus datos.
+ * @param estudiantes Puntero al primer nodo de la lista enlazada.
+ * @param k El número de estudiantes a encontrar.
+ */
 void imprimir_k_peores_estudiantes(ListadoEstudiantes *estudiantes, int k)
 {
     Estudiante **peores_estudiantes = encontrar_k_peores_promedios(estudiantes, k);

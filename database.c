@@ -8,21 +8,41 @@
 Estudiante *buscar_por_legajo(ListadoEstudiantes *lista, int legajo);
 MateriaGlobal *buscar_por_identificador(ListadoMaterias *lista, const char *id);
 
+/**
+ * @brief Crea una nueva lista de estudiantes vacía.
+ * @return ListadoEstudiantes* Puntero a la nueva lista (inicialmente NULL).
+ */
 ListadoEstudiantes *crear_listado_estudiantes()
 {
     return NULL;
 }
 
+/**
+ * @brief Crea una nueva lista de materias vacía.
+ * @return ListadoMaterias* Puntero a la nueva lista (inicialmente NULL).
+ */
 ListadoMaterias *crear_listado_materias()
 {
     return NULL;
 }
 
+/**
+ * @brief Crea una nueva lista de cursadas vacía.
+ * @return ListadoCursadas* Puntero a la nueva lista (inicialmente NULL).
+ */
 ListadoCursadas *crear_listado_cursadas()
 {
     return NULL;
 }
 
+/**
+ * @brief Agrega un nuevo estudiante a la lista.
+ * @param lista Puntero doble a la lista de estudiantes.
+ * @param legajo Número de legajo del estudiante.
+ * @param edad Edad del estudiante.
+ * @param nombre Nombre del estudiante.
+ * @return int 0 si se agregó correctamente, 1 si hubo error.
+ */
 int agregar_estudiante(ListadoEstudiantes **lista, int legajo, int edad, const char *nombre)
 {
 
@@ -81,6 +101,13 @@ int agregar_estudiante(ListadoEstudiantes **lista, int legajo, int edad, const c
     return 0;
 }
 
+/**
+ * @brief Agrega una nueva materia a la lista.
+ * @param lista Puntero doble a la lista de materias.
+ * @param identificador Identificador único de la materia.
+ * @param nombre Nombre de la materia.
+ * @return int 0 si se agregó correctamente, 1 si hubo error.
+ */
 int agregar_materia(ListadoMaterias **lista, const char *identificador, const char *nombre)
 {
 
@@ -138,6 +165,12 @@ int agregar_materia(ListadoMaterias **lista, const char *identificador, const ch
     return 0;
 }
 
+/**
+ * @brief Elimina un estudiante de la lista por su legajo.
+ * @param lista Puntero doble a la lista de estudiantes.
+ * @param legajo Legajo del estudiante a eliminar.
+ * @return int 0 si se eliminó correctamente, 1 si hubo error.
+ */
 int eliminar_estudiante(ListadoEstudiantes **lista, int legajo)
 {
     if (*lista == NULL)
@@ -184,6 +217,12 @@ int eliminar_estudiante(ListadoEstudiantes **lista, int legajo)
     return 0;
 }
 
+/**
+ * @brief Elimina una materia de la lista por su nombre.
+ * @param lista Puntero doble a la lista de materias.
+ * @param nombre Nombre de la materia a eliminar.
+ * @return int 0 si se eliminó correctamente, 1 si hubo error.
+ */
 int eliminar_materia(ListadoMaterias **lista, const char *nombre)
 {
     if (*lista == NULL)
@@ -231,6 +270,11 @@ int eliminar_materia(ListadoMaterias **lista, const char *nombre)
     return 0;
 }
 
+/**
+ * @brief Cuenta la cantidad de estudiantes en la lista.
+ * @param lista Puntero a la lista de estudiantes.
+ * @return int Cantidad de estudiantes.
+ */
 int cantidad_estudiantes(ListadoEstudiantes *lista)
 {
     int cantidad = 0;
@@ -243,6 +287,11 @@ int cantidad_estudiantes(ListadoEstudiantes *lista)
     return cantidad;
 }
 
+/**
+ * @brief Cuenta la cantidad de materias en la lista.
+ * @param lista Puntero a la lista de materias.
+ * @return int Cantidad de materias.
+ */
 int cantidad_materias(ListadoMaterias *lista)
 {
     int cantidad = 0;
@@ -255,6 +304,11 @@ int cantidad_materias(ListadoMaterias *lista)
     return cantidad;
 }
 
+/**
+ * @brief Cuenta la cantidad de cursadas en la lista.
+ * @param lista Puntero a la lista de cursadas.
+ * @return int Cantidad de cursadas.
+ */
 int cantidad_cursadas(ListadoCursadas *lista)
 {
     int cantidad = 0;
@@ -267,6 +321,10 @@ int cantidad_cursadas(ListadoCursadas *lista)
     return cantidad;
 }
 
+/**
+ * @brief Muestra por pantalla el listado de estudiantes.
+ * @param lista Puntero a la lista de estudiantes.
+ */
 void listar_estudiantes(ListadoEstudiantes *lista)
 {
     if (lista == NULL)
@@ -287,6 +345,10 @@ void listar_estudiantes(ListadoEstudiantes *lista)
     }
 }
 
+/**
+ * @brief Muestra por pantalla el listado de materias.
+ * @param lista Puntero a la lista de materias.
+ */
 void listar_materias(ListadoMaterias *lista)
 {
     if (lista == NULL)
@@ -307,6 +369,11 @@ void listar_materias(ListadoMaterias *lista)
     }
 }
 
+/**
+ * @brief Busca estudiantes por nombre y los muestra por pantalla.
+ * @param lista Puntero a la lista de estudiantes.
+ * @param nombre Nombre a buscar.
+ */
 void buscar_por_nombre(ListadoEstudiantes *lista, const char *nombre)
 {
     if (lista == NULL)
@@ -351,6 +418,12 @@ void buscar_por_nombre(ListadoEstudiantes *lista, const char *nombre)
 }
 
 // Tanto edad_min como edad_max son incluyentes
+/**
+ * @brief Busca estudiantes dentro de un rango de edad y los muestra por pantalla.
+ * @param lista Puntero a la lista de estudiantes.
+ * @param edad_min Edad mínima (inclusiva).
+ * @param edad_max Edad máxima (inclusiva).
+ */
 void buscar_por_rango_edad(ListadoEstudiantes *lista, int edad_min, int edad_max)
 {
     if (lista == NULL)
@@ -407,6 +480,12 @@ void buscar_por_rango_edad(ListadoEstudiantes *lista, int edad_min, int edad_max
     }
 }
 
+/**
+ * @brief Busca un estudiante por su legajo.
+ * @param lista Puntero a la lista de estudiantes.
+ * @param legajo Legajo a buscar.
+ * @return Estudiante* Puntero al estudiante encontrado o NULL si no existe.
+ */
 Estudiante *buscar_por_legajo(ListadoEstudiantes *lista, int legajo)
 {
     if (lista == NULL)
@@ -436,6 +515,12 @@ Estudiante *buscar_por_legajo(ListadoEstudiantes *lista, int legajo)
     return NULL;
 }
 
+/**
+ * @brief Busca una materia por su identificador.
+ * @param lista Puntero a la lista de materias.
+ * @param id Identificador a buscar.
+ * @return MateriaGlobal* Puntero a la materia encontrada o NULL si no existe.
+ */
 MateriaGlobal *buscar_por_identificador(ListadoMaterias *lista, const char *id)
 {
     if (lista == NULL)
@@ -460,6 +545,12 @@ MateriaGlobal *buscar_por_identificador(ListadoMaterias *lista, const char *id)
     return NULL;
 }
 
+/**
+ * @brief Busca una materia por su nombre.
+ * @param lista Puntero a la lista de materias.
+ * @param nombre Nombre a buscar.
+ * @return MateriaGlobal* Puntero a la materia encontrada o NULL si no existe.
+ */
 MateriaGlobal *buscar_materia_por_nombre(ListadoMaterias *lista, const char *nombre)
 {
     ListadoMaterias *actual = lista;
@@ -473,6 +564,11 @@ MateriaGlobal *buscar_materia_por_nombre(ListadoMaterias *lista, const char *nom
     return NULL;
 }
 
+/**
+ * @brief Convierte el estado de una materia a string.
+ * @param e Estado de la materia.
+ * @return const char* Representación en string del estado.
+ */
 const char *estado_a_string(EstadoMateria e)
 {
     switch (e)
@@ -491,6 +587,10 @@ const char *estado_a_string(EstadoMateria e)
     return "DESCONOCIDO";
 }
 
+/**
+ * @brief Imprime los datos básicos de un estudiante.
+ * @param estudiante Puntero al estudiante.
+ */
 void print_estudiante(Estudiante *estudiante)
 {
     if (estudiante == NULL)
@@ -502,6 +602,10 @@ void print_estudiante(Estudiante *estudiante)
     printf("|%-50s|%-6d|%-4d|%-10.2f|\n", estudiante->nombre, estudiante->legajo, estudiante->edad, estudiante->promedio);
 }
 
+/**
+ * @brief Imprime los datos de una materia.
+ * @param materia Puntero a la materia.
+ */
 void print_materia(MateriaGlobal *materia)
 {
     if (materia == NULL)
@@ -512,6 +616,10 @@ void print_materia(MateriaGlobal *materia)
     printf("|%-50s|%-6s|%-9d|%-9d|%-12d|\n", materia->nombre, materia->identificador, materia->cursantes, materia->aprobados, materia->desaprobados);
 }
 
+/**
+ * @brief Imprime los datos de una cursada.
+ * @param cursada Puntero a la cursada.
+ */
 void print_cursada(Cursada *cursada)
 {
     if (cursada == NULL)
@@ -524,6 +632,10 @@ void print_cursada(Cursada *cursada)
     printf("|   %-47s|%-6s|%-2.2f|%-20s|\n", cursada->referencia->nombre, cursada->referencia->identificador, cursada->nota, estado);
 }
 
+/**
+ * @brief Imprime el detalle completo de un estudiante, incluyendo cursadas.
+ * @param estudiante Puntero al estudiante.
+ */
 void print_detalle(Estudiante *estudiante)
 {
     print_estudiante(estudiante);

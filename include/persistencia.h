@@ -3,6 +3,7 @@
 
 #include "materia.h"
 #include "estudiante.h"
+#include "database.h"
 #include "cJSON.h"
 
 MateriaGlobal *json_a_materia(cJSON *obj);

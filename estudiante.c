@@ -4,6 +4,12 @@
 #include "database.h"
 #include <string.h>
 
+/**
+ * @brief Modifica el legajo de un estudiante.
+ * @param estudiante Puntero al estudiante.
+ * @param nuevo_legajo Nuevo número de legajo.
+ * @return int 0 si se modificó correctamente, 1 si hubo error.
+ */
 int estudiante_modificar_legajo(Estudiante *estudiante, int nuevo_legajo)
 {
     if (estudiante == NULL)
@@ -22,6 +28,12 @@ int estudiante_modificar_legajo(Estudiante *estudiante, int nuevo_legajo)
     return 0;
 }
 
+/**
+ * @brief Modifica la edad de un estudiante.
+ * @param estudiante Puntero al estudiante.
+ * @param nueva_edad Nueva edad.
+ * @return int 0 si se modificó correctamente, 1 si hubo error.
+ */
 int estudiante_modificar_edad(Estudiante *estudiante, int nueva_edad)
 {
     if (estudiante == NULL)
@@ -40,6 +52,12 @@ int estudiante_modificar_edad(Estudiante *estudiante, int nueva_edad)
     return 0;
 }
 
+/**
+ * @brief Modifica el nombre de un estudiante.
+ * @param estudiante Puntero al estudiante.
+ * @param nuevo_nombre Nuevo nombre.
+ * @return int 0 si se modificó correctamente, 1 si hubo error.
+ */
 int estudiante_modificar_nombre(Estudiante *estudiante, const char *nuevo_nombre)
 {
     if (estudiante == NULL)
@@ -58,6 +76,11 @@ int estudiante_modificar_nombre(Estudiante *estudiante, const char *nuevo_nombre
     return 0;
 }
 
+/**
+ * @brief Recalcula y actualiza el promedio del estudiante.
+ * @param estudiante Puntero al estudiante.
+ * @return int 0 si se actualizó correctamente, 1 si hubo error.
+ */
 int estudiante_actualizar_promedio(Estudiante *estudiante)
 {
     if (estudiante == NULL)
@@ -91,6 +114,13 @@ int estudiante_actualizar_promedio(Estudiante *estudiante)
     return 0;
 }
 
+/**
+ * @brief Anota a un estudiante a una materia.
+ * @param estudiante Puntero al estudiante.
+ * @param lista_materias Puntero a la lista de materias disponibles.
+ * @param nombre_materia Nombre de la materia a cursar.
+ * @return int 0 si se anotó correctamente, 1 si hubo error.
+ */
 int anotar(Estudiante *estudiante, ListadoMaterias *lista_materias, const char *nombre_materia)
 {
     if (estudiante == NULL)
@@ -163,6 +193,12 @@ int anotar(Estudiante *estudiante, ListadoMaterias *lista_materias, const char *
 }
 
 // TODO: deberia comprobar si no esta anotado a ninguna materia con ese nombrE?
+/**
+ * @brief Da de baja a un estudiante de una materia en curso.
+ * @param estudiante Puntero al estudiante.
+ * @param nombre_materia Nombre de la materia.
+ * @return int 0 si se dio de baja correctamente, 1 si hubo error.
+ */
 int bajar(Estudiante *estudiante, const char *nombre_materia)
 {
     if (estudiante == NULL)
@@ -218,6 +254,13 @@ int bajar(Estudiante *estudiante, const char *nombre_materia)
 }
 
 // TODO: comprobar que no la aprobo todavia
+/**
+ * @brief Registra la nota final de una materia para un estudiante.
+ * @param estudiante Puntero al estudiante.
+ * @param nombre_materia Nombre de la materia.
+ * @param nota Nota obtenida.
+ * @return int 0 si se registró correctamente, 1 si hubo error.
+ */
 int rendir_final(Estudiante *estudiante, const char *nombre_materia, float nota)
 {
     if (estudiante == NULL)
