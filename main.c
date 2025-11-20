@@ -6,6 +6,7 @@
 #include "persistencia.h"
 #include <time.h>
 #include "generador.h"
+#include <utils.c>
 
 int ventana_legajo();
 int ventana_edad();
@@ -14,7 +15,7 @@ void menu_modificar_estudiante(ListadoEstudiantes *lista);
 void menu_modificar_materia(ListadoMaterias *lista);
 void menu_busqueda_estudiante(ListadoEstudiantes *lista);
 void menu_busqueda_materia(ListadoMaterias *lista);
-void menu_estadisticas();
+void menu_estadisticas(ListadoEstudiantes *estudiantes, ListadoMaterias *materias);
 
 int main()
 {
@@ -56,9 +57,6 @@ int main()
             valido_carga = 1;
             break;
         case 'C':
-            printf("\n");
-            printf("ADVERTENCIA: El generador de materias no crea materias con correlativas\n");
-            printf("debes cargar las correlativas para cada materia manualmente\n");
             printf("\n");
             int cant_estudiantes;
             int cant_materias;
@@ -241,8 +239,7 @@ int main()
             break;
         }
         case 'O':
-            // TODO;
-            menu_estadisticas();
+            menu_estadisticas(lista_estudiantes, lista_materias);
             break;
         case 'P':
         {
@@ -287,7 +284,7 @@ int ventana_legajo()
 
         if (legajo < 10000 || legajo > 99999)
         {
-            printf("[ERROR]: número de legajo inválido (debe tener 6 dígitos)\n");
+            printf("[ERROR]: número de legajo inválido (debe tener 5 dígitos)\n");
             continue;
         }
 
@@ -424,6 +421,53 @@ void menu_modificar_estudiante(ListadoEstudiantes *lista)
 
 void menu_modificar_materia(ListadoMaterias *lista)
 {
+    printf("¿Que estudiante desea modificar? \n");
+    printf("\n");
+
+    const char *id = ventana_identificador();
+    MateriaGlobal *materia = buscar_por_identificador(lista, id);
+
+    char opcion;
+    int valido = 0;
+
+    while (!valido)
+    {
+        printf("Opciones:\n");
+        printf("A. Modificar nombre\n");
+        printf("B. Modificar identificador\n");
+        printf("Z. Salir\n");
+        printf("\n");
+
+        scanf(" %c", &opcion);
+        printf("\n");
+
+        switch (opcion)
+        {
+        case 'A':
+        {
+            char nombre[50];
+            printf("Ingresar nuevo nombre: \n");
+            scanf(" %[^\n]%*cs", nombre);
+            materia_modificar_nombre(materia, nombre);
+            printf("\n");
+            break;
+        }
+        case 'B':
+        {
+            printf("Ingresar nuevo identificador: \n");
+            const char *nuevo_id = ventana_identificador();
+            materia_modificar_identificador(materia, nuevo_id);
+            break;
+        }
+        case 'Z':
+            valido = 1;
+            break;
+        default:
+            printf("Opcion invalida.\n");
+            printf("\n");
+            break;
+        }
+    }
 }
 
 void menu_busqueda_estudiante(ListadoEstudiantes *lista)
@@ -494,19 +538,65 @@ void menu_busqueda_materia(ListadoMaterias *lista)
     }
 }
 
-void menu_estadisticas()
+void menu_estadisticas(ListadoEstudiantes *estudiantes, ListadoMaterias *materias)
 {
-    // total de estudiantes y materias
-    // promedio general
-    // top mejores promedios
-    // top peores promedios
-    // materias menos cursadas
-    // materias mas cursadas
+
+    const int cant_estudiantes = cantidad_estudiantes(estudiantes);
+    const int cant_materia = cantidad_materias(materias);
+
+    // TODO: si no hay estudiantes volver? si no hay materias volver? o mostrar solo lo que haya
+
+    printf("\n");
+    printf("Estadisticas:\n");
+    printf("\n");
+
+    printf("Cantidad total de estudiantes: %d\n", cant_estudiantes);
+    printf("Cantidad total de materias: %d\n", cant_materia);
+    printf("\n");
+
+    int promedio_general = 0;
+    ListadoEstudiantes *actual = estudiantes;
+    while (actual != NULL)
+    {
+        promedio_general += actual->data->promedio;
+        actual->siguiente;
+    }
+    printf("Promedio general: %d\n", promedio_general / cant_estudiantes);
+    printf("\n");
+
+    int edad_promedio = 0;
+    ListadoEstudiantes *actual = estudiantes;
+    while (actual != NULL)
+    {
+        edad_promedio += actual->data->edad;
+        actual->siguiente;
+    }
+    printf("Edad promedio: %d\n", edad_promedio / cant_estudiantes);
+
+    int edad_maxima = 0;
+    ListadoEstudiantes *actual = estudiantes;
+    while (actual != NULL)
+    {
+        if (actual->data->edad > edad_maxima)
+            edad_maxima = actual->data->edad;
+        actual->siguiente;
+    }
+    printf("Edad maxima: %d\n", edad_promedio);
+    printf("\n");
+
+    printf("Mejores promedios:\n");
+    imprimir_k_mejores_estudiantes(estudiantes, 5);
+    printf("\n");
+
+    printf("Peores promedios:\n");
+    imprimir_k_peores_estudiantes(estudiantes, 5);
+    printf("\n");
+
+    // TODO:
+    // 5 materias menos cursadas
+    // 5 materias mas cursadas
     // promedio de materias cursadas por estudiante (tasa de aprobacion, tasa de desaprobacion)
-    // - ranking materias faciles y materias dificiles (mayor y menor promedio)
-    // - materias con mas aprobados
-    // nota promedio de cada materia
-    // edades (max, min, promedio)
+    // materias con mas aprobados y mas desaprobados (usar porcentaje)
     // cantidad de estudiantes no cursan nadas
-    // estudiantes con mas materias
+    // estudiantes con mas materias historicas
 }

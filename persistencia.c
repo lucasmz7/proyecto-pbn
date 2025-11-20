@@ -7,11 +7,11 @@ EstadoMateria json_a_estado(const char *s)
 {
     if (strcmp(s, "CURSANDO") == 0)
         return CURSANDO;
-    if (strcmp(s, "REGULAR_PENDIENTE") == 0)
+    if (strcmp(s, "REGULAR PENDIENTE") == 0)
         return REGULAR_PENDIENTE;
-    if (strcmp(s, "REGULAR_DESAPROBADA") == 0)
+    if (strcmp(s, "REGULAR DESAPROBADA") == 0)
         return REGULAR_DESAPROBADA;
-    if (strcmp(s, "REGULAR_APROBADA") == 0)
+    if (strcmp(s, "REGULAR APROBADA") == 0)
         return REGULAR_APROBADA;
     if (strcmp(s, "LIBRE") == 0)
         return LIBRE;
@@ -25,17 +25,6 @@ MateriaGlobal *json_a_materia(cJSON *obj)
 
     strcpy(m->nombre, cJSON_GetObjectItem(obj, "nombre")->valuestring);
     strcpy(m->identificador, cJSON_GetObjectItem(obj, "id")->valuestring);
-
-    m->correlativas = NULL;
-    cJSON *corr = cJSON_GetObjectItem(obj, "correlativas");
-
-    for (int i = 0; i < cJSON_GetArraySize(corr); i++)
-    {
-        cJSON *idcorr = cJSON_GetArrayItem(corr, i);
-        // TODO
-        // se procesarán después para evitar buscar antes de cargar todas las materias
-        // podés guardarlo en una lista temporal
-    }
 
     return m;
 }
@@ -166,17 +155,6 @@ cJSON *materia_a_json(MateriaGlobal *m)
     cJSON_AddStringToObject(obj, "nombre", m->nombre);
     cJSON_AddStringToObject(obj, "id", m->identificador);
 
-    cJSON *corr_arr = cJSON_CreateArray();
-
-    ListadoCorrelativa *it = m->correlativas;
-    while (it)
-    {
-        cJSON_AddItemToArray(corr_arr,
-                             cJSON_CreateString(it->data->nombre));
-        it = it->siguiente;
-    }
-
-    cJSON_AddItemToObject(obj, "correlativas", corr_arr);
     return obj;
 }
 

@@ -20,12 +20,6 @@ typedef struct ListadoMaterias
     struct ListadoMaterias *siguiente;
 } ListadoMaterias;
 
-typedef struct ListadoCorrelativa
-{
-    MateriaGlobal *data;
-    struct ListadoCorrelativa *siguiente;
-} ListadoCorrelativa;
-
 typedef struct ListadoCursadas
 {
     Cursada *data;

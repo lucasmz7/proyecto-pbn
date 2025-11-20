@@ -2,7 +2,6 @@
 #define MATERIA_H
 
 #include <stdbool.h>
-typedef struct ListadoCorrelativa ListadoCorrelativa;
 
 typedef enum
 {
@@ -17,8 +16,9 @@ typedef struct
 {
     char nombre[50];
     char identificador[6];
-    // lista enlazada con cada correlativa
-    ListadoCorrelativa *correlativas;
+    int cursantes;
+    int aprobados;
+    int desaprobados;
 } MateriaGlobal;
 
 typedef struct
@@ -30,7 +30,5 @@ typedef struct
 
 int materia_modificar_nombre(MateriaGlobal *materia, const char *nuevo_nombre);
 int materia_modificar_identificador(MateriaGlobal *materia, const char *nuevo_identificador);
-int agregar_correlativa(MateriaGlobal *materia, MateriaGlobal *correlativa);
-int eliminar_correlativa(ListadoCorrelativa **lista, const char *nombre);
 
 #endif

@@ -93,7 +93,6 @@ int estudiante_actualizar_promedio(Estudiante *estudiante)
 
 int anotar(Estudiante *estudiante, ListadoMaterias *lista_materias, const char *nombre_materia)
 {
-    // Validar parámetros
     if (estudiante == NULL)
     {
         printf("[ERROR]: Struct 'Estudiante' invalido\n");
@@ -133,6 +132,10 @@ int anotar(Estudiante *estudiante, ListadoMaterias *lista_materias, const char *
         return 1;
     }
 
+    // TODO: Buscar si ya esta anotado
+
+    materia_encontrada->cursantes += 1;
+
     // Crear la cursada
     Cursada *c = malloc(sizeof(Cursada));
     c->referencia = materia_encontrada;
@@ -159,6 +162,7 @@ int anotar(Estudiante *estudiante, ListadoMaterias *lista_materias, const char *
     return 0;
 }
 
+// TODO: deberia comprobar si no esta anotado a ninguna materia con ese nombrE?
 int bajar(Estudiante *estudiante, const char *nombre_materia)
 {
     if (estudiante == NULL)
@@ -180,7 +184,7 @@ int bajar(Estudiante *estudiante, const char *nombre_materia)
     ListadoCursadas *actual = *lista;
     ListadoCursadas *previo = NULL;
 
-    // Si la correlativa a eliminar es la primera
+    // Si la materia a eliminar es la primera
     if (actual != NULL && actual->data != NULL && strcmp(actual->data->referencia->nombre, nombre_materia) == 0)
     {
         *lista = actual->siguiente;
@@ -203,6 +207,8 @@ int bajar(Estudiante *estudiante, const char *nombre_materia)
         return 1;
     }
 
+    actual->data->referencia->cursantes -= 1;
+
     // Eliminamos el nodo y reconectamos la lista
     previo->siguiente = actual->siguiente;
     if (actual->data)
@@ -211,6 +217,7 @@ int bajar(Estudiante *estudiante, const char *nombre_materia)
     return 0;
 }
 
+// TODO: comprobar que no la aprobo todavia
 int rendir_final(Estudiante *estudiante, const char *nombre_materia, float nota)
 {
     if (estudiante == NULL)
@@ -254,6 +261,16 @@ int rendir_final(Estudiante *estudiante, const char *nombre_materia, float nota)
         }
         lista = lista->siguiente;
     }
+
+    if (nota >= 4)
+    {
+        lista->data->referencia->aprobados += 1;
+    }
+    else
+    {
+        lista->data->referencia->desaprobados += 1;
+    }
+
     bajar(estudiante, nombre_materia);
     return 0;
 }

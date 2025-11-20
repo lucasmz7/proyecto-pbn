@@ -18,11 +18,6 @@ ListadoMaterias *crear_listado_materias()
     return NULL;
 }
 
-ListadoCorrelativa *crear_listado_correlativa()
-{
-    return NULL;
-}
-
 ListadoCursadas *crear_listado_cursadas()
 {
     return NULL;
@@ -117,6 +112,9 @@ int agregar_materia(ListadoMaterias **lista, const char *identificador, const ch
     MateriaGlobal *nueva_materia = malloc(sizeof(MateriaGlobal));
     strcpy(nueva_materia->identificador, identificador);
     strcpy(nueva_materia->nombre, nombre);
+    nueva_materia->cursantes = 0;
+    nueva_materia->aprobados = 0;
+    nueva_materia->desaprobados = 0;
 
     // Incializamos nuevo nodo de la lista
     ListadoMaterias *nuevo_nodo = malloc(sizeof(ListadoMaterias));
@@ -257,6 +255,18 @@ int cantidad_materias(ListadoMaterias *lista)
     return cantidad;
 }
 
+int cantidad_cursadas(ListadoCursadas *lista)
+{
+    int cantidad = 0;
+    ListadoCursadas *actual = lista;
+    while (actual != NULL)
+    {
+        cantidad++;
+        actual = actual->siguiente;
+    }
+    return cantidad;
+}
+
 void listar_estudiantes(ListadoEstudiantes *lista)
 {
     if (lista == NULL)
@@ -267,8 +277,8 @@ void listar_estudiantes(ListadoEstudiantes *lista)
 
     ListadoEstudiantes *actual = lista;
 
-    printf("|%-50s|%-6s|%-4s|%-20s|\n", "Nombre", "Legajo", "Edad", "Promedio");
-    printf("|==================================================|======|====|====================|\n");
+    printf("|%-50s|%-6s|%-4s|%-10s|\n", "Nombre", "Legajo", "Edad", "Promedio");
+    printf("|==================================================|======|====|==========|\n");
 
     while (actual != NULL)
     {
@@ -287,8 +297,8 @@ void listar_materias(ListadoMaterias *lista)
 
     ListadoMaterias *actual = lista;
 
-    printf("|%-50s|%-6s|\n", "Materias", "ID");
-    printf("|==================================================|======|\n");
+    printf("|%-50s|%-6s|%-9s|%-9s|%-12s|\n", "Materias", "ID", "Cursantes", "Aprobados", "Desaprobados");
+    printf("|==================================================|======|=========|=========|============|\n");
 
     while (actual != NULL)
     {
@@ -322,8 +332,9 @@ void buscar_por_nombre(ListadoEstudiantes *lista, const char *nombre)
             // Mostrar encabezado solo la primera vez
             if (!encontrado)
             {
-                printf("|%-50s|%-6s|%-4s|%-20s|\n",
+                printf("|%-50s|%-6s|%-4s|%-10s|\n",
                        "Nombre", "Legajo", "Edad", "Promedio");
+                printf("|==================================================|======|====|==========|\n");
             }
 
             print_estudiante(actual->data);
@@ -376,8 +387,10 @@ void buscar_por_rango_edad(ListadoEstudiantes *lista, int edad_min, int edad_max
             if (!encontrado)
             {
                 printf("Estudiantes en el rango %d - %d\n", edad_min, edad_max);
-                printf("|%-50s|%-6s|%-4s|%-20s|\n",
+                printf("\n");
+                printf("|%-50s|%-6s|%-4s|%-10s|\n",
                        "Nombre", "Legajo", "Edad", "Promedio");
+                printf("|==================================================|======|====|==========|\n");
             }
 
             print_estudiante(actual->data);
@@ -467,11 +480,11 @@ const char *estado_a_string(EstadoMateria e)
     case CURSANDO:
         return "CURSANDO";
     case REGULAR_PENDIENTE:
-        return "REGULAR_PENDIENTE";
+        return "REGULAR PENDIENTE";
     case REGULAR_DESAPROBADA:
-        return "REGULAR_DESAPROBADA";
+        return "REGULAR DESAPROBADA";
     case REGULAR_APROBADA:
-        return "REGULAR_APROBADA";
+        return "REGULAR APROBADA";
     case LIBRE:
         return "LIBRE";
     }
@@ -486,10 +499,9 @@ void print_estudiante(Estudiante *estudiante)
     }
 
     estudiante_actualizar_promedio(estudiante);
-    printf("|%-51s|%-6d|%-4d|%-5.2f%-15s|\n", estudiante->nombre, estudiante->legajo, estudiante->edad, estudiante->promedio, "");
+    printf("|%-50s|%-6d|%-4d|%-10.2f|\n", estudiante->nombre, estudiante->legajo, estudiante->edad, estudiante->promedio);
 }
 
-// TODO: correlativas
 void print_materia(MateriaGlobal *materia)
 {
     if (materia == NULL)
@@ -497,7 +509,7 @@ void print_materia(MateriaGlobal *materia)
         printf("[ERROR]: Struct 'MateriaGlobal' invalido\n");
     }
 
-    printf("|%-50s|%-6s|\n", materia->nombre, materia->identificador);
+    printf("|%-50s|%-6s|%-9s|%-9s|%-12s|\n", materia->nombre, materia->identificador, materia->cursantes, materia->aprobados, materia->desaprobados);
 }
 
 void print_cursada(Cursada *cursada)

@@ -4,7 +4,6 @@
 #include "estudiante.h"
 #include "database.h"
 
-// TODO agregar nombres
 const char *NOMBRES_MATERIAS[] = {
     "Algebra I",
     "Algebra II",
