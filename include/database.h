@@ -1,12 +1,8 @@
 #ifndef DATABASE_H
 #define DATABASE_H
 
-#include <stdio.h>
-#include <stdlib.h>
+#include "estudiante.h"
 #include "materia.h"
-#include <string.h>
-
-typedef struct Estudiante Estudiante;
 
 typedef struct ListadoEstudiantes
 {
@@ -28,31 +24,32 @@ typedef struct ListadoCursadas
 
 ListadoEstudiantes *crear_listado_estudiantes();
 ListadoMaterias *crear_listado_materias();
-
-int agregar_estudiante(ListadoEstudiantes **lista, int legajo, int edad, const char *nombre);
-int agregar_materia(ListadoMaterias **lista, const char *identificador, const char *nombre);
-
-int eliminar_estudiante(ListadoEstudiantes **lista, int legajo);
-int eliminar_materia(ListadoMaterias **lista, const char *nombre);
-
-int cantidad_estudiantes(ListadoEstudiantes *lista);
-int cantidad_materias(ListadoMaterias *lista);
-
-void listar_estudiantes(ListadoEstudiantes *lista);
-void listar_materias(ListadoMaterias *lista);
-
-void buscar_por_nombre(ListadoEstudiantes *lista, const char *nombre);
-void buscar_por_rango_edad(ListadoEstudiantes *lista, int edad_min, int edad_max);
-
-Estudiante *buscar_por_legajo(ListadoEstudiantes *lista, int legajo);
-MateriaGlobal *buscar_por_identificador(ListadoMaterias *lista, const char *id);
-MateriaGlobal *buscar_materia_por_nombre(ListadoMaterias *lista, const char *nombre);
+ListadoCursadas *crear_listado_cursadas();
 
 const char *estado_a_string(EstadoMateria e);
 
-void print_detalle(Estudiante *estudiante);
+int agregar_estudiante(ListadoEstudiantes **lista, int legajo, int edad, const char *nombre);
+int eliminar_estudiante(ListadoEstudiantes **lista, int legajo);
+Estudiante *buscar_por_legajo(ListadoEstudiantes *lista, int legajo);
+void buscar_por_nombre(ListadoEstudiantes *lista, const char *nombre);
+void buscar_por_rango_edad(ListadoEstudiantes *lista, int edad_min, int edad_max);
+
+int agregar_materia(ListadoMaterias **lista, const char *identificador, const char *nombre);
+int eliminar_materia(ListadoMaterias **lista, const char *nombre);
+MateriaGlobal *buscar_por_identificador(ListadoMaterias *lista, const char *id);
+MateriaGlobal *buscar_materia_por_nombre(ListadoMaterias *lista, const char *nombre);
+
+int cantidad_estudiantes(ListadoEstudiantes *lista);
+int cantidad_materias(ListadoMaterias *lista);
+int cantidad_cursadas(ListadoCursadas *lista);
+int cantidad_materias_aprobadas(ListadoCursadas *lista); // Nueva funcion
+int cantidad_materias_desaprobadas(ListadoCursadas *lista); // Nueva funcion
+
+void listar_estudiantes(ListadoEstudiantes *lista);
+void listar_materias(ListadoMaterias *lista);
 void print_estudiante(Estudiante *estudiante);
 void print_materia(MateriaGlobal *materia);
 void print_cursada(Cursada *cursada);
+void print_detalle(Estudiante *estudiante);
 
 #endif

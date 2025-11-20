@@ -18,7 +18,7 @@ int estudiante_modificar_legajo(Estudiante *estudiante, int nuevo_legajo)
         return 1;
     }
 
-    if (nuevo_legajo < 10000 || nuevo_legajo > 99999)
+    if (nuevo_legajo < 100000 || nuevo_legajo > 999999)
     {
         printf("[ERROR]: Legajo invalido\n");
         return 1;
@@ -281,39 +281,57 @@ int rendir_final(Estudiante *estudiante, const char *nombre_materia, float nota)
         return 1;
     }
 
-    EstadoMateria estado;
-    if (nota >= 4)
-    {
-        estado = REGULAR_APROBADA;
-    }
-    else
-    {
-        estado = REGULAR_DESAPROBADA;
-    }
-
-    ListadoCursadas *lista = estudiante->regulares;
+    // Buscar la materia en las CURSADAS (no en regulares)
+    ListadoCursadas *lista = estudiante->cursadas;
+    Cursada *cursada_encontrada = NULL;
 
     while (lista != NULL)
     {
         if (strcmp(lista->data->referencia->nombre, nombre_materia) == 0)
         {
-            lista->data->estado = estado;
-            lista->data->nota = nota;
-            estudiante_actualizar_promedio(estudiante);
+            cursada_encontrada = lista->data;
             break;
         }
         lista = lista->siguiente;
     }
 
+    // Si no se encontró la cursada
+    if (cursada_encontrada == NULL)
+    {
+        printf("[ERROR]: El estudiante no está cursando esa materia\n");
+        return 1;
+    }
+
+    // Determinar el estado según la nota
+    EstadoMateria estado;
     if (nota >= 4)
     {
-        lista->data->referencia->aprobados += 1;
+        estado = REGULAR_APROBADA;
+        cursada_encontrada->referencia->aprobados += 1;
     }
     else
     {
-        lista->data->referencia->desaprobados += 1;
+        estado = REGULAR_DESAPROBADA;
+        cursada_encontrada->referencia->desaprobados += 1;
     }
 
+    // Crear una nueva cursada para regulares
+    Cursada *c = malloc(sizeof(Cursada));
+    c->referencia = cursada_encontrada->referencia;
+    c->estado = estado;
+    c->nota = nota;
+
+    // Agregar a la lista de regulares
+    ListadoCursadas *nodo = malloc(sizeof(ListadoCursadas));
+    nodo->data = c;
+    nodo->siguiente = estudiante->regulares;
+    estudiante->regulares = nodo;
+
+    // Actualizar promedio
+    estudiante_actualizar_promedio(estudiante);
+
+    // Dar de baja la cursada (la elimina de la lista de cursadas)
     bajar(estudiante, nombre_materia);
+    
     return 0;
 }

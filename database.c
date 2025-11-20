@@ -179,7 +179,7 @@ int eliminar_estudiante(ListadoEstudiantes **lista, int legajo)
         return 1;
     }
 
-    if (legajo < 10000 || legajo >= 99999)
+    if (legajo < 100000 || legajo >= 999999)
     {
         printf("[ERROR]: Legajo invalido\n");
         return 1;
@@ -322,6 +322,48 @@ int cantidad_cursadas(ListadoCursadas *lista)
 }
 
 /**
+ * @brief Cuenta la cantidad de materias aprobadas en la lista.
+ * @param lista Puntero a la lista de cursadas.
+ * @return int Cantidad de materias aprobadas.
+ */
+int cantidad_materias_aprobadas(ListadoCursadas *lista)
+{
+    int cantidad = 0;
+    ListadoCursadas *actual = lista;
+    while (actual != NULL)
+    {
+        if (actual->data->estado == REGULAR_APROBADA)
+        {
+            cantidad++;
+        }
+        actual = actual->siguiente;
+    }
+    return cantidad;
+}
+
+/**
+ * @brief Cuenta la cantidad de materias desaprobadas en la lista.
+ * @param lista Puntero a la lista de cursadas.
+ * @return int Cantidad de materias desaprobadas.
+ */
+int cantidad_materias_desaprobadas(ListadoCursadas *lista)
+{
+    int cantidad = 0;
+    ListadoCursadas *actual = lista;
+    while (actual != NULL)
+    {
+        if (actual->data->estado == REGULAR_DESAPROBADA)
+        {
+            cantidad++;
+        }
+        actual = actual->siguiente;
+    }
+    return cantidad;
+}
+
+
+
+/**
  * @brief Muestra por pantalla el listado de estudiantes.
  * @param lista Puntero a la lista de estudiantes.
  */
@@ -335,8 +377,8 @@ void listar_estudiantes(ListadoEstudiantes *lista)
 
     ListadoEstudiantes *actual = lista;
 
-    printf("|%-50s|%-6s|%-4s|%-10s|\n", "Nombre", "Legajo", "Edad", "Promedio");
-    printf("|==================================================|======|====|==========|\n");
+    printf("|%-50s|%-6s|%-4s|%-10s|%-17s|%-18s|%-21s|\n", "Nombre", "Legajo", "Edad", "Promedio", "Materias cursadas", "Materias aprobadas", "Materias desaprobadas");
+    printf("|==================================================|======|====|==========|=================|==================|=====================|\n");
 
     while (actual != NULL)
     {
@@ -359,8 +401,8 @@ void listar_materias(ListadoMaterias *lista)
 
     ListadoMaterias *actual = lista;
 
-    printf("|%-50s|%-6s|%-9s|%-9s|%-12s|\n", "Materias", "ID", "Cursantes", "Aprobados", "Desaprobados");
-    printf("|==================================================|======|=========|=========|============|\n");
+    printf("|%-50s|%-6s|%-4s|%-10s|%-17s|%-18s|%-21s|\n", "Nombre", "Legajo", "Edad", "Promedio", "Materias cursadas", "Materias aprobadas", "Materias desaprobadas");
+    printf("|==================================================|======|====|==========|=================|==================|=====================|\n");
 
     while (actual != NULL)
     {
@@ -399,9 +441,8 @@ void buscar_por_nombre(ListadoEstudiantes *lista, const char *nombre)
             // Mostrar encabezado solo la primera vez
             if (!encontrado)
             {
-                printf("|%-50s|%-6s|%-4s|%-10s|\n",
-                       "Nombre", "Legajo", "Edad", "Promedio");
-                printf("|==================================================|======|====|==========|\n");
+                printf("|%-50s|%-6s|%-4s|%-10s|%-17s|%-18s|%-21s|\n", "Nombre", "Legajo", "Edad", "Promedio", "Materias cursadas", "Materias aprobadas", "Materias desaprobadas");
+                printf("|==================================================|======|====|==========|=================|==================|=====================|\n");
             }
 
             print_estudiante(actual->data);
@@ -461,9 +502,8 @@ void buscar_por_rango_edad(ListadoEstudiantes *lista, int edad_min, int edad_max
             {
                 printf("Estudiantes en el rango %d - %d\n", edad_min, edad_max);
                 printf("\n");
-                printf("|%-50s|%-6s|%-4s|%-10s|\n",
-                       "Nombre", "Legajo", "Edad", "Promedio");
-                printf("|==================================================|======|====|==========|\n");
+    printf("|%-50s|%-6s|%-4s|%-10s|%-17s|%-18s|%-21s|\n", "Nombre", "Legajo", "Edad", "Promedio", "Materias cursadas", "Materias aprobadas", "Materias desaprobadas");
+    printf("|==================================================|======|====|==========|=================|==================|=====================|\n");
             }
 
             print_estudiante(actual->data);
@@ -599,7 +639,7 @@ void print_estudiante(Estudiante *estudiante)
     }
 
     estudiante_actualizar_promedio(estudiante);
-    printf("|%-50s|%-6d|%-4d|%-10.2f|\n", estudiante->nombre, estudiante->legajo, estudiante->edad, estudiante->promedio);
+    printf("|%-50s|%-6d|%-4d|%-10.2f|%-17d|%-18d|%-21d|\n", estudiante->nombre, estudiante->legajo, estudiante->edad, estudiante->promedio, cantidad_cursadas(estudiante->regulares), cantidad_materias_aprobadas(estudiante->regulares), cantidad_materias_desaprobadas(estudiante->regulares));
 }
 
 /**
@@ -629,7 +669,7 @@ void print_cursada(Cursada *cursada)
 
     const char *estado = estado_a_string(cursada->estado);
 
-    printf("|   %-47s|%-6s|%-2.2f|%-20s|\n", cursada->referencia->nombre, cursada->referencia->identificador, cursada->nota, estado);
+    printf("|      %-44s|%-6s|%-2.2f|%-20s|\n", cursada->referencia->nombre, cursada->referencia->identificador, cursada->nota, estado);
 }
 
 /**
@@ -638,11 +678,11 @@ void print_cursada(Cursada *cursada)
  */
 void print_detalle(Estudiante *estudiante)
 {
-    print_estudiante(estudiante);
+    printf("|%-50s|%-6d|%-4d|%-20.2f|%-17d|%-18d|%-21d|\n", estudiante->nombre, estudiante->legajo, estudiante->edad, estudiante->promedio, cantidad_cursadas(estudiante->regulares), cantidad_materias_aprobadas(estudiante->regulares), cantidad_materias_desaprobadas(estudiante->regulares));
 
     ListadoCursadas *actual_cursadas = estudiante->cursadas;
     ListadoCursadas *actual_regulares = estudiante->regulares;
-
+    printf("|==================================================|======|====|====================|=================|==================|=====================|\n");
     printf("|   %-47s|%-6s|%-4s|%-20s|\n", "Materias en curso:", "ID", "Nota", "Estado");
     while (actual_cursadas != NULL)
     {

@@ -18,15 +18,15 @@ El sistema debe poder soportar un gran listado de estudiantes y materias. Utiliz
 Si los requerimientos planteados son cumplidos, el ejercicio está aprobado (nota 4). Puede pasar que en situaciones en la que la cantidad de datos sea muy grande, el sistema sea inmanejable. En ese caso, detallar las limitaciones de la solución propuesta (si las limitaciones son reconocidas no se considera desaprobado el punto). Agregar en el README del repositorio.
 
 Ideas no-obligatorias de implementar pero que suman puntos: 
-- [] Utilizar paginado
+- [ ] Utilizar paginado
 - [X] Poder elegir el estudiante/materia de un listado reducido
 - [X] Generar estudiantes de prueba y materias aleatorias de forma masiva
 - [X] Estadísticas de los estudiantes y materias, etc.
 - [] Arboles de correlatividad de materias
-- [X] Qué pasa si una materia anterior está desaprobada? Puede anotarse? 
+- [] Qué pasa si una materia anterior está desaprobada? Puede anotarse? 
 - [X] Cálculo de promedios. 
-- [] Archivo de configuración general donde se especifican las variables del sistema.
-- [] Mejoras en la interfaz de usuario
-- [] Tests unitarios
-- [X] Persistencia en CSV
+- [ ] Archivo de configuración general donde se especifican las variables del sistema.
+- [ ] Mejoras en la interfaz de usuario
+- [X] Tests unitarios
+- [X] Persistencia en JSON
 

@@ -4,19 +4,12 @@
 #include <limits.h>
 #include "database.h"
 #include "estudiante.h"
+#include "utils.h"
 
-typedef struct
-{
-    Estudiante **arr;
-    int capacidad;
-    int tamano;
-} Heap;
+// Heap definition is in utils.h
 
-/**
- * @brief Crea un nuevo Heap con la capacidad especificada.
- * @param capacidad Capacidad máxima del heap.
- * @return Heap* Puntero al heap creado.
- */
+// --- Heap implementation for Estudiante (Existing) ---
+
 Heap *crearHeap(int capacidad)
 {
     Heap *nuevoHeap = (Heap *)malloc(sizeof(Heap));
@@ -39,11 +32,6 @@ Heap *crearHeap(int capacidad)
     return nuevoHeap;
 }
 
-/**
- * @brief Intercambia dos punteros a Estudiante.
- * @param a Puntero al primer puntero de estudiante.
- * @param b Puntero al segundo puntero de estudiante.
- */
 void intercambiar_estudiante(Estudiante **a, Estudiante **b)
 {
     Estudiante *temp = *a;
@@ -51,10 +39,6 @@ void intercambiar_estudiante(Estudiante **a, Estudiante **b)
     *b = temp;
 }
 
-/**
- * @brief Libera la memoria asociada a un Heap.
- * @param heap Puntero al heap a liberar.
- */
 void liberarHeap(Heap *heap)
 {
     if (heap == NULL)
@@ -63,11 +47,6 @@ void liberarHeap(Heap *heap)
     free(heap);
 }
 
-/**
- * @brief Mantiene la propiedad de Min-Heap en el subárbol con raíz en i.
- * @param heap Puntero al heap.
- * @param i Índice del nodo raíz del subárbol.
- */
 void min_heapify(Heap *heap, int i)
 {
     int mas_pequeno = i;
@@ -92,11 +71,6 @@ void min_heapify(Heap *heap, int i)
     }
 }
 
-/**
- * @brief Inserta un estudiante en el Min-Heap.
- * @param heap Puntero al heap.
- * @param estudiante Puntero al estudiante a insertar.
- */
 void insertar_min_heap(Heap *heap, Estudiante *estudiante)
 {
     if (heap->tamano == heap->capacidad)
@@ -116,11 +90,6 @@ void insertar_min_heap(Heap *heap, Estudiante *estudiante)
     }
 }
 
-/**
- * @brief Extrae el estudiante con el promedio mínimo del Min-Heap.
- * @param heap Puntero al heap.
- * @return Estudiante* Puntero al estudiante extraído.
- */
 Estudiante *extraer_minimo_min_heap(Heap *heap)
 {
     if (heap->tamano <= 0)
@@ -139,11 +108,6 @@ Estudiante *extraer_minimo_min_heap(Heap *heap)
     return raiz;
 }
 
-/**
- * @brief Obtiene el estudiante con el promedio mínimo del Min-Heap sin extraerlo.
- * @param heap Puntero al heap.
- * @return Estudiante* Puntero al estudiante mínimo.
- */
 Estudiante *obtener_minimo_min_heap(Heap *heap)
 {
     if (heap->tamano <= 0)
@@ -151,11 +115,6 @@ Estudiante *obtener_minimo_min_heap(Heap *heap)
     return heap->arr[0];
 }
 
-/**
- * @brief Mantiene la propiedad de Max-Heap en el subárbol con raíz en i.
- * @param heap Puntero al heap.
- * @param i Índice del nodo raíz del subárbol.
- */
 void max_heapify(Heap *heap, int i)
 {
     int mas_grande = i;
@@ -180,11 +139,6 @@ void max_heapify(Heap *heap, int i)
     }
 }
 
-/**
- * @brief Inserta un estudiante en el Max-Heap.
- * @param heap Puntero al heap.
- * @param estudiante Puntero al estudiante a insertar.
- */
 void insertar_max_heap(Heap *heap, Estudiante *estudiante)
 {
     if (heap->tamano == heap->capacidad)
@@ -205,11 +159,6 @@ void insertar_max_heap(Heap *heap, Estudiante *estudiante)
     }
 }
 
-/**
- * @brief Extrae el estudiante con el promedio máximo del Max-Heap.
- * @param heap Puntero al heap.
- * @return Estudiante* Puntero al estudiante extraído.
- */
 Estudiante *extraer_maximo_max_heap(Heap *heap)
 {
     if (heap->tamano <= 0)
@@ -228,11 +177,6 @@ Estudiante *extraer_maximo_max_heap(Heap *heap)
     return raiz;
 }
 
-/**
- * @brief Obtiene el estudiante con el promedio máximo del Max-Heap sin extraerlo.
- * @param heap Puntero al heap.
- * @return Estudiante* Puntero al estudiante máximo.
- */
 Estudiante *obtener_maximo_max_heap(Heap *heap)
 {
     if (heap->tamano <= 0)
@@ -240,12 +184,6 @@ Estudiante *obtener_maximo_max_heap(Heap *heap)
     return heap->arr[0];
 }
 
-/**
- * @brief Encuentra los K estudiantes con los mejores promedios.
- * @param lista Puntero al primer nodo de la lista enlazada.
- * @param k El número de estudiantes a encontrar.
- * @return Estudiante** Puntero a un array de punteros a Estudiante*, o NULL si hay error.
- */
 Estudiante **encontrar_k_mejores_promedios(ListadoEstudiantes *lista, int k)
 {
     if (k <= 0)
@@ -302,12 +240,6 @@ Estudiante **encontrar_k_mejores_promedios(ListadoEstudiantes *lista, int k)
     return array_estudiantes;
 }
 
-/**
- * @brief Encuentra los K estudiantes con los peores promedios.
- * @param lista Puntero al primer nodo de la lista enlazada.
- * @param k El número de estudiantes a encontrar.
- * @return Estudiante** Puntero a un array de punteros a Estudiante*, o NULL si hay error.
- */
 Estudiante **encontrar_k_peores_promedios(ListadoEstudiantes *lista, int k)
 {
     if (k <= 0)
@@ -366,60 +298,371 @@ Estudiante **encontrar_k_peores_promedios(ListadoEstudiantes *lista, int k)
     return array_estudiantes;
 }
 
-/**
- * @brief Encuentra los K estudiantes con los mejores promedios e imprime sus datos.
- * @param estudiantes Puntero al primer nodo de la lista enlazada.
- * @param k El número de estudiantes a encontrar.
- */
-void imprimir_k_mejores_estudiantes(ListadoEstudiantes *estudiantes, int k)
+void min_heapify_cursadas(Heap *heap, int i)
 {
-    Estudiante **mejores_estudiantes = encontrar_k_mejores_promedios(estudiantes, k);
+    int mas_pequeno = i;
+    int izquierda = 2 * i + 1;
+    int derecha = 2 * i + 2;
 
-    if (mejores_estudiantes == NULL)
+    // Compare using number of cursadas in 'regulares'
+    if (izquierda < heap->tamano && cantidad_materias_aprobadas(heap->arr[izquierda]->regulares) < cantidad_materias_aprobadas(heap->arr[mas_pequeno]->regulares))
     {
-        printf("No se encontraron estudiantes o k es inválido.\n");
-        return;
+        mas_pequeno = izquierda;
     }
 
-    printf("|%-50s|%-6s|%-4s|%-10s|\n", "Nombre", "Legajo", "Edad", "Promedio");
-    printf("|==================================================|======|====|==========|\n");
-    for (int i = 0; i < k; i++)
+    if (derecha < heap->tamano && cantidad_materias_aprobadas(heap->arr[derecha]->regulares) < cantidad_materias_aprobadas(heap->arr[mas_pequeno]->regulares))
     {
-        Estudiante *e = mejores_estudiantes[i];
-        if (e != NULL)
-        {
-            print_estudiante(e);
-        }
+        mas_pequeno = derecha;
     }
 
-    free(mejores_estudiantes);
+    if (mas_pequeno != i)
+    {
+        intercambiar_estudiante(&heap->arr[i], &heap->arr[mas_pequeno]);
+        min_heapify_cursadas(heap, mas_pequeno);
+    }
+}
+
+void insertar_min_heap_cursadas(Heap *heap, Estudiante *estudiante)
+{
+    if (heap->tamano == heap->capacidad) return;
+
+    int i = heap->tamano;
+    heap->arr[i] = estudiante;
+    heap->tamano++;
+
+    while (i != 0 && cantidad_materias_aprobadas(heap->arr[(i - 1) / 2]->regulares) > cantidad_materias_aprobadas(heap->arr[i]->regulares))
+    {
+        intercambiar_estudiante(&heap->arr[i], &heap->arr[(i - 1) / 2]);
+        i = (i - 1) / 2;
+    }
+}
+
+Estudiante *extraer_minimo_min_heap_cursadas(Heap *heap)
+{
+    if (heap->tamano <= 0) return NULL;
+    if (heap->tamano == 1)
+    {
+        heap->tamano--;
+        return heap->arr[0];
+    }
+
+    Estudiante *raiz = heap->arr[0];
+    heap->arr[0] = heap->arr[heap->tamano - 1];
+    heap->tamano--;
+    min_heapify_cursadas(heap, 0);
+    return raiz;
+}
+
+Estudiante *obtener_minimo_min_heap_cursadas(Heap *heap)
+{
+    if (heap->tamano <= 0) return NULL;
+    return heap->arr[0];
 }
 
 /**
- * @brief Encuentra los K estudiantes con los peores promedios e imprime sus datos.
- * @param estudiantes Puntero al primer nodo de la lista enlazada.
+ * @brief Encuentra los K estudiantes con mayor cantidad de cursadas aprobadas (regulares).
+ * @param lista Puntero al primer nodo de la lista de estudiantes.
  * @param k El número de estudiantes a encontrar.
+ * @return Estudiante** Puntero a un array de punteros a Estudiante*, o NULL si hay error.
  */
-void imprimir_k_peores_estudiantes(ListadoEstudiantes *estudiantes, int k)
+Estudiante **encontrar_k_estudiantes_mas_cursadas(ListadoEstudiantes *lista, int k)
 {
-    Estudiante **peores_estudiantes = encontrar_k_peores_promedios(estudiantes, k);
+    if (k <= 0) return NULL;
 
-    if (peores_estudiantes == NULL)
-    {
-        printf("No se encontraron estudiantes o k es inválido.\n");
-        return;
-    }
+    int n_estudiantes = cantidad_estudiantes(lista);
+    if (n_estudiantes < k) k = n_estudiantes;
+    if (n_estudiantes == 0) return NULL;
 
-    printf("|%-50s|%-6s|%-4s|%-10s|\n", "Nombre", "Legajo", "Edad", "Promedio");
-    printf("|==================================================|======|====|==========|\n");
-    for (int i = 0; i < k; i++)
+    // Use Min-Heap to keep top K largest
+    Heap *min_heap = crearHeap(k);
+    ListadoEstudiantes *actual = lista;
+
+    while (actual != NULL)
     {
-        Estudiante *e = peores_estudiantes[i];
-        if (e != NULL)
+        Estudiante *estudiante_actual = actual->data;
+        int cursadas_actual = cantidad_materias_aprobadas(estudiante_actual->regulares);
+
+        if (min_heap->tamano < k)
         {
-            print_estudiante(e);
+            insertar_min_heap_cursadas(min_heap, estudiante_actual);
         }
+        else if (cursadas_actual > cantidad_materias_aprobadas(obtener_minimo_min_heap_cursadas(min_heap)->regulares))
+        {
+            extraer_minimo_min_heap_cursadas(min_heap);
+            insertar_min_heap_cursadas(min_heap, estudiante_actual);
+        }
+        actual = actual->siguiente;
     }
 
-    free(peores_estudiantes);
+    Estudiante **array_estudiantes = (Estudiante **)malloc(k * sizeof(Estudiante *));
+    if (array_estudiantes == NULL)
+    {
+        liberarHeap(min_heap);
+        return NULL;
+    }
+
+    // Extract in descending order
+    for (int i = k - 1; i >= 0; i--)
+    {
+        array_estudiantes[i] = extraer_minimo_min_heap_cursadas(min_heap);
+    }
+
+    liberarHeap(min_heap);
+    return array_estudiantes;
 }
+
+
+HeapMaterias *crearHeapMaterias(int capacidad)
+{
+    HeapMaterias *nuevoHeap = (HeapMaterias *)malloc(sizeof(HeapMaterias));
+    if (nuevoHeap == NULL)
+    {
+        perror("Fallo al asignar memoria para HeapMaterias");
+        exit(EXIT_FAILURE);
+    }
+    nuevoHeap->capacidad = capacidad;
+    nuevoHeap->tamano = 0;
+
+    nuevoHeap->arr = (MateriaGlobal **)malloc(capacidad * sizeof(MateriaGlobal *));
+    if (nuevoHeap->arr == NULL)
+    {
+        perror("Fallo al asignar memoria para arr de materias");
+        free(nuevoHeap);
+        exit(EXIT_FAILURE);
+    }
+    return nuevoHeap;
+}
+
+void liberarHeapMaterias(HeapMaterias *heap)
+{
+    if (heap == NULL)
+        return;
+    free(heap->arr);
+    free(heap);
+}
+
+void intercambiar_materia(MateriaGlobal **a, MateriaGlobal **b)
+{
+    MateriaGlobal *temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void min_heapify_materias(HeapMaterias *heap, int i)
+{
+    int mas_pequeno = i;
+    int izquierda = 2 * i + 1;
+    int derecha = 2 * i + 2;
+
+    if (izquierda < heap->tamano && heap->arr[izquierda]->cursantes < heap->arr[mas_pequeno]->cursantes)
+        mas_pequeno = izquierda;
+
+    if (derecha < heap->tamano && heap->arr[derecha]->cursantes < heap->arr[mas_pequeno]->cursantes)
+        mas_pequeno = derecha;
+
+    if (mas_pequeno != i)
+    {
+        intercambiar_materia(&heap->arr[i], &heap->arr[mas_pequeno]);
+        min_heapify_materias(heap, mas_pequeno);
+    }
+}
+
+void insertar_min_heap_materias(HeapMaterias *heap, MateriaGlobal *materia)
+{
+    if (heap->tamano == heap->capacidad) return;
+
+    int i = heap->tamano;
+    heap->arr[i] = materia;
+    heap->tamano++;
+
+    while (i != 0 && heap->arr[(i - 1) / 2]->cursantes > heap->arr[i]->cursantes)
+    {
+        intercambiar_materia(&heap->arr[i], &heap->arr[(i - 1) / 2]);
+        i = (i - 1) / 2;
+    }
+}
+
+MateriaGlobal *extraer_minimo_min_heap_materias(HeapMaterias *heap)
+{
+    if (heap->tamano <= 0) return NULL;
+    if (heap->tamano == 1)
+    {
+        heap->tamano--;
+        return heap->arr[0];
+    }
+
+    MateriaGlobal *raiz = heap->arr[0];
+    heap->arr[0] = heap->arr[heap->tamano - 1];
+    heap->tamano--;
+    min_heapify_materias(heap, 0);
+    return raiz;
+}
+
+MateriaGlobal *obtener_minimo_min_heap_materias(HeapMaterias *heap)
+{
+    if (heap->tamano <= 0) return NULL;
+    return heap->arr[0];
+}
+
+void max_heapify_materias(HeapMaterias *heap, int i)
+{
+    int mas_grande = i;
+    int izquierda = 2 * i + 1;
+    int derecha = 2 * i + 2;
+
+    if (izquierda < heap->tamano && heap->arr[izquierda]->cursantes > heap->arr[mas_grande]->cursantes)
+        mas_grande = izquierda;
+
+    if (derecha < heap->tamano && heap->arr[derecha]->cursantes > heap->arr[mas_grande]->cursantes)
+        mas_grande = derecha;
+
+    if (mas_grande != i)
+    {
+        intercambiar_materia(&heap->arr[i], &heap->arr[mas_grande]);
+        max_heapify_materias(heap, mas_grande);
+    }
+}
+
+void insertar_max_heap_materias(HeapMaterias *heap, MateriaGlobal *materia)
+{
+    if (heap->tamano == heap->capacidad) return;
+
+    int i = heap->tamano;
+    heap->arr[i] = materia;
+    heap->tamano++;
+
+    while (i != 0 && heap->arr[(i - 1) / 2]->cursantes < heap->arr[i]->cursantes)
+    {
+        intercambiar_materia(&heap->arr[i], &heap->arr[(i - 1) / 2]);
+        i = (i - 1) / 2;
+    }
+}
+
+MateriaGlobal *extraer_maximo_max_heap_materias(HeapMaterias *heap)
+{
+    if (heap->tamano <= 0) return NULL;
+    if (heap->tamano == 1)
+    {
+        heap->tamano--;
+        return heap->arr[0];
+    }
+
+    MateriaGlobal *raiz = heap->arr[0];
+    heap->arr[0] = heap->arr[heap->tamano - 1];
+    heap->tamano--;
+    max_heapify_materias(heap, 0);
+    return raiz;
+}
+
+MateriaGlobal *obtener_maximo_max_heap_materias(HeapMaterias *heap)
+{
+    if (heap->tamano <= 0) return NULL;
+    return heap->arr[0];
+}
+
+
+/**
+ * @brief Encuentra las K materias con más cursantes.
+ * @param lista Puntero a la lista de materias.
+ * @param k Cantidad de materias a encontrar.
+ * @return MateriaGlobal** Array de punteros a las materias encontradas.
+ */
+MateriaGlobal **encontrar_k_materias_mas_cursadas(ListadoMaterias *lista, int k)
+{
+    if (k <= 0) return NULL;
+    int n_materias = cantidad_materias(lista);
+    if (n_materias < k) k = n_materias;
+    if (n_materias == 0) return NULL;
+
+    // Usamos un Min-Heap de tamaño k para mantener los k mayores.
+    // Si el nuevo elemento es mayor que el mínimo del heap, reemplazamos.
+    HeapMaterias *min_heap = crearHeapMaterias(k);
+    ListadoMaterias *actual = lista;
+
+    while (actual != NULL)
+    {
+        MateriaGlobal *materia_actual = actual->data;
+        if (min_heap->tamano < k)
+        {
+            insertar_min_heap_materias(min_heap, materia_actual);
+        }
+        else if (materia_actual->cursantes > obtener_minimo_min_heap_materias(min_heap)->cursantes)
+        {
+            extraer_minimo_min_heap_materias(min_heap);
+            insertar_min_heap_materias(min_heap, materia_actual);
+        }
+        actual = actual->siguiente;
+    }
+
+    MateriaGlobal **array_materias = (MateriaGlobal **)malloc(k * sizeof(MateriaGlobal *));
+    if (array_materias == NULL)
+    {
+        liberarHeapMaterias(min_heap);
+        return NULL;
+    }
+
+    // Extraemos del Min-Heap, saldrán de menor a mayor (dentro de los k mejores),
+    // así que llenamos el array desde el final para tener el orden descendente.
+    for (int i = k - 1; i >= 0; i--)
+    {
+        array_materias[i] = extraer_minimo_min_heap_materias(min_heap);
+    }
+
+    liberarHeapMaterias(min_heap);
+    return array_materias;
+}
+
+/**
+ * @brief Encuentra las K materias con menos cursantes.
+ * @param lista Puntero a la lista de materias.
+ * @param k Cantidad de materias a encontrar.
+ * @return MateriaGlobal** Array de punteros a las materias encontradas.
+ */
+MateriaGlobal **encontrar_k_materias_menos_cursadas(ListadoMaterias *lista, int k)
+{
+    if (k <= 0) return NULL;
+    int n_materias = cantidad_materias(lista);
+    if (n_materias < k) k = n_materias;
+    if (n_materias == 0) return NULL;
+
+    // Usamos un Max-Heap de tamaño k para mantener los k menores.
+    // Si el nuevo elemento es menor que el máximo del heap, reemplazamos.
+    HeapMaterias *max_heap = crearHeapMaterias(k);
+    ListadoMaterias *actual = lista;
+
+    while (actual != NULL)
+    {
+        MateriaGlobal *materia_actual = actual->data;
+        if (max_heap->tamano < k)
+        {
+            insertar_max_heap_materias(max_heap, materia_actual);
+        }
+        else if (materia_actual->cursantes < obtener_maximo_max_heap_materias(max_heap)->cursantes)
+        {
+            extraer_maximo_max_heap_materias(max_heap);
+            insertar_max_heap_materias(max_heap, materia_actual);
+        }
+        actual = actual->siguiente;
+    }
+
+    MateriaGlobal **array_materias = (MateriaGlobal **)malloc(k * sizeof(MateriaGlobal *));
+    if (array_materias == NULL)
+    {
+        liberarHeapMaterias(max_heap);
+        return NULL;
+    }
+
+    // Extraemos del Max-Heap, saldrán de mayor a menor (dentro de los k peores),
+    // así que llenamos el array desde el final para tener el orden ascendente (menor a mayor).
+    for (int i = k - 1; i >= 0; i--)
+    {
+        array_materias[i] = extraer_maximo_max_heap_materias(max_heap);
+    }
+
+    liberarHeapMaterias(max_heap);
+    return array_materias;
+}
+
+
+
+

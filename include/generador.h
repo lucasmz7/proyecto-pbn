@@ -12,4 +12,8 @@ int generador(ListadoEstudiantes **estudiantes,
               int cantidad_estudiantes,
               int cantidad_materias);
 
+int anotar_estudiante_materias_aleatorias(Estudiante *estudiante, ListadoMaterias *materias);
+
+int rendir_materias_aleatorias(Estudiante *estudiante);
+
 #endif

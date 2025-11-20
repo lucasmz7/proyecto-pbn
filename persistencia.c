@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "database.h"
 #include "estudiante.h"
 #include "materia.h"

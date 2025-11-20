@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <time.h>
 #include "estudiante.h"
@@ -49,7 +50,6 @@ const char *NOMBRES_MATERIAS[] = {
     "Teoria de la Computacion",
     "Criptografia",
     "Seguridad Informatica",
-    "Procesamiento de Señales",
     "Procesamiento Digital de Imagenes",
     "Vision por Computadora",
     "Biomecanica Computacional",
@@ -119,7 +119,6 @@ const char *NOMBRES_MATERIAS[] = {
     "Resistencia de Materiales",
     "Termodinamica Aplicada",
     "Maquinas Termicas",
-    "Diseño Mecanico",
     "Materiales Industriales",
     "Procesos de Manufactura",
     "Ingenieria de Transporte",
@@ -139,7 +138,6 @@ const char *NOMBRES_MATERIAS[] = {
     "Hidraulica",
     "Topografia",
     "Geotecnia",
-    "Diseño Estructural",
     "Hormigon Armado",
     "Mecanica de Suelos",
     "Transporte y Vias de Comunicacion",
@@ -179,7 +177,6 @@ const char *NOMBRES_MATERIAS[] = {
     "Energias Renovables",
     "Tecnologia Nuclear",
     "Fision y Fusion Nuclear",
-    "Diseño de Reactores",
     "Ingenieria Biomedica",
     "Prostetica y Bionica",
     "Bioinstrumentacion",
@@ -253,8 +250,7 @@ const char *APELLIDOS[] = {
     "Gomez", "Gonzalez", "Guerrero", "Heredia", "Herrera",
     "Ibarra", "Ledesma", "Leguizamon", "Lopez", "Luna",
     "Maidana", "Martinez", "Medina", "Mendez", "Miranda",
-    "Molina", "Monzon", "Morales", "Mori", "Navarro",
-    "Nuñez", "Ojeda", "Olmedo", "Ortiz", "Paez",
+    "Molina", "Monzon", "Morales", "Mori", "Navarro", "Ojeda", "Olmedo", "Ortiz", "Paez",
     "Paredes", "Perez", "Ponce", "Ramirez", "Reyes",
     "Rios", "Rivero", "Rodriguez", "Romero", "Ruiz",
     "Salinas", "Sanchez", "Sosa", "Suarez", "Torres",
@@ -294,8 +290,7 @@ void generar_materia_aleatoria(ListadoMaterias **lista)
     int total_nombres = sizeof(NOMBRES_MATERIAS) / sizeof(NOMBRES_MATERIAS[0]);
     const char *nombre_random = NOMBRES_MATERIAS[rand() % total_nombres];
 
-    char id[6];
-
+    char id[7]; // 6 caracteres para el ID + 1 para el null terminator '\0'
     do
     {
         for (int i = 0; i < 6; i++)
@@ -306,10 +301,13 @@ void generar_materia_aleatoria(ListadoMaterias **lista)
             else
                 id[i] = '0' + (r - 26);
         }
-    } while (buscar_por_identificador(*lista, id) != NULL && *lista != NULL);
+        id[6] = '\0'; // Null terminator OBLIGATORIO para que sea un string válido
+    } while (*lista != NULL && buscar_por_identificador(*lista, id) != NULL);
 
     agregar_materia(lista, id, nombre_random);
 }
+
+
 
 /**
  * @brief Genera un conjunto de estudiantes y materias aleatorios.
@@ -355,4 +353,138 @@ int generador(ListadoEstudiantes **estudiantes,
 
     printf("Generacion exitosa\n");
     return 0;
+}
+
+/**
+ * @brief Anota a un estudiante en una cantidad aleatoria de materias (entre 0 y 5).
+ * @param estudiante Puntero al estudiante a anotar.
+ * @param materias Puntero a la lista de materias disponibles.
+ * @return int Cantidad de materias en las que se anotó el estudiante.
+ */
+int anotar_estudiante_materias_aleatorias(Estudiante *estudiante, ListadoMaterias *materias)
+{
+    if (estudiante == NULL || materias == NULL)
+    {
+        return 0;
+    }
+
+    // Contar cuántas materias hay disponibles
+    int total_materias = cantidad_materias(materias);
+    if (total_materias == 0)
+    {
+        return 0;
+    }
+
+    // Determinar cantidad de materias a anotar (entre 0 y 5, pero no más que las disponibles)
+    int max_anotaciones = (total_materias < 5) ? total_materias : 5;
+    int cantidad_a_anotar = rand() % (max_anotaciones + 1); // 0 a max_anotaciones
+
+    if (cantidad_a_anotar == 0)
+    {
+        return 0;
+    }
+
+    // Crear un array con todas las materias disponibles
+    MateriaGlobal **materias_disponibles = (MateriaGlobal **)malloc(sizeof(MateriaGlobal *) * total_materias);
+    ListadoMaterias *actual = materias;
+    int idx = 0;
+    while (actual != NULL)
+    {
+        materias_disponibles[idx++] = actual->data;
+        actual = actual->siguiente;
+    }
+
+    // Seleccionar materias aleatorias sin repetir
+    int anotadas = 0;
+    for (int i = 0; i < cantidad_a_anotar; i++)
+    {
+        // Seleccionar una materia aleatoria del rango restante
+        int indice_aleatorio = i + (rand() % (total_materias - i));
+        
+        // Intercambiar para evitar repeticiones
+        MateriaGlobal *temp = materias_disponibles[i];
+        materias_disponibles[i] = materias_disponibles[indice_aleatorio];
+        materias_disponibles[indice_aleatorio] = temp;
+
+        // Anotar al estudiante en la materia seleccionada
+        if (anotar(estudiante, materias, materias_disponibles[i]->nombre) == 0)
+        {
+            anotadas++;
+        }
+    }
+
+    free(materias_disponibles);
+    return anotadas;
+}
+
+/**
+ * @brief Hace rendir al estudiante una cantidad aleatoria de sus materias cursadas actuales.
+ * @param estudiante Puntero al estudiante.
+ * @return int Cantidad de materias rendidas.
+ */
+int rendir_materias_aleatorias(Estudiante *estudiante)
+{
+    if (estudiante == NULL || estudiante->cursadas == NULL)
+    {
+        return 0;
+    }
+
+    // Contar cuántas cursadas tiene
+    int total_cursadas = cantidad_cursadas(estudiante->cursadas);
+    if (total_cursadas == 0)
+    {
+        return 0;
+    }
+
+    // Determinar cantidad de materias a rendir (entre 0 y total_cursadas)
+    int cantidad_a_rendir = rand() % (total_cursadas + 1);
+
+    if (cantidad_a_rendir == 0)
+    {
+        return 0;
+    }
+
+    // Crear un array con los NOMBRES de todas las cursadas (no punteros a Cursada)
+    // Esto es necesario porque rendir_final() modifica la lista de cursadas
+    char **nombres_cursadas = (char **)malloc(sizeof(char *) * total_cursadas);
+    ListadoCursadas *actual = estudiante->cursadas;
+    int idx = 0;
+    while (actual != NULL)
+    {
+        nombres_cursadas[idx] = (char *)malloc(sizeof(char) * 50);
+        strcpy(nombres_cursadas[idx], actual->data->referencia->nombre);
+        idx++;
+        actual = actual->siguiente;
+    }
+
+    // Seleccionar cursadas aleatorias sin repetir
+    int rendidas = 0;
+    for (int i = 0; i < cantidad_a_rendir; i++)
+    {
+        // Seleccionar un índice aleatorio del rango restante
+        int indice_aleatorio = i + (rand() % (total_cursadas - i));
+        
+        // Intercambiar para evitar repeticiones
+        char *temp = nombres_cursadas[i];
+        nombres_cursadas[i] = nombres_cursadas[indice_aleatorio];
+        nombres_cursadas[indice_aleatorio] = temp;
+
+        // Generar nota aleatoria entre 1 y 10
+        int nota = 1 + (rand() % 10);
+
+        // Rendir la materia
+        if (rendir_final(estudiante, nombres_cursadas[i], nota) == 0)
+        {
+            rendidas++;
+        }
+    }
+
+    // Liberar memoria
+    for (int i = 0; i < total_cursadas; i++)
+    {
+        free(nombres_cursadas[i]);
+    }
+    free(nombres_cursadas);
+    
+    return rendidas;
 }

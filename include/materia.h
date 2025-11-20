@@ -15,7 +15,7 @@ typedef enum
 typedef struct
 {
     char nombre[50];
-    char identificador[6];
+    char identificador[7]; // 6 caracteres + 1 para '\0'
     int cursantes;
     int aprobados;
     int desaprobados;
