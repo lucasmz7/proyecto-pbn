@@ -275,9 +275,9 @@ void generar_estudiante_aleatorio(ListadoEstudiantes **lista)
     do
     {
         legajo = 100000 + rand() % 900000;
-    } while (*lista != NULL && buscar_por_legajo(*lista, legajo) != NULL);
+    } while (*lista != NULL && buscar_por_legajo(*lista, legajo, 1) != NULL);
 
-    agregar_estudiante(lista, legajo, edad, nombre_completo);
+    agregar_estudiante(lista, legajo, edad, nombre_completo, 1);
 }
 
 /**
@@ -302,9 +302,9 @@ void generar_materia_aleatoria(ListadoMaterias **lista)
                 id[i] = '0' + (r - 26);
         }
         id[6] = '\0'; // Null terminator OBLIGATORIO para que sea un string válido
-    } while (*lista != NULL && buscar_por_identificador(*lista, id) != NULL);
+    } while (*lista != NULL && buscar_por_identificador(*lista, id, 1) != NULL);
 
-    agregar_materia(lista, id, nombre_random);
+    agregar_materia(lista, id, nombre_random, 1);
 }
 
 

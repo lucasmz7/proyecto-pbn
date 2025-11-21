@@ -18,6 +18,7 @@ void menu_busqueda_estudiante(ListadoEstudiantes *lista);
 void menu_busqueda_materia(ListadoMaterias *lista);
 void menu_estadisticas(ListadoEstudiantes *estudiantes, ListadoMaterias *materias);
 void menu_simulacion(ListadoEstudiantes *estudiantes, ListadoMaterias *materias);
+void ventana_salida();
 
 int main()
 {
@@ -66,6 +67,7 @@ int main()
             scanf(" %d", &cant_estudiantes);
             printf("Cantidad de materias: ");
             scanf(" %d", &cant_materias);
+            printf("\n");
             int check = generador(&lista_estudiantes, &lista_materias, cant_estudiantes, cant_materias);
             if (check != 0)
             {
@@ -120,7 +122,7 @@ int main()
             scanf(" %[^\n]%*c", nombre);
             int edad = ventana_edad();
             int legajo = ventana_legajo();
-            agregar_estudiante(&lista_estudiantes, legajo, edad, nombre);
+            agregar_estudiante(&lista_estudiantes, legajo, edad, nombre, 0);
             break;
         }
         case 'B':
@@ -145,7 +147,7 @@ int main()
         case 'E':
         {
             int legajo = ventana_legajo();
-            Estudiante *estudiante = buscar_por_legajo(lista_estudiantes, legajo);
+            Estudiante *estudiante = buscar_por_legajo(lista_estudiantes, legajo, 0);
             printf("|%-50s|%-6s|%-4s|%-20s|%-17s|%-18s|%-21s|\n", "Nombre", "Legajo", "Edad", "Promedio", "Materias cursadas", "Materias aprobadas", "Materias desaprobadas");
             printf("|==================================================|======|====|====================|=================|==================|=====================|\n");
             print_estudiante(estudiante);
@@ -169,7 +171,7 @@ int main()
             scanf(" %[^\n]%*c", nombre);
             printf("Ingresar identificador:\n");
             const char *identificador = ventana_identificador();
-            agregar_materia(&lista_materias, identificador, nombre);
+            agregar_materia(&lista_materias, identificador, nombre, 0);
             break;
         case 'H':
         {
@@ -190,7 +192,7 @@ int main()
             printf("Nombre de materia: ");
             scanf(" %[^\n]%*c", nombre);
             {
-                Estudiante *estudiante = buscar_por_legajo(lista_estudiantes, legajo);
+                Estudiante *estudiante = buscar_por_legajo(lista_estudiantes, legajo, 0);
                 if (estudiante != NULL)
                 {
                     anotar(estudiante, lista_materias, nombre);
@@ -205,7 +207,7 @@ int main()
             printf("Nombre: ");
             scanf(" %[^\n]%*c", nombre);
             {
-                Estudiante *estudiante = buscar_por_legajo(lista_estudiantes, legajo);
+                Estudiante *estudiante = buscar_por_legajo(lista_estudiantes, legajo, 0);
                 bajar(estudiante, nombre);
             }
             break;
@@ -223,7 +225,7 @@ int main()
             printf("Nombre: ");
             scanf(" %[^\n]%*c", nombre);
             {
-                Estudiante *estudiante = buscar_por_legajo(lista_estudiantes, legajo);
+                Estudiante *estudiante = buscar_por_legajo(lista_estudiantes, legajo, 0);
                 rendir_final(estudiante, nombre, nota);
             }
             break;
@@ -242,6 +244,7 @@ int main()
         }
         case 'O':
             menu_estadisticas(lista_estudiantes, lista_materias);
+            ventana_salida();
             break;
         case 'P':
         {
@@ -253,6 +256,8 @@ int main()
 
             guardar_datos(lista_materias, lista_estudiantes, filepath);
             printf("Datos guardados en: %s\n", filepath);
+            printf("\n");
+            ventana_salida();
             break;
         }
         case 'Z':
@@ -361,13 +366,32 @@ const char *ventana_identificador()
     return id;
 }
 
+void ventana_salida() {
+    while (true)
+    {
+        printf("A. Volver\n");
+        printf("\n");
+        char opcion;
+        scanf(" %c", &opcion);
+
+        if (opcion == 'A')
+        {
+            return;
+        } else {
+            printf("\n");
+            printf("Opcion invalida.\n");
+            printf("\n");
+        }
+    }
+}
+
 void menu_modificar_estudiante(ListadoEstudiantes *lista)
 {
     printf("¿Que estudiante desea modificar? \n");
     printf("\n");
 
     int legajo = ventana_legajo();
-    Estudiante *estudiante = buscar_por_legajo(lista, legajo);
+    Estudiante *estudiante = buscar_por_legajo(lista, legajo, 0);
 
     char opcion;
     int valido = 0;
@@ -427,7 +451,7 @@ void menu_modificar_materia(ListadoMaterias *lista)
     printf("\n");
 
     const char *id = ventana_identificador();
-    MateriaGlobal *materia = buscar_por_identificador(lista, id);
+    MateriaGlobal *materia = buscar_por_identificador(lista, id, 0);
 
     char opcion;
     int valido = 0;
@@ -465,6 +489,7 @@ void menu_modificar_materia(ListadoMaterias *lista)
             valido = 1;
             break;
         default:
+            printf("\n");
             printf("Opcion invalida.\n");
             printf("\n");
             break;
@@ -492,7 +517,7 @@ void menu_busqueda_estudiante(ListadoEstudiantes *lista)
             printf("\n");
             int legajo = ventana_legajo();
             printf("\n");
-            Estudiante *estudiante = buscar_por_legajo(lista, legajo);
+            Estudiante *estudiante = buscar_por_legajo(lista, legajo, 0);
             if (!estudiante)
             {
                 break;
@@ -532,7 +557,7 @@ void menu_busqueda_materia(ListadoMaterias *lista)
             printf("\n");
             const char *id = ventana_identificador();
             printf("\n");
-            MateriaGlobal *materia = buscar_por_identificador(lista, id);
+            MateriaGlobal *materia = buscar_por_identificador(lista, id, 0);
             if (!materia)
             {
                 break;
@@ -543,6 +568,7 @@ void menu_busqueda_materia(ListadoMaterias *lista)
             valido = 1;
             return;
         default:
+            printf("\n");
             printf("Opcion invalida.\n");
             printf("\n");
             break;
@@ -762,7 +788,11 @@ void menu_estadisticas(ListadoEstudiantes *estudiantes, ListadoMaterias *materia
     const int cant_estudiantes = cantidad_estudiantes(estudiantes);
     const int cant_materia = cantidad_materias(materias);
 
-    // TODO: si no hay estudiantes volver? si no hay materias volver? o mostrar solo lo que haya
+    if (cant_estudiantes == 0 || cant_materia == 0)
+    {
+        printf("No hay estudiantes o materias para mostrar estadisticas.\n");
+        return;
+    }
 
     printf("Estadisticas:\n");
     printf("\n");
@@ -829,14 +859,4 @@ void menu_estadisticas(ListadoEstudiantes *estudiantes, ListadoMaterias *materia
     // materias con mas aprobados y mas desaprobados (usar porcentaje)
     // cantidad de estudiantes no cursan nadas
     // estudiantes con mas materias historicas
-
-    printf("A. Volver\n");
-    printf("\n");
-    char opcion;
-    scanf(" %c", &opcion);
-
-    if (opcion == 'A')
-    {
-        return;
-    }
 }

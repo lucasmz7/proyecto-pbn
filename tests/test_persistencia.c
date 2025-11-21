@@ -10,10 +10,10 @@ void test_persistencia() {
     
     // Crear datos
     ListadoEstudiantes* estudiantes = crear_listado_estudiantes();
-    agregar_estudiante(&estudiantes, 111111, 20, "Test User");
+    agregar_estudiante(&estudiantes, 111111, 20, "Test User", 0);
     
     ListadoMaterias* materias = crear_listado_materias();
-    agregar_materia(&materias, "TST101", "Test Subject");
+    agregar_materia(&materias, "TST101", "Test Subject", 0);
     
     // Guardar
     guardar_datos(materias, estudiantes, filename);
@@ -31,11 +31,11 @@ void test_persistencia() {
     ASSERT("Debería haber 1 estudiante", cantidad_estudiantes(estudiantes_loaded) == 1);
     ASSERT("Debería haber 1 materia", cantidad_materias(materias_loaded) == 1);
     
-    Estudiante* e = buscar_por_legajo(estudiantes_loaded, 111111);
+    Estudiante* e = buscar_por_legajo(estudiantes_loaded, 111111, 0);
     ASSERT("Debería encontrar el estudiante cargado", e != NULL);
     ASSERT("El nombre del estudiante cargado coincide", strcmp(e->nombre, "Test User") == 0);
     
-    MateriaGlobal* m = buscar_por_identificador(materias_loaded, "TST101");
+    MateriaGlobal* m = buscar_por_identificador(materias_loaded, "TST101", 0);
     ASSERT("Debería encontrar la materia cargada", m != NULL);
     ASSERT("El nombre de la materia cargada coincide", strcmp(m->nombre, "Test Subject") == 0);
     

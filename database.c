@@ -5,8 +5,8 @@
 #include <string.h>
 #include "database.h"
 
-Estudiante *buscar_por_legajo(ListadoEstudiantes *lista, int legajo);
-MateriaGlobal *buscar_por_identificador(ListadoMaterias *lista, const char *id);
+Estudiante *buscar_por_legajo(ListadoEstudiantes *lista, int legajo, int modo_silencioso);
+MateriaGlobal *buscar_por_identificador(ListadoMaterias *lista, const char *id, int modo_silencioso);
 
 /**
  * @brief Crea una nueva lista de estudiantes vacía.
@@ -43,30 +43,42 @@ ListadoCursadas *crear_listado_cursadas()
  * @param nombre Nombre del estudiante.
  * @return int 0 si se agregó correctamente, 1 si hubo error.
  */
-int agregar_estudiante(ListadoEstudiantes **lista, int legajo, int edad, const char *nombre)
+int agregar_estudiante(ListadoEstudiantes **lista, int legajo, int edad, const char *nombre, int modo_silencioso)
 {
 
     if (edad < 18 || edad > 100)
     {
-        printf("[ERROR]: Edad invalida\n");
+        if (!modo_silencioso)
+        {
+            printf("[ERROR]: Edad invalida\n");
+        }
         return 1;
     }
 
     if (legajo < 100000 || legajo > 999999)
     {
-        printf("[ERROR]: Legajo invalido\n");
+        if (!modo_silencioso)
+        {
+            printf("[ERROR]: Legajo invalido\n");
+        }
         return 1;
     }
 
     if (strlen(nombre) < 1 || strlen(nombre) > 50)
     {
-        printf("[ERROR]: Nombre de estudiante invalido\n");
+        if (!modo_silencioso)
+        {
+            printf("[ERROR]: Nombre de estudiante invalido\n");
+        }
         return 1;
     }
 
-    if (buscar_por_legajo(*lista, legajo) != NULL)
+    if (buscar_por_legajo(*lista, legajo, 1) != NULL)
     {
-        printf("Ya existe un estudiante con ese legajo");
+        if (!modo_silencioso)
+        {
+            printf("Ya existe un estudiante con ese legajo\n");
+        }
         return 1;
     }
 
@@ -108,30 +120,42 @@ int agregar_estudiante(ListadoEstudiantes **lista, int legajo, int edad, const c
  * @param nombre Nombre de la materia.
  * @return int 0 si se agregó correctamente, 1 si hubo error.
  */
-int agregar_materia(ListadoMaterias **lista, const char *identificador, const char *nombre)
+int agregar_materia(ListadoMaterias **lista, const char *identificador, const char *nombre, int modo_silencioso)
 {
 
     if (strlen(identificador) > 6 || strlen(identificador) < 1)
     {
-        printf("[ERROR]: Identificador de materia invalido\n");
+        if (!modo_silencioso)
+        {
+            printf("[ERROR]: Identificador de materia invalido\n");
+        }
         return 1;
     }
 
     if (strlen(nombre) > 50 || strlen(nombre) < 1)
     {
-        printf("[ERROR]: Nombre de materia invalido\n");
+        if (!modo_silencioso)
+        {
+            printf("[ERROR]: Nombre de materia invalido\n");
+        }
         return 1;
     }
 
-    if (buscar_por_identificador(*lista, identificador) != NULL)
+    if (buscar_por_identificador(*lista, identificador, 1) != NULL)
     {
-        printf("Ya existe una materia con ese identificador");
+        if (!modo_silencioso)
+        {
+            printf("Ya existe una materia con ese identificador\n");
+        }
         return 1;
     }
 
     if (buscar_materia_por_nombre(*lista, nombre) != NULL)
     {
-        printf("Ya existe una materia con ese nombre");
+        if (!modo_silencioso)
+        {
+            printf("Ya existe una materia con ese nombre\n");
+        }
         return 1;
     }
 
@@ -526,17 +550,23 @@ void buscar_por_rango_edad(ListadoEstudiantes *lista, int edad_min, int edad_max
  * @param legajo Legajo a buscar.
  * @return Estudiante* Puntero al estudiante encontrado o NULL si no existe.
  */
-Estudiante *buscar_por_legajo(ListadoEstudiantes *lista, int legajo)
+Estudiante *buscar_por_legajo(ListadoEstudiantes *lista, int legajo, int modo_silencioso)
 {
     if (lista == NULL)
     {
-        printf("No hay estudiantes en la lista\n");
+        if (!modo_silencioso)
+        {
+            printf("No hay estudiantes en la lista\n");
+        }
         return NULL;
     }
 
     if (legajo < 100000 || legajo >= 999999)
     {
-        printf("[ERROR]: numero de legajo invalido (debe ser de 6 digitos)\n");
+        if (!modo_silencioso)
+        {
+            printf("[ERROR]: numero de legajo invalido (debe ser de 6 digitos)\n");
+        }
         return NULL;
     }
 
@@ -551,7 +581,10 @@ Estudiante *buscar_por_legajo(ListadoEstudiantes *lista, int legajo)
     }
 
     // No encontrado
-    printf("No existe un estudiante con ese legajo\n");
+    if (!modo_silencioso)
+    {
+        printf("No existe un estudiante con ese legajo\n");
+    }
     return NULL;
 }
 
@@ -561,27 +594,38 @@ Estudiante *buscar_por_legajo(ListadoEstudiantes *lista, int legajo)
  * @param id Identificador a buscar.
  * @return MateriaGlobal* Puntero a la materia encontrada o NULL si no existe.
  */
-MateriaGlobal *buscar_por_identificador(ListadoMaterias *lista, const char *id)
+MateriaGlobal *buscar_por_identificador(ListadoMaterias *lista, const char *id, int modo_silencioso)
 {
     if (lista == NULL)
     {
-        printf("No hay materias en la lista\n");
+        if (!modo_silencioso)
+        {
+            printf("No hay materias en la lista\n");
+        }
         return NULL;
     }
 
     if (strlen(id) < 1 || strlen(id) > 6)
     {
-        printf("[ERROR]: Identificador invalido\n");
+        if (!modo_silencioso)
+        {
+            printf("[ERROR]: Identificador invalido\n");
+        }
         return NULL;
     }
 
     while (lista)
     {
         if (strcmp(lista->data->identificador, id) == 0)
+        {
             return lista->data;
+        }
         lista = lista->siguiente;
     }
-    printf("No existe una materia con ese identificador\n");
+    if (!modo_silencioso)
+    {
+        printf("No existe una materia con ese identificador\n");
+    }
     return NULL;
 }
 

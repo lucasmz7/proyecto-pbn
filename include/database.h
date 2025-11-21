@@ -28,15 +28,15 @@ ListadoCursadas *crear_listado_cursadas();
 
 const char *estado_a_string(EstadoMateria e);
 
-int agregar_estudiante(ListadoEstudiantes **lista, int legajo, int edad, const char *nombre);
+int agregar_estudiante(ListadoEstudiantes **lista, int legajo, int edad, const char *nombre, int modo_silencioso);
 int eliminar_estudiante(ListadoEstudiantes **lista, int legajo);
-Estudiante *buscar_por_legajo(ListadoEstudiantes *lista, int legajo);
+Estudiante *buscar_por_legajo(ListadoEstudiantes *lista, int legajo, int modo_silencioso);
 void buscar_por_nombre(ListadoEstudiantes *lista, const char *nombre);
 void buscar_por_rango_edad(ListadoEstudiantes *lista, int edad_min, int edad_max);
 
-int agregar_materia(ListadoMaterias **lista, const char *identificador, const char *nombre);
+int agregar_materia(ListadoMaterias **lista, const char *identificador, const char *nombre, int modo_silencioso);
 int eliminar_materia(ListadoMaterias **lista, const char *nombre);
-MateriaGlobal *buscar_por_identificador(ListadoMaterias *lista, const char *id);
+MateriaGlobal *buscar_por_identificador(ListadoMaterias *lista, const char *id, int modo_silencioso);
 MateriaGlobal *buscar_materia_por_nombre(ListadoMaterias *lista, const char *nombre);
 
 int cantidad_estudiantes(ListadoEstudiantes *lista);

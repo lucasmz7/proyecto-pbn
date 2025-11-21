@@ -80,7 +80,7 @@ Cursada *json_a_cursada(cJSON *obj, ListadoMaterias *materias)
     Cursada *c = malloc(sizeof(Cursada));
 
     const char *id = cJSON_GetObjectItem(obj, "id")->valuestring;
-    c->referencia = buscar_por_identificador(materias, id);
+    c->referencia = buscar_por_identificador(materias, id,0);
 
     c->estado = json_a_estado(cJSON_GetObjectItem(obj, "estado")->valuestring);
     c->nota = cJSON_GetObjectItem(obj, "nota")->valuedouble;

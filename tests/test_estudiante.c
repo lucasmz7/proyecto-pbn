@@ -35,7 +35,7 @@ void test_estudiante_modificar_datos() {
 void test_anotar_y_bajar() {
     Estudiante* e = crear_estudiante_dummy();
     ListadoMaterias* materias = crear_listado_materias();
-    agregar_materia(&materias, "MAT1", "Matematica I");
+    agregar_materia(&materias, "MAT1", "Matematica I", 0);
     
     int res = anotar(e, materias, "Matematica I");
     ASSERT("anotar() debería retornar 0 (éxito)", res == 0);
@@ -54,7 +54,7 @@ void test_anotar_y_bajar() {
 void test_rendir_final() {
     Estudiante* e = crear_estudiante_dummy();
     ListadoMaterias* materias = crear_listado_materias();
-    agregar_materia(&materias, "MAT1", "Matematica I");
+    agregar_materia(&materias, "MAT1", "Matematica I", 0);
     
     anotar(e, materias, "Matematica I");
     
@@ -65,7 +65,7 @@ void test_rendir_final() {
     ASSERT("La nota debería ser 8.0", e->regulares->data->nota == 8.0);
     
     // Rendir otra materia
-    agregar_materia(&materias, "FIS1", "Fisica I");
+    agregar_materia(&materias, "FIS1", "Fisica I", 0);
     anotar(e, materias, "Fisica I");
     rendir_final(e, "Fisica I", 6.0);
     
