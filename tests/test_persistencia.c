@@ -8,23 +8,19 @@
 void test_persistencia() {
     const char* filename = "test_data.json";
     
-    // Crear datos
     ListadoEstudiantes* estudiantes = crear_listado_estudiantes();
     agregar_estudiante(&estudiantes, 111111, 20, "Test User", 0);
     
     ListadoMaterias* materias = crear_listado_materias();
     agregar_materia(&materias, "TST101", "Test Subject", 0);
     
-    // Guardar
     guardar_datos(materias, estudiantes, filename);
     
-    // Cargar
     ListadoEstudiantes* estudiantes_loaded = NULL;
     ListadoMaterias* materias_loaded = NULL;
     
     cargar_datos(filename, &materias_loaded, &estudiantes_loaded);
     
-    // Verificar
     ASSERT("Los estudiantes cargados no deberían ser NULL", estudiantes_loaded != NULL);
     ASSERT("Las materias cargadas no deberían ser NULL", materias_loaded != NULL);
     
@@ -39,9 +35,7 @@ void test_persistencia() {
     ASSERT("Debería encontrar la materia cargada", m != NULL);
     ASSERT("El nombre de la materia cargada coincide", strcmp(m->nombre, "Test Subject") == 0);
     
-    // Limpieza
     remove(filename);
-    // Liberar listas...
 }
 
 int main() {

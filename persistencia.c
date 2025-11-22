@@ -24,7 +24,7 @@ EstadoMateria json_a_estado(const char *s)
     if (strcmp(s, "LIBRE") == 0)
         return LIBRE;
 
-    return LIBRE; // Default seguro
+    return LIBRE;
 }
 
 /**
@@ -343,11 +343,9 @@ int cargar_datos(const char *path,
     cJSON *root = cJSON_Parse(buffer);
     free(buffer);
 
-    // 1) cargar materias globales
     cJSON *jsonMaterias = cJSON_GetObjectItem(root, "materias");
     *materias_out = json_a_lista_materias(jsonMaterias);
 
-    // 2) cargar estudiantes usando materias existentes
     cJSON *jsonEstudiantes = cJSON_GetObjectItem(root, "estudiantes");
     *estudiantes_out = json_a_lista_estudiantes(jsonEstudiantes, *materias_out);
 

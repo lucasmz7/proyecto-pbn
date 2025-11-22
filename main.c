@@ -101,12 +101,15 @@ int main()
         printf("J. Anotar un estudiante a una materia\n");
         printf("K. Bajar un estudiante de una materia\n");
         printf("L. Rendir una materia\n");
+        printf("M. Buscar una materia por nombre\n");
+        printf("N. Buscar una materia por identificador\n");
         printf("=== Bases de datos ===\n");
-        printf("M. Listar estudiantes\n");
-        printf("N. Listar materias\n");
+        printf("O. Listar estudiantes\n");
+        printf("P. Listar materias\n");
         printf("=== Otros ===\n");
-        printf("O. Estadisticas del sistema\n");
-        printf("P. Guardar datos\n");
+        printf("Q. Simular un cuatrimestre (anotar y rendir materias)\n");
+        printf("R. Estadisticas del sistema\n");
+        printf("S. Guardar datos\n");
         printf("Z. Salir del sistema\n");
         printf("\n");
 
@@ -232,21 +235,64 @@ int main()
         }
         case 'M':
         {
+            char nombre[50];
+            printf("Nombre: ");
+            scanf(" %[^\n]%*c", nombre);
+            MateriaGlobal *materia = buscar_materia_por_nombre(lista_materias, nombre);
+            printf("\n");
+            if (materia != NULL)
+            {
+                printf("|%-50s|%-6s|%-9s|%-9s|%-12s|\n", "Nombre", "ID", "Cursantes", "Aprobados", "Desaprobados");
+                printf("|==================================================|======|=========|=========|============|\n");
+                print_materia(materia);  
+            }
+            else
+            {
+                printf("Materia no encontrada\n");
+            }
+            printf("\n");
+            ventana_salida();
+            break;
+        }
+        case 'N':
+        {
+            const char *id = ventana_identificador();
+            MateriaGlobal *materia = buscar_por_identificador(lista_materias, id, 0);
+            if (materia != NULL)
+            {
+                printf("|%-50s|%-6s|%-9s|%-9s|%-12s|\n", "Nombre", "ID", "Cursantes", "Aprobados", "Desaprobados");
+                printf("|==================================================|======|=========|=========|============|\n");
+                print_materia(materia);  
+            }
+            printf("\n");
+            ventana_salida();
+            break;
+        }
+        case 'O':
+        {
             listar_estudiantes(lista_estudiantes);
             menu_busqueda_estudiante(lista_estudiantes);
             break;
         }
-        case 'N':
+        case 'P':
         {
             listar_materias(lista_materias);
             menu_busqueda_materia(lista_materias);
             break;
         }
-        case 'O':
+        case 'Q':
+        {
+            menu_simulacion(lista_estudiantes, lista_materias);
+            ventana_salida();
+            break;
+        }
+        case 'R':
+        {
             menu_estadisticas(lista_estudiantes, lista_materias);
             ventana_salida();
             break;
-        case 'P':
+        }
+        case 'S':
         {
             time_t now = time(NULL);
             struct tm *tm_info = localtime(&now);
@@ -296,8 +342,7 @@ int ventana_legajo()
         }
 
         printf("\n");
-
-        break; // legajo válido → salir del loop
+        break; 
     }
     return legajo;
 }
@@ -583,7 +628,7 @@ void menu_simulacion(ListadoEstudiantes *estudiantes, ListadoMaterias *materias)
     {
         char opcion_lista;
         printf("\n");
-        printf("¿Desea anotar materias aleatorias a los estudiantes generados? [S/N]\n");
+        printf("¿Desea anotar materias aleatorias a los estudiantes? [S/N]\n");
         printf("\n");
         scanf(" %c", &opcion_lista);
         
@@ -591,7 +636,6 @@ void menu_simulacion(ListadoEstudiantes *estudiantes, ListadoMaterias *materias)
         {
         case 'S':
             printf("\n");
-            // Iterar sobre todos los estudiantes
             ListadoEstudiantes *actual = estudiantes;
             int contador = 0;
             while (actual != NULL)
@@ -615,12 +659,12 @@ void menu_simulacion(ListadoEstudiantes *estudiantes, ListadoMaterias *materias)
         }
     }
 
-    valido = 0; // Resetear para el siguiente menú
+    valido = 0;
     while (!valido)
     {
         char opcion_lista;
         printf("\n");
-        printf("¿Desea rendir materias aleatorias a los estudiantes generados? (Con nota aleatoria) [S/N]\n");
+        printf("¿Desea rendir materias aleatorias a los estudiantes? (Con nota aleatoria) [S/N]\n");
         printf("\n");
         scanf(" %c", &opcion_lista);
 
@@ -628,7 +672,6 @@ void menu_simulacion(ListadoEstudiantes *estudiantes, ListadoMaterias *materias)
         {
         case 'S':
             printf("\n");
-            // Iterar sobre todos los estudiantes
             ListadoEstudiantes *actual = estudiantes;
             int contador = 0;
             while (actual != NULL)
@@ -854,9 +897,4 @@ void menu_estadisticas(ListadoEstudiantes *estudiantes, ListadoMaterias *materia
     imprimir_k_estudiantes_mas_cursadas(estudiantes, 5);
     printf("\n");
 
-
-    // promedio de materias cursadas por estudiante (tasa de aprobacion, tasa de desaprobacion)
-    // materias con mas aprobados y mas desaprobados (usar porcentaje)
-    // cantidad de estudiantes no cursan nadas
-    // estudiantes con mas materias historicas
 }

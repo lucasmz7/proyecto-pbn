@@ -6,10 +6,6 @@
 #include "estudiante.h"
 #include "utils.h"
 
-// Heap definition is in utils.h
-
-// --- Heap implementation for Estudiante (Existing) ---
-
 Heap *crearHeap(int capacidad)
 {
     Heap *nuevoHeap = (Heap *)malloc(sizeof(Heap));
@@ -21,7 +17,6 @@ Heap *crearHeap(int capacidad)
     nuevoHeap->capacidad = capacidad;
     nuevoHeap->tamano = 0;
 
-    // Asigna memoria para el array de punteros a Estudiante
     nuevoHeap->arr = (Estudiante **)malloc(capacidad * sizeof(Estudiante *));
     if (nuevoHeap->arr == NULL)
     {
@@ -43,7 +38,7 @@ void liberarHeap(Heap *heap)
 {
     if (heap == NULL)
         return;
-    free(heap->arr); // Solo se libera el array de punteros, no las estructuras Estudiante
+    free(heap->arr);
     free(heap);
 }
 
@@ -53,7 +48,6 @@ void min_heapify(Heap *heap, int i)
     int izquierda = 2 * i + 1;
     int derecha = 2 * i + 2;
 
-    // Compara usando el campo 'promedio'
     if (izquierda < heap->tamano && heap->arr[izquierda]->promedio < heap->arr[mas_pequeno]->promedio)
     {
         mas_pequeno = izquierda;
@@ -121,7 +115,6 @@ void max_heapify(Heap *heap, int i)
     int izquierda = 2 * i + 1;
     int derecha = 2 * i + 2;
 
-    // Compara usando el campo 'promedio'
     if (izquierda < heap->tamano && heap->arr[izquierda]->promedio > heap->arr[mas_grande]->promedio)
     {
         mas_grande = izquierda;
@@ -151,7 +144,6 @@ void insertar_max_heap(Heap *heap, Estudiante *estudiante)
     heap->arr[i] = estudiante;
     heap->tamano++;
 
-    // Restaura la propiedad del Max-Heap hacia arriba, comparando promedios
     while (i != 0 && heap->arr[(i - 1) / 2]->promedio < heap->arr[i]->promedio)
     {
         intercambiar_estudiante(&heap->arr[i], &heap->arr[(i - 1) / 2]);
@@ -189,7 +181,6 @@ Estudiante **encontrar_k_mejores_promedios(ListadoEstudiantes *lista, int k)
     if (k <= 0)
         return NULL;
 
-    // Conteo y verificación de estudiantes
     int n_estudiantes = cantidad_estudiantes(lista);
 
     if (n_estudiantes < k)
@@ -203,7 +194,6 @@ Estudiante **encontrar_k_mejores_promedios(ListadoEstudiantes *lista, int k)
     Heap *min_heap = crearHeap(k);
     ListadoEstudiantes *actual = lista;
 
-    // Recorrido O(N log k)
     while (actual != NULL)
     {
         Estudiante *estudiante_actual = actual->data;
@@ -221,7 +211,6 @@ Estudiante **encontrar_k_mejores_promedios(ListadoEstudiantes *lista, int k)
         actual = actual->siguiente;
     }
 
-    // Extracción en un array de Estudiante**
     Estudiante **array_estudiantes = (Estudiante **)malloc(k * sizeof(Estudiante *));
     if (array_estudiantes == NULL)
     {
@@ -230,7 +219,6 @@ Estudiante **encontrar_k_mejores_promedios(ListadoEstudiantes *lista, int k)
         return NULL;
     }
 
-    // Extrae y almacena en orden descendente (mejor a peor)
     for (int i = k - 1; i >= 0; i--)
     {
         array_estudiantes[i] = extraer_minimo_min_heap(min_heap);
@@ -245,7 +233,6 @@ Estudiante **encontrar_k_peores_promedios(ListadoEstudiantes *lista, int k)
     if (k <= 0)
         return NULL;
 
-    // Conteo y verificación de estudiantes
     int n_estudiantes = cantidad_estudiantes(lista);
     if (n_estudiantes < k)
         k = n_estudiantes;
@@ -258,7 +245,6 @@ Estudiante **encontrar_k_peores_promedios(ListadoEstudiantes *lista, int k)
     Heap *max_heap = crearHeap(k);
     ListadoEstudiantes *actual = lista;
 
-    // Recorrido O(N log k)
     while (actual != NULL)
     {
         Estudiante *estudiante_actual = actual->data;
@@ -267,7 +253,6 @@ Estudiante **encontrar_k_peores_promedios(ListadoEstudiantes *lista, int k)
         {
             insertar_max_heap(max_heap, estudiante_actual);
         }
-        // Condición de reemplazo: Si el promedio actual es menor que la raíz (el más grande de los peores)
         else if (estudiante_actual->promedio < obtener_maximo_max_heap(max_heap)->promedio)
         {
             extraer_maximo_max_heap(max_heap);
@@ -277,7 +262,6 @@ Estudiante **encontrar_k_peores_promedios(ListadoEstudiantes *lista, int k)
         actual = actual->siguiente;
     }
 
-    // Extracción en un array de Estudiante**
     Estudiante **array_estudiantes = (Estudiante **)malloc(k * sizeof(Estudiante *));
     if (array_estudiantes == NULL)
     {
@@ -286,11 +270,8 @@ Estudiante **encontrar_k_peores_promedios(ListadoEstudiantes *lista, int k)
         return NULL;
     }
 
-    // Extrae y almacena en orden ascendente (peor a mejor)
     for (int i = 0; i < k; i++)
     {
-        // El Max-Heap devuelve los elementos del más grande al más pequeño.
-        // Los almacenamos de forma inversa para que el índice 0 contenga al peor de los peores.
         array_estudiantes[k - 1 - i] = extraer_maximo_max_heap(max_heap);
     }
 
@@ -304,7 +285,6 @@ void min_heapify_cursadas(Heap *heap, int i)
     int izquierda = 2 * i + 1;
     int derecha = 2 * i + 2;
 
-    // Compare using number of cursadas in 'regulares'
     if (izquierda < heap->tamano && cantidad_materias_aprobadas(heap->arr[izquierda]->regulares) < cantidad_materias_aprobadas(heap->arr[mas_pequeno]->regulares))
     {
         mas_pequeno = izquierda;
@@ -373,7 +353,6 @@ Estudiante **encontrar_k_estudiantes_mas_cursadas(ListadoEstudiantes *lista, int
     if (n_estudiantes < k) k = n_estudiantes;
     if (n_estudiantes == 0) return NULL;
 
-    // Use Min-Heap to keep top K largest
     Heap *min_heap = crearHeap(k);
     ListadoEstudiantes *actual = lista;
 
@@ -401,7 +380,6 @@ Estudiante **encontrar_k_estudiantes_mas_cursadas(ListadoEstudiantes *lista, int
         return NULL;
     }
 
-    // Extract in descending order
     for (int i = k - 1; i >= 0; i--)
     {
         array_estudiantes[i] = extraer_minimo_min_heap_cursadas(min_heap);
@@ -574,8 +552,6 @@ MateriaGlobal **encontrar_k_materias_mas_cursadas(ListadoMaterias *lista, int k)
     if (n_materias < k) k = n_materias;
     if (n_materias == 0) return NULL;
 
-    // Usamos un Min-Heap de tamaño k para mantener los k mayores.
-    // Si el nuevo elemento es mayor que el mínimo del heap, reemplazamos.
     HeapMaterias *min_heap = crearHeapMaterias(k);
     ListadoMaterias *actual = lista;
 
@@ -601,8 +577,6 @@ MateriaGlobal **encontrar_k_materias_mas_cursadas(ListadoMaterias *lista, int k)
         return NULL;
     }
 
-    // Extraemos del Min-Heap, saldrán de menor a mayor (dentro de los k mejores),
-    // así que llenamos el array desde el final para tener el orden descendente.
     for (int i = k - 1; i >= 0; i--)
     {
         array_materias[i] = extraer_minimo_min_heap_materias(min_heap);
@@ -625,8 +599,6 @@ MateriaGlobal **encontrar_k_materias_menos_cursadas(ListadoMaterias *lista, int 
     if (n_materias < k) k = n_materias;
     if (n_materias == 0) return NULL;
 
-    // Usamos un Max-Heap de tamaño k para mantener los k menores.
-    // Si el nuevo elemento es menor que el máximo del heap, reemplazamos.
     HeapMaterias *max_heap = crearHeapMaterias(k);
     ListadoMaterias *actual = lista;
 
@@ -652,8 +624,6 @@ MateriaGlobal **encontrar_k_materias_menos_cursadas(ListadoMaterias *lista, int 
         return NULL;
     }
 
-    // Extraemos del Max-Heap, saldrán de mayor a menor (dentro de los k peores),
-    // así que llenamos el array desde el final para tener el orden ascendente (menor a mayor).
     for (int i = k - 1; i >= 0; i--)
     {
         array_materias[i] = extraer_maximo_max_heap_materias(max_heap);

@@ -141,7 +141,6 @@ int anotar(Estudiante *estudiante, ListadoMaterias *lista_materias, const char *
         return 1;
     }
 
-    // Buscar la materia global en la lista
     ListadoMaterias *actual = lista_materias;
     MateriaGlobal *materia_encontrada = NULL;
 
@@ -155,36 +154,29 @@ int anotar(Estudiante *estudiante, ListadoMaterias *lista_materias, const char *
         actual = actual->siguiente;
     }
 
-    // Si no se encontró la materia
     if (materia_encontrada == NULL)
     {
         printf("[ERROR]: No existe una materia con ese nombre\n");
         return 1;
     }
 
-    // TODO: Buscar si ya esta anotado
-
     materia_encontrada->cursantes += 1;
 
-    // Crear la cursada
     Cursada *c = malloc(sizeof(Cursada));
     c->referencia = materia_encontrada;
     c->estado = CURSANDO;
     c->nota = 0.0f;
 
-    // Crear el nodo de lista
     ListadoCursadas *nodo = malloc(sizeof(ListadoCursadas));
     nodo->data = c;
     nodo->siguiente = NULL;
 
-    // Insertar en la lista de cursadas del estudiante
     if (estudiante->cursadas == NULL)
     {
         estudiante->cursadas = nodo;
         return 0;
     }
 
-    // Recorrer hasta el final e insertar
     ListadoCursadas *iter = estudiante->cursadas;
     while (iter->siguiente != NULL)
         iter = iter->siguiente;
@@ -192,7 +184,6 @@ int anotar(Estudiante *estudiante, ListadoMaterias *lista_materias, const char *
     return 0;
 }
 
-// TODO: deberia comprobar si no esta anotado a ninguna materia con ese nombrE?
 /**
  * @brief Da de baja a un estudiante de una materia en curso.
  * @param estudiante Puntero al estudiante.
@@ -220,7 +211,6 @@ int bajar(Estudiante *estudiante, const char *nombre_materia)
     ListadoCursadas *actual = *lista;
     ListadoCursadas *previo = NULL;
 
-    // Si la materia a eliminar es la primera
     if (actual != NULL && actual->data != NULL && strcmp(actual->data->referencia->nombre, nombre_materia) == 0)
     {
         *lista = actual->siguiente;
@@ -229,14 +219,12 @@ int bajar(Estudiante *estudiante, const char *nombre_materia)
         return 0;
     }
 
-    // Recorremos hasta llegar encontrar el nodo a eliminar
     while (actual != NULL && (actual->data == NULL || strcmp(actual->data->referencia->nombre, nombre_materia) != 0))
     {
         previo = actual;
         actual = actual->siguiente;
     }
 
-    // Si no se encontrro
     if (actual == NULL)
     {
         printf("[ERROR]: No existe una materia con ese nombre\n");
@@ -245,7 +233,6 @@ int bajar(Estudiante *estudiante, const char *nombre_materia)
 
     actual->data->referencia->cursantes -= 1;
 
-    // Eliminamos el nodo y reconectamos la lista
     previo->siguiente = actual->siguiente;
     if (actual->data)
         free(actual->data);
@@ -253,7 +240,6 @@ int bajar(Estudiante *estudiante, const char *nombre_materia)
     return 0;
 }
 
-// TODO: comprobar que no la aprobo todavia
 /**
  * @brief Registra la nota final de una materia para un estudiante.
  * @param estudiante Puntero al estudiante.
@@ -281,7 +267,6 @@ int rendir_final(Estudiante *estudiante, const char *nombre_materia, float nota)
         return 1;
     }
 
-    // Buscar la materia en las CURSADAS (no en regulares)
     ListadoCursadas *lista = estudiante->cursadas;
     Cursada *cursada_encontrada = NULL;
 
@@ -295,14 +280,12 @@ int rendir_final(Estudiante *estudiante, const char *nombre_materia, float nota)
         lista = lista->siguiente;
     }
 
-    // Si no se encontró la cursada
     if (cursada_encontrada == NULL)
     {
         printf("[ERROR]: El estudiante no está cursando esa materia\n");
         return 1;
     }
 
-    // Determinar el estado según la nota
     EstadoMateria estado;
     if (nota >= 4)
     {
@@ -315,22 +298,18 @@ int rendir_final(Estudiante *estudiante, const char *nombre_materia, float nota)
         cursada_encontrada->referencia->desaprobados += 1;
     }
 
-    // Crear una nueva cursada para regulares
     Cursada *c = malloc(sizeof(Cursada));
     c->referencia = cursada_encontrada->referencia;
     c->estado = estado;
     c->nota = nota;
 
-    // Agregar a la lista de regulares
     ListadoCursadas *nodo = malloc(sizeof(ListadoCursadas));
     nodo->data = c;
     nodo->siguiente = estudiante->regulares;
     estudiante->regulares = nodo;
 
-    // Actualizar promedio
     estudiante_actualizar_promedio(estudiante);
 
-    // Dar de baja la cursada (la elimina de la lista de cursadas)
     bajar(estudiante, nombre_materia);
     
     return 0;

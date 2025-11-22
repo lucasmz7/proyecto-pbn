@@ -154,7 +154,7 @@ const char *NOMBRES_MATERIAS[] = {
     "Estructuras Aeronauticas",
     "Propulsion Espacial",
 
-    // Optativas (muchas)
+    // Otras
     "Introduccion al Data Science",
     "Mineria de Datos",
     "Teoria de Juegos",
@@ -206,7 +206,8 @@ const char *NOMBRES_MATERIAS[] = {
     "Taller de Investigacion",
     "Seminario Final",
     "Seminario de Tesis I",
-    "Seminario de Tesis II"};
+    "Seminario de Tesis II"
+};
 
 const int TOTAL_NOMBRES_MATERIAS = sizeof(NOMBRES_MATERIAS) / sizeof(NOMBRES_MATERIAS[0]);
 
@@ -290,7 +291,7 @@ void generar_materia_aleatoria(ListadoMaterias **lista)
     int total_nombres = sizeof(NOMBRES_MATERIAS) / sizeof(NOMBRES_MATERIAS[0]);
     const char *nombre_random = NOMBRES_MATERIAS[rand() % total_nombres];
 
-    char id[7]; // 6 caracteres para el ID + 1 para el null terminator '\0'
+    char id[7]; 
     do
     {
         for (int i = 0; i < 6; i++)
@@ -301,7 +302,7 @@ void generar_materia_aleatoria(ListadoMaterias **lista)
             else
                 id[i] = '0' + (r - 26);
         }
-        id[6] = '\0'; // Null terminator OBLIGATORIO para que sea un string válido
+        id[6] = '\0'; 
     } while (*lista != NULL && buscar_por_identificador(*lista, id, 1) != NULL);
 
     agregar_materia(lista, id, nombre_random, 1);
@@ -331,7 +332,6 @@ int generador(ListadoEstudiantes **estudiantes,
         return 1;
     }
 
-    // Legajos disponibles: del 100000 al 999999   → 900000 posibles
     const int TOTAL_LEGAJOS_POSIBLES = 900000;
 
     if (cantidad_estudiantes > TOTAL_LEGAJOS_POSIBLES)
@@ -368,14 +368,12 @@ int anotar_estudiante_materias_aleatorias(Estudiante *estudiante, ListadoMateria
         return 0;
     }
 
-    // Contar cuántas materias hay disponibles
     int total_materias = cantidad_materias(materias);
     if (total_materias == 0)
     {
         return 0;
     }
 
-    // Determinar cantidad de materias a anotar (entre 0 y 5, pero no más que las disponibles)
     int max_anotaciones = (total_materias < 5) ? total_materias : 5;
     int cantidad_a_anotar = rand() % (max_anotaciones + 1); // 0 a max_anotaciones
 
@@ -384,7 +382,6 @@ int anotar_estudiante_materias_aleatorias(Estudiante *estudiante, ListadoMateria
         return 0;
     }
 
-    // Crear un array con todas las materias disponibles
     MateriaGlobal **materias_disponibles = (MateriaGlobal **)malloc(sizeof(MateriaGlobal *) * total_materias);
     ListadoMaterias *actual = materias;
     int idx = 0;
@@ -394,19 +391,15 @@ int anotar_estudiante_materias_aleatorias(Estudiante *estudiante, ListadoMateria
         actual = actual->siguiente;
     }
 
-    // Seleccionar materias aleatorias sin repetir
     int anotadas = 0;
     for (int i = 0; i < cantidad_a_anotar; i++)
     {
-        // Seleccionar una materia aleatoria del rango restante
         int indice_aleatorio = i + (rand() % (total_materias - i));
         
-        // Intercambiar para evitar repeticiones
         MateriaGlobal *temp = materias_disponibles[i];
         materias_disponibles[i] = materias_disponibles[indice_aleatorio];
         materias_disponibles[indice_aleatorio] = temp;
 
-        // Anotar al estudiante en la materia seleccionada
         if (anotar(estudiante, materias, materias_disponibles[i]->nombre) == 0)
         {
             anotadas++;
@@ -429,14 +422,12 @@ int rendir_materias_aleatorias(Estudiante *estudiante)
         return 0;
     }
 
-    // Contar cuántas cursadas tiene
     int total_cursadas = cantidad_cursadas(estudiante->cursadas);
     if (total_cursadas == 0)
     {
         return 0;
     }
 
-    // Determinar cantidad de materias a rendir (entre 0 y total_cursadas)
     int cantidad_a_rendir = rand() % (total_cursadas + 1);
 
     if (cantidad_a_rendir == 0)
@@ -444,8 +435,6 @@ int rendir_materias_aleatorias(Estudiante *estudiante)
         return 0;
     }
 
-    // Crear un array con los NOMBRES de todas las cursadas (no punteros a Cursada)
-    // Esto es necesario porque rendir_final() modifica la lista de cursadas
     char **nombres_cursadas = (char **)malloc(sizeof(char *) * total_cursadas);
     ListadoCursadas *actual = estudiante->cursadas;
     int idx = 0;
@@ -457,29 +446,23 @@ int rendir_materias_aleatorias(Estudiante *estudiante)
         actual = actual->siguiente;
     }
 
-    // Seleccionar cursadas aleatorias sin repetir
     int rendidas = 0;
     for (int i = 0; i < cantidad_a_rendir; i++)
     {
-        // Seleccionar un índice aleatorio del rango restante
         int indice_aleatorio = i + (rand() % (total_cursadas - i));
         
-        // Intercambiar para evitar repeticiones
         char *temp = nombres_cursadas[i];
         nombres_cursadas[i] = nombres_cursadas[indice_aleatorio];
         nombres_cursadas[indice_aleatorio] = temp;
 
-        // Generar nota aleatoria entre 1 y 10
         int nota = 1 + (rand() % 10);
 
-        // Rendir la materia
         if (rendir_final(estudiante, nombres_cursadas[i], nota) == 0)
         {
             rendidas++;
         }
     }
 
-    // Liberar memoria
     for (int i = 0; i < total_cursadas; i++)
     {
         free(nombres_cursadas[i]);

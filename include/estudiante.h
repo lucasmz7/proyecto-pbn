@@ -11,7 +11,7 @@ typedef struct Estudiante
     char nombre[50];
     int legajo;
     int edad;
-    ListadoCursadas *cursadas;  
+    ListadoCursadas *cursadas; // materias que esta cursando
     ListadoCursadas *regulares; // materias regulares, aprobadas y desaprobadas
     float promedio;
 } Estudiante;

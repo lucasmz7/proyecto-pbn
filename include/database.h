@@ -42,8 +42,8 @@ MateriaGlobal *buscar_materia_por_nombre(ListadoMaterias *lista, const char *nom
 int cantidad_estudiantes(ListadoEstudiantes *lista);
 int cantidad_materias(ListadoMaterias *lista);
 int cantidad_cursadas(ListadoCursadas *lista);
-int cantidad_materias_aprobadas(ListadoCursadas *lista); // Nueva funcion
-int cantidad_materias_desaprobadas(ListadoCursadas *lista); // Nueva funcion
+int cantidad_materias_aprobadas(ListadoCursadas *lista);
+int cantidad_materias_desaprobadas(ListadoCursadas *lista); 
 
 void listar_estudiantes(ListadoEstudiantes *lista);
 void listar_materias(ListadoMaterias *lista);

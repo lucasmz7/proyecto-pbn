@@ -82,7 +82,6 @@ int agregar_estudiante(ListadoEstudiantes **lista, int legajo, int edad, const c
         return 1;
     }
 
-    // Inicializamos Estudiante
     Estudiante *nuevo_estudiante = malloc(sizeof(Estudiante));
     nuevo_estudiante->legajo = legajo;
     nuevo_estudiante->edad = edad;
@@ -91,17 +90,15 @@ int agregar_estudiante(ListadoEstudiantes **lista, int legajo, int edad, const c
     nuevo_estudiante->cursadas = NULL;
     nuevo_estudiante->regulares = NULL;
 
-    // Incializamos nuevo nodo de la lista
     ListadoEstudiantes *nuevo_nodo = malloc(sizeof(ListadoEstudiantes));
     nuevo_nodo->data = nuevo_estudiante;
     nuevo_nodo->siguiente = NULL;
 
-    // Si la lista está vacía, el nuevo nodo se convierte en la cabeza
     if (*lista == NULL)
     {
         *lista = nuevo_nodo;
     }
-    else // Si no, recorremos la lista hasta el final y añadimos el nuevo nodo
+    else
     {
         ListadoEstudiantes *actual = *lista;
         while (actual->siguiente != NULL)
@@ -159,7 +156,6 @@ int agregar_materia(ListadoMaterias **lista, const char *identificador, const ch
         return 1;
     }
 
-    // Inicializamos Materia
     MateriaGlobal *nueva_materia = malloc(sizeof(MateriaGlobal));
     strcpy(nueva_materia->identificador, identificador);
     strcpy(nueva_materia->nombre, nombre);
@@ -167,17 +163,15 @@ int agregar_materia(ListadoMaterias **lista, const char *identificador, const ch
     nueva_materia->aprobados = 0;
     nueva_materia->desaprobados = 0;
 
-    // Incializamos nuevo nodo de la lista
     ListadoMaterias *nuevo_nodo = malloc(sizeof(ListadoMaterias));
     nuevo_nodo->data = nueva_materia;
     nuevo_nodo->siguiente = NULL;
 
-    // Si la lista está vacía, el nuevo nodo se convierte en la cabeza
     if (*lista == NULL)
     {
         *lista = nuevo_nodo;
     }
-    else // Si no, recorremos la lista hasta el final y añadimos el nuevo nodo
+    else
     {
         ListadoMaterias *actual = *lista;
         while (actual->siguiente != NULL)
@@ -212,7 +206,6 @@ int eliminar_estudiante(ListadoEstudiantes **lista, int legajo)
     ListadoEstudiantes *actual = *lista;
     ListadoEstudiantes *previo = NULL;
 
-    // Si el estudiante a eliminar es el primero
     if (actual->data->legajo == legajo)
     {
         *lista = actual->siguiente;
@@ -221,20 +214,18 @@ int eliminar_estudiante(ListadoEstudiantes **lista, int legajo)
         return 0;
     }
 
-    // Recorremos hasta llegar encontrar el nodo a eliminar
     while (actual != NULL && (actual->data->legajo == legajo))
     {
         previo = actual;
         actual = actual->siguiente;
     }
 
-    // Si no se encontrro
     if (actual == NULL)
     {
         printf("No existe ningun estudiante con ese legajo\n");
         return 1;
     }
-    // Eliminamos el nodo y reconectamos la lista
+
     previo->siguiente = actual->siguiente;
     free(actual->data);
     free(actual);
@@ -264,7 +255,6 @@ int eliminar_materia(ListadoMaterias **lista, const char *nombre)
     ListadoMaterias *actual = *lista;
     ListadoMaterias *previo = NULL;
 
-    // Si la materia a eliminar es la primera
     if (strcmp(actual->data->nombre, nombre) == 0)
     {
         *lista = actual->siguiente;
@@ -273,21 +263,18 @@ int eliminar_materia(ListadoMaterias **lista, const char *nombre)
         return 0;
     }
 
-    // Recorremos hasta llegar encontrar el nodo a eliminar
     while (actual != NULL && strcmp(actual->data->nombre, nombre) != 0)
     {
         previo = actual;
         actual = actual->siguiente;
     }
 
-    // Si no se encontrro
     if (actual == NULL)
     {
         printf("No existe una materia con ese nombre\n");
         return 1;
     }
 
-    // Eliminamos el nodo y reconectamos la lista
     previo->siguiente = actual->siguiente;
     free(actual->data);
     free(actual);
@@ -457,12 +444,10 @@ void buscar_por_nombre(ListadoEstudiantes *lista, const char *nombre)
     ListadoEstudiantes *actual = lista;
     int encontrado = 0;
 
-    // Recorremos la lista
     while (actual != NULL)
     {
         if (strcmp(actual->data->nombre, nombre) == 0)
         {
-            // Mostrar encabezado solo la primera vez
             if (!encontrado)
             {
                 printf("|%-50s|%-6s|%-4s|%-10s|%-17s|%-18s|%-21s|\n", "Nombre", "Legajo", "Edad", "Promedio", "Materias cursadas", "Materias aprobadas", "Materias desaprobadas");
@@ -482,7 +467,6 @@ void buscar_por_nombre(ListadoEstudiantes *lista, const char *nombre)
     }
 }
 
-// Tanto edad_min como edad_max son incluyentes
 /**
  * @brief Busca estudiantes dentro de un rango de edad y los muestra por pantalla.
  * @param lista Puntero a la lista de estudiantes.
@@ -524,10 +508,8 @@ void buscar_por_rango_edad(ListadoEstudiantes *lista, int edad_min, int edad_max
         {
             if (!encontrado)
             {
-                printf("Estudiantes en el rango %d - %d\n", edad_min, edad_max);
-                printf("\n");
-    printf("|%-50s|%-6s|%-4s|%-10s|%-17s|%-18s|%-21s|\n", "Nombre", "Legajo", "Edad", "Promedio", "Materias cursadas", "Materias aprobadas", "Materias desaprobadas");
-    printf("|==================================================|======|====|==========|=================|==================|=====================|\n");
+                printf("|%-50s|%-6s|%-4s|%-10s|%-17s|%-18s|%-21s|\n", "Nombre", "Legajo", "Edad", "Promedio", "Materias cursadas", "Materias aprobadas", "Materias desaprobadas");
+                printf("|==================================================|======|====|==========|=================|==================|=====================|\n");
             }
 
             print_estudiante(actual->data);
@@ -580,7 +562,6 @@ Estudiante *buscar_por_legajo(ListadoEstudiantes *lista, int legajo, int modo_si
         actual = actual->siguiente;
     }
 
-    // No encontrado
     if (!modo_silencioso)
     {
         printf("No existe un estudiante con ese legajo\n");
@@ -622,6 +603,7 @@ MateriaGlobal *buscar_por_identificador(ListadoMaterias *lista, const char *id, 
         }
         lista = lista->siguiente;
     }
+
     if (!modo_silencioso)
     {
         printf("No existe una materia con ese identificador\n");
