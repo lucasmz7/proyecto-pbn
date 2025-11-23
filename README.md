@@ -22,11 +22,21 @@ Ideas no-obligatorias de implementar pero que suman puntos:
 - [X] Poder elegir el estudiante/materia de un listado reducido
 - [X] Generar estudiantes de prueba y materias aleatorias de forma masiva
 - [X] Estadísticas de los estudiantes y materias, etc.
-- [] Arboles de correlatividad de materias
-- [] Qué pasa si una materia anterior está desaprobada? Puede anotarse? 
+- [ ] Arboles de correlatividad de materias
+- [ ] Qué pasa si una materia anterior está desaprobada? Puede anotarse? 
 - [X] Cálculo de promedios. 
 - [ ] Archivo de configuración general donde se especifican las variables del sistema.
 - [ ] Mejoras en la interfaz de usuario
 - [X] Tests unitarios
 - [X] Persistencia en JSON
 
+# Desarrollo de la solucion
+El sistema esta limitado por la cantidad de legajos disponibles (6 digitos y empiezan a partir del 100000, es decir 900000 estudiantes al mismo tiempo). 
+
+El sistema ha sido testeado con distintas cantidades dentro del rango previamente mencionado y no se han detectado problemas en el sistema.
+
+Para la persistencia en JSON se ha utilizado la libreria cJSON.
+
+Para comprobar los tests unitarios se debe ejecutar el archivo run_tests.sh
+
+URL de la demostracion: https://www.youtube.com/watch?v=EeodAtpev2U&feature=youtu.be

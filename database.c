@@ -184,6 +184,21 @@ int agregar_materia(ListadoMaterias **lista, const char *identificador, const ch
 }
 
 /**
+ * @brief Libera la memoria de una lista de cursadas.
+ * @param lista Puntero a la lista de cursadas a liberar.
+ */
+static void liberar_cursadas(ListadoCursadas *lista)
+{
+    while (lista != NULL)
+    {
+        ListadoCursadas *temp = lista;
+        lista = lista->siguiente;
+        free(temp->data);
+        free(temp);
+    }
+}
+
+/**
  * @brief Elimina un estudiante de la lista por su legajo.
  * @param lista Puntero doble a la lista de estudiantes.
  * @param legajo Legajo del estudiante a eliminar.
@@ -206,15 +221,20 @@ int eliminar_estudiante(ListadoEstudiantes **lista, int legajo)
     ListadoEstudiantes *actual = *lista;
     ListadoEstudiantes *previo = NULL;
 
+    // Si el primer estudiante es el que buscamos
     if (actual->data->legajo == legajo)
     {
         *lista = actual->siguiente;
+        // Liberar las listas de cursadas y regulares
+        liberar_cursadas(actual->data->cursadas);
+        liberar_cursadas(actual->data->regulares);
         free(actual->data);
         free(actual);
         return 0;
     }
 
-    while (actual != NULL && (actual->data->legajo == legajo))
+    // Buscar el estudiante en el resto de la lista
+    while (actual != NULL && (actual->data->legajo != legajo))
     {
         previo = actual;
         actual = actual->siguiente;
@@ -227,6 +247,9 @@ int eliminar_estudiante(ListadoEstudiantes **lista, int legajo)
     }
 
     previo->siguiente = actual->siguiente;
+    // Liberar las listas de cursadas y regulares
+    liberar_cursadas(actual->data->cursadas);
+    liberar_cursadas(actual->data->regulares);
     free(actual->data);
     free(actual);
     return 0;
@@ -412,8 +435,8 @@ void listar_materias(ListadoMaterias *lista)
 
     ListadoMaterias *actual = lista;
 
-    printf("|%-50s|%-6s|%-4s|%-10s|%-17s|%-18s|%-21s|\n", "Nombre", "Legajo", "Edad", "Promedio", "Materias cursadas", "Materias aprobadas", "Materias desaprobadas");
-    printf("|==================================================|======|====|==========|=================|==================|=====================|\n");
+    printf("|%-50s|%-6s|%-9s|%-9s|%-12s|\n", "Nombre", "ID", "Cursantes", "Aprobados", "Desaprobados");
+    printf("|==================================================|======|=========|=========|============|\n");
 
     while (actual != NULL)
     {

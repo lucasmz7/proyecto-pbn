@@ -218,15 +218,18 @@ int main()
         case 'L':
         {
             int legajo = ventana_legajo();
+            char nombre[50];
+            printf("Nombre de materia: ");
+            scanf(" %[^\n]%*c", nombre);
             int nota;
+            printf("Nota: ");
             if (scanf(" %d", &nota) != 1)
             {
-                getchar();
+                printf("[ERROR]: Debe ingresar un número\n");
+                while (getchar() != '\n'); // Limpiar buffer
                 break;
             }
-            char nombre[50];
-            printf("Nombre: ");
-            scanf(" %[^\n]%*c", nombre);
+            printf("\n");
             {
                 Estudiante *estudiante = buscar_por_legajo(lista_estudiantes, legajo, 0);
                 rendir_final(estudiante, nombre, nota);
@@ -567,9 +570,10 @@ void menu_busqueda_estudiante(ListadoEstudiantes *lista)
             {
                 break;
             }
-            printf("|%-50s|%-6s|%-4s|%-10s|%-17s|%-18s|%-21s|\n", "Nombre", "Legajo", "Edad", "Promedio", "Materias cursadas", "Materias aprobadas", "Materias desaprobadas");
-            printf("|==================================================|======|====|==========|=================|==================|=====================|\n");
+            printf("|%-50s|%-6s|%-4s|%-20s|%-17s|%-18s|%-21s|\n", "Nombre", "Legajo", "Edad", "Promedio", "Materias cursadas", "Materias aprobadas", "Materias desaprobadas");
+            printf("|==================================================|======|====|====================|=================|==================|=====================|\n");
             print_detalle(estudiante);
+            valido = 1;
             break;
         case 'B':
             valido = 1;
